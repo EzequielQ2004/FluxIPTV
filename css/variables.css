@@ -1,0 +1,41 @@
+:root {
+    --flux-black: #000000;
+    --flux-dark-gray: #0A0A0A;
+    --flux-cyan: #00FFFF;
+    --flux-cyan-dim: #00B4D8;
+    --flux-white: #FFFFFF;
+    --flux-gray-light: #B0B0B0;
+    --flux-gray-mid: #6C6C6C;
+    --flux-border: #2A2A2A;
+    --flux-success: #39FF14;
+    --flux-error: #FF4D4D;
+
+    --bg-primary: #000000;
+    --bg-secondary: #0A0A0A;
+    --bg-card: #111111;
+    --border-color: #2A2A2A;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --accent: #00FFFF;
+    --accent-hover: #00B4D8;
+    --accent-bg: rgba(0, 255, 255, 0.15);
+    --shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    --transition: all 0.3s ease;
+
+    --font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-logo: 'Space Grotesk', 'Montserrat', system-ui, sans-serif;
+}
+
+[data-theme="light"] {
+    --bg-primary: #F5F5F5;
+    --bg-secondary: #EAEAEA;
+    --bg-card: #FFFFFF;
+    --border-color: #D0D0D0;
+    --text-primary: #0A0A0A;
+    --text-secondary: #595959;
+    --accent: #0099CC;
+    --accent-hover: #0077AA;
+    --accent-bg: rgba(0, 153, 204, 0.1);
+    --shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}

@@ -1,0 +1,488 @@
+var currentLang: string = 'es';
+
+var translations: Record<string, Record<string, string>> = {
+    es: {
+        'app.title': 'Flux - Reproductor IPTV',
+        'app.searchPlaceholder': 'Buscar canales...',
+        'app.loadingList': 'Cargando lista...',
+        'app.loadingStream': 'Cargando stream...',
+        'app.streamError': 'No se pudo cargar el stream',
+        'app.noChannels': 'No hay canales cargados',
+        'app.noChannelsHint': 'Haz clic en "Cargar Lista" para comenzar',
+        'app.menuOpen': 'Abrir menú',
+        'app.menuClose': 'Cerrar menú',
+
+        'skipLink': 'Saltar al contenido principal',
+
+        'sidebar.title': 'Canales',
+        'sidebar.searchPlaceholder': 'Buscar canales...',
+        'sidebar.searchAria': 'Buscar canales',
+        'sidebar.channelListAria': 'Lista de canales',
+
+        'header.menuToggle': 'Abrir menú',
+        'header.themeToggle': 'Cambiar tema',
+        'header.loadM3u': 'Cargar lista M3U',
+        'header.loadM3uTooltip': 'Cargar lista',
+        'header.settings': 'Ajustes',
+        'header.pip': 'Picture in Picture',
+
+        'player.videoAria': 'Reproductor de video',
+        'player.prev': 'Canal anterior',
+        'player.playPause': 'Reproducir/Pausar',
+        'player.next': 'Siguiente canal',
+        'player.volume': 'Silenciar',
+        'player.volumeSlider': 'Volumen',
+        'player.fullscreen': 'Pantalla completa',
+        'player.epg': 'Guía de programación',
+        'player.kiosk': 'Modo kiosko',
+
+        'filter.all': 'Todos',
+        'filter.favorites': 'Favoritos',
+        'filter.recent': 'Recientes',
+        'filter.groups': 'Grupos',
+        'filter.search': 'Buscar',
+
+        'player.streamInterrupted': 'El stream se ha interrumpido',
+        'player.streamError': 'Error al cargar el stream',
+        'player.streamUnsupported': 'No se pudo reproducir el stream. El formato no es compatible.',
+        'player.streamBlocked': 'Reproducción bloqueada. Interactúa con la página para iniciar.',
+        'player.streamTooManyErrors': 'El stream no está disponible. Demasiados errores de red.',
+        'player.streamTimeout': 'El stream tardó demasiado en cargar',
+        'player.streamFailed': 'No se pudo reproducir el stream',
+        'player.pipUnavailable': 'Picture-in-Picture no está disponible para este tipo de contenido',
+        'player.loadingNested': 'Cargando lista anidada: ',
+        'player.kioskOn': 'Modo kiosko activado',
+        'player.kioskOff': 'Modo kiosko desactivado',
+
+        'player.youtubeLoadError': 'No se pudo cargar el reproductor de YouTube',
+        'player.youtubeExtractError': 'No se pudo extraer el ID del video de YouTube',
+        'player.youtubeInvalidParam': 'Parámetro inválido en la solicitud',
+        'player.youtubeHtml5Error': 'Error del reproductor HTML5. Reintenta el canal.',
+        'player.youtubeNotFound': 'El video no fue encontrado o fue eliminado',
+        'player.youtubeNotAllowed': 'La reproducción no está permitida en este sitio',
+        'player.youtubeError': 'Error de YouTube: ',
+        'player.youtubeUnknown': 'Error desconocido',
+        'player.embedContainerNotFound': 'Error interno: contenedor embed no encontrado',
+        'player.twitchExtractError': 'No se pudo extraer el nombre del canal de Twitch',
+        'player.dailymotionExtractError': 'No se pudo extraer el ID del video de Dailymotion',
+
+        'player.pin.invalidLength': 'El PIN debe tener 4 dígitos',
+        'player.pin.mismatch': 'Los PIN no coinciden',
+        'player.pin.incorrect': 'PIN incorrecto',
+        'player.pin.configured': 'PIN configurado y canal bloqueado',
+        'player.pin.unlocked': 'Canal desbloqueado',
+        'player.pin.removed': 'PIN eliminado y canales desbloqueados',
+        'player.pin.playTitle': 'Canal bloqueado',
+        'player.pin.playMessage': 'Ingresa el PIN para reproducir este canal',
+        'player.pin.playBtn': 'Reproducir',
+
+        'modal.m3u.title': 'Gestionar Listas M3U',
+        'modal.m3u.savedTab': 'Mis Listas',
+        'modal.m3u.savedSection': 'Mis Listas',
+        'modal.m3u.addTab': 'Agregar Nueva',
+        'modal.m3u.addSection': 'Agregar Nueva Lista',
+        'modal.m3u.urlTab': 'Desde URL',
+        'modal.m3u.fileTab': 'Archivo Local',
+        'modal.m3u.fileAria': 'Seleccionar archivo M3U',
+        'modal.m3u.epgSection': 'EPG (Guía de Programación)',
+        'modal.m3u.confirmBtn': 'Cargar',
+        'modal.m3u.namePlaceholder': 'Nombre (opcional)',
+        'modal.m3u.urlPlaceholder': 'https://ejemplo.com/playlist.m3u',
+        'modal.m3u.epgPlaceholder': 'URL del archivo XMLTV (opcional)',
+        'modal.m3u.epgHint': 'Si no se especifica, se intentará cargar desde la misma URL reemplazando .m3u por .xml',
+        'modal.m3u.cancelBtn': 'Cancelar',
+        'modal.m3u.loadBtn': 'Cargar',
+
+        'modal.pin.title': 'Control Parental',
+        'modal.pin.unlockTitle': 'Desbloquear canal',
+        'modal.pin.unlockMessage': 'Ingresa el PIN para desbloquear este canal',
+        'modal.pin.unlockBtn': 'Desbloquear',
+        'modal.pin.setTitle': 'Configurar PIN',
+        'modal.pin.setMessage': 'Establece un PIN de 4 dígitos para bloquear canales',
+        'modal.pin.setBtn': 'Configurar',
+        'modal.pin.removeTitle': 'Eliminar PIN',
+        'modal.pin.removeMessage': 'Ingresa tu PIN actual para eliminar la protección',
+        'modal.pin.removeBtn': 'Eliminar',
+        'modal.pin.placeholder': 'PIN',
+        'modal.pin.confirmPlaceholder': 'Confirmar PIN',
+        'modal.pin.confirmBtn': 'Confirmar',
+        'modal.pin.cancelBtn': 'Cancelar',
+
+        'modal.epg.title': 'Guía de Programación',
+        'modal.epg.empty': 'No hay información de programación disponible',
+        'modal.epg.closeBtn': 'Cerrar',
+
+        'modal.playlistDetail.title': 'Detalles de la Lista',
+        'modal.playlistDetail.nameLabel': 'Nombre',
+        'modal.playlistDetail.urlLabel': 'URL',
+        'modal.playlistDetail.channelsLabel': 'Canales',
+        'modal.playlistDetail.importedLabel': 'Importada',
+        'modal.playlistDetail.namePlaceholder': 'Nombre de la lista',
+        'modal.playlistDetail.copyBtn': 'Copiar URL',
+        'modal.playlistDetail.closeBtn': 'Cerrar',
+        'modal.playlistDetail.saveBtn': 'Guardar',
+
+        'modal.settings.title': 'Configuraciones',
+        'modal.settings.closeBtn': 'Cerrar',
+        'modal.settings.section.parental': 'Control Parental',
+        'modal.settings.section.appearance': 'Apariencia',
+        'modal.settings.section.playback': 'Reproducción',
+        'modal.settings.section.data': 'Datos',
+        'modal.settings.section.info': 'Información',
+        'modal.settings.pin.changeLabel': 'Cambiar PIN',
+        'modal.settings.pin.changeDesc': 'Modifica el PIN de bloqueo de canales',
+        'modal.settings.pin.removeLabel': 'Eliminar PIN',
+        'modal.settings.pin.removeDesc': 'Desactiva la protección por PIN',
+        'modal.settings.pin.changeOldPlaceholder': 'PIN actual',
+        'modal.settings.pin.changeNewPlaceholder': 'Nuevo PIN',
+        'modal.settings.pin.changeConfirmPlaceholder': 'Confirmar nuevo PIN',
+        'modal.settings.pin.cancelBtn': 'Cancelar',
+        'modal.settings.pin.saveBtn': 'Guardar',
+        'modal.settings.themeLabel': 'Tema',
+        'modal.settings.themeAuto': 'Automático',
+        'modal.settings.kioskLabel': 'Modo kiosko',
+        'modal.settings.kioskDesc': 'Pantalla completa automática al reproducir',
+        'modal.settings.historyLabel': 'Limpiar historial',
+        'modal.settings.historyDesc': 'Elimina el historial de canales vistos',
+        'modal.settings.historyBtn': 'Limpiar',
+        'modal.settings.bugLabel': 'Reportar bug',
+        'modal.settings.bugDesc': 'Notifica un problema en GitHub',
+        'modal.settings.bugBtn': 'Abrir',
+        'modal.settings.aboutLabel': 'Acerca de',
+        'modal.settings.aboutDesc': 'Flux - Reproductor IPTV v1.0',
+
+        'modal.confirm.title': 'Confirmar',
+        'modal.confirm.cancelBtn': 'Cancelar',
+        'modal.confirm.acceptBtn': 'Aceptar',
+
+        'toast.url.invalid': 'La URL ingresada no es válida',
+        'toast.url.selectFile': 'Por favor, selecciona un archivo',
+        'toast.url.copied': 'URL copiada al portapapeles',
+        'toast.url.copyFailed': 'No se pudo copiar la URL',
+        'toast.playlist.deleteConfirm': '¿Eliminar esta lista?',
+        'toast.playlist.channelUnavailable': 'El canal ya no está disponible en la lista actual',
+        'toast.playlist.nestedLoading': 'Cargando lista anidada: ',
+        'toast.history.cleared': 'Historial limpiado',
+
+        'loader.urlInvalid': 'La URL ingresada no es válida',
+        'loader.noM3UHeader': 'El contenido no es una lista M3U válida (falta la cabecera #EXTM3U)',
+        'loader.noChannels': 'No se encontraron canales en la lista',
+        'loader.timeout': 'La solicitud tardó demasiado. Verifica que el servidor responda.',
+        'loader.connectionError': 'Error de conexión. Verifica la URL o la conexión a internet.',
+        'loader.tooLarge': 'La lista es demasiado grande (más de 50 MB)',
+        'loader.empty': 'El archivo está vacío o es demasiado pequeño',
+        'loader.unexpectedError': 'Error inesperado: ',
+        'loader.fileTooLarge': 'El archivo es demasiado grande (máximo 50 MB)',
+        'loader.loading': 'Cargando lista...',
+        'loading.nested': 'Cargando lista anidada: ',
+
+        'ui.noName': 'Sin nombre',
+        'ui.noPlaylists': 'No hay listas guardadas',
+        'ui.noHistory': 'Sin historial reciente',
+        'ui.noGroups': 'No se encontraron grupos',
+        'ui.noChannels': 'No se encontraron canales',
+        'ui.removeFav': 'Quitar de favoritos',
+        'ui.addFav': 'Agregar a favoritos',
+        'ui.unlock': 'Desbloquear',
+        'ui.lock': 'Bloquear',
+        'ui.updateList': 'Actualizar lista',
+        'ui.viewDetails': 'Ver detalles',
+        'ui.deleteList': 'Eliminar lista',
+        'ui.retryBtn': 'Reintentar',
+        'ui.confirmClearHistory': '¿Limpiar el historial de canales vistos?',
+
+        'epg.noTitle': 'Sin título',
+        'epg.downloadError': 'Error al descargar EPG',
+        'epg.noPrograms': 'No hay programación disponible para este canal',
+        'epg.noTvgId': 'El canal no tiene tvg-id asignado',
+        'epg.loadedFrom': 'EPG cargado desde:',
+        'epg.loadPrompt': 'Carga un archivo XMLTV desde el menú de listas',
+        'epg.now': 'AHORA',
+
+        'settings.pin.invalidLength': 'El nuevo PIN debe tener 4 dígitos',
+        'settings.pin.mismatch': 'Los PIN no coinciden',
+        'settings.pin.currentIncorrect': 'PIN actual incorrecto',
+        'settings.pin.saved': 'PIN guardado correctamente',
+        'settings.pin.removeTitle': 'Eliminar PIN',
+        'settings.pin.removeMessage': 'Ingresa tu PIN actual para eliminar la protección',
+        'settings.pin.removeBtn': 'Eliminar',
+        'settings.history.clearConfirm': '¿Limpiar el historial de canales vistos?',
+        'settings.history.cleared': 'Historial limpiado',
+        'settings.kioskOn': 'Modo kiosko activado',
+        'settings.kioskOff': 'Modo kiosko desactivado',
+        'settings.themeAuto': 'Auto',
+        'settings.kiosk.enabled': 'Modo kiosko activado',
+        'settings.kiosk.disabled': 'Modo kiosko desactivado',
+        'settings.themeLight': 'Claro',
+        'settings.themeDark': 'Oscuro',
+        'settings.pin.changeBtn': 'Cambiar',
+        'settings.pin.setBtn': 'Configurar'
+    },
+
+    en: {
+        'app.title': 'Flux - IPTV Player',
+        'app.searchPlaceholder': 'Search channels...',
+        'app.loadingList': 'Loading list...',
+        'app.loadingStream': 'Loading stream...',
+        'app.streamError': 'Could not load the stream',
+        'app.noChannels': 'No channels loaded',
+        'app.noChannelsHint': 'Click "Load List" to get started',
+        'app.menuOpen': 'Open menu',
+        'app.menuClose': 'Close menu',
+
+        'skipLink': 'Skip to main content',
+
+        'sidebar.title': 'Channels',
+        'sidebar.searchPlaceholder': 'Search channels...',
+        'sidebar.searchAria': 'Search channels',
+        'sidebar.channelListAria': 'Channel list',
+
+        'header.menuToggle': 'Open menu',
+        'header.themeToggle': 'Toggle theme',
+        'header.loadM3u': 'Load M3U list',
+        'header.loadM3uTooltip': 'Load list',
+        'header.settings': 'Settings',
+        'header.pip': 'Picture in Picture',
+
+        'player.videoAria': 'Video player',
+        'player.prev': 'Previous channel',
+        'player.playPause': 'Play/Pause',
+        'player.next': 'Next channel',
+        'player.volume': 'Mute',
+        'player.volumeSlider': 'Volume',
+        'player.fullscreen': 'Fullscreen',
+        'player.epg': 'Program guide',
+        'player.kiosk': 'Kiosk mode',
+
+        'filter.all': 'All',
+        'filter.favorites': 'Favorites',
+        'filter.recent': 'Recent',
+        'filter.groups': 'Groups',
+        'filter.search': 'Search',
+
+        'player.streamInterrupted': 'Stream was interrupted',
+        'player.streamError': 'Error loading the stream',
+        'player.streamUnsupported': 'Could not play the stream. The format is not supported.',
+        'player.streamBlocked': 'Playback blocked. Interact with the page to start.',
+        'player.streamTooManyErrors': 'Stream is unavailable. Too many network errors.',
+        'player.streamTimeout': 'Stream took too long to load',
+        'player.streamFailed': 'Could not play the stream',
+        'player.pipUnavailable': 'Picture-in-Picture is not available for this content type',
+        'player.loadingNested': 'Loading nested list: ',
+        'player.kioskOn': 'Kiosk mode activated',
+        'player.kioskOff': 'Kiosk mode deactivated',
+
+        'player.youtubeLoadError': 'Could not load the YouTube player',
+        'player.youtubeExtractError': 'Could not extract YouTube video ID',
+        'player.youtubeInvalidParam': 'Invalid request parameter',
+        'player.youtubeHtml5Error': 'HTML5 player error. Try the channel again.',
+        'player.youtubeNotFound': 'Video was not found or was removed',
+        'player.youtubeNotAllowed': 'Playback is not allowed on this site',
+        'player.youtubeError': 'YouTube Error: ',
+        'player.youtubeUnknown': 'Unknown error',
+        'player.embedContainerNotFound': 'Internal error: embed container not found',
+        'player.twitchExtractError': 'Could not extract Twitch channel name',
+        'player.dailymotionExtractError': 'Could not extract Dailymotion video ID',
+
+        'player.pin.invalidLength': 'PIN must be 4 digits',
+        'player.pin.mismatch': 'PINs do not match',
+        'player.pin.incorrect': 'Incorrect PIN',
+        'player.pin.configured': 'PIN set and channel locked',
+        'player.pin.unlocked': 'Channel unlocked',
+        'player.pin.removed': 'PIN removed and channels unlocked',
+        'player.pin.playTitle': 'Channel locked',
+        'player.pin.playMessage': 'Enter the PIN to play this channel',
+        'player.pin.playBtn': 'Play',
+
+        'modal.m3u.title': 'Manage M3U Lists',
+        'modal.m3u.savedTab': 'My Lists',
+        'modal.m3u.savedSection': 'My Lists',
+        'modal.m3u.addTab': 'Add New',
+        'modal.m3u.addSection': 'Add New List',
+        'modal.m3u.urlTab': 'From URL',
+        'modal.m3u.fileTab': 'Local File',
+        'modal.m3u.fileAria': 'Select M3U file',
+        'modal.m3u.epgSection': 'EPG (Program Guide)',
+        'modal.m3u.confirmBtn': 'Load',
+        'modal.m3u.namePlaceholder': 'Name (optional)',
+        'modal.m3u.urlPlaceholder': 'https://example.com/playlist.m3u',
+        'modal.m3u.epgPlaceholder': 'XMLTV file URL (optional)',
+        'modal.m3u.epgHint': 'If not specified, it will try replacing .m3u with .xml',
+        'modal.m3u.cancelBtn': 'Cancel',
+        'modal.m3u.loadBtn': 'Load',
+
+        'modal.pin.title': 'Parental Control',
+        'modal.pin.unlockTitle': 'Unlock channel',
+        'modal.pin.unlockMessage': 'Enter the PIN to unlock this channel',
+        'modal.pin.unlockBtn': 'Unlock',
+        'modal.pin.setTitle': 'Set PIN',
+        'modal.pin.setMessage': 'Set a 4-digit PIN to lock channels',
+        'modal.pin.setBtn': 'Set',
+        'modal.pin.removeTitle': 'Remove PIN',
+        'modal.pin.removeMessage': 'Enter your current PIN to remove protection',
+        'modal.pin.removeBtn': 'Remove',
+        'modal.pin.placeholder': 'PIN',
+        'modal.pin.confirmPlaceholder': 'Confirm PIN',
+        'modal.pin.confirmBtn': 'Confirm',
+        'modal.pin.cancelBtn': 'Cancel',
+
+        'modal.epg.title': 'Program Guide',
+        'modal.epg.empty': 'No program information available',
+        'modal.epg.closeBtn': 'Close',
+
+        'modal.playlistDetail.title': 'Playlist Details',
+        'modal.playlistDetail.nameLabel': 'Name',
+        'modal.playlistDetail.urlLabel': 'URL',
+        'modal.playlistDetail.channelsLabel': 'Channels',
+        'modal.playlistDetail.importedLabel': 'Imported',
+        'modal.playlistDetail.namePlaceholder': 'List name',
+        'modal.playlistDetail.copyBtn': 'Copy URL',
+        'modal.playlistDetail.closeBtn': 'Close',
+        'modal.playlistDetail.saveBtn': 'Save',
+
+        'modal.settings.title': 'Settings',
+        'modal.settings.closeBtn': 'Close',
+        'modal.settings.section.parental': 'Parental Control',
+        'modal.settings.section.appearance': 'Appearance',
+        'modal.settings.section.playback': 'Playback',
+        'modal.settings.section.data': 'Data',
+        'modal.settings.section.info': 'Info',
+        'modal.settings.pin.changeLabel': 'Change PIN',
+        'modal.settings.pin.changeDesc': 'Modify the channel lock PIN',
+        'modal.settings.pin.removeLabel': 'Remove PIN',
+        'modal.settings.pin.removeDesc': 'Disable PIN protection',
+        'modal.settings.pin.changeOldPlaceholder': 'Current PIN',
+        'modal.settings.pin.changeNewPlaceholder': 'New PIN',
+        'modal.settings.pin.changeConfirmPlaceholder': 'Confirm new PIN',
+        'modal.settings.pin.cancelBtn': 'Cancel',
+        'modal.settings.pin.saveBtn': 'Save',
+        'modal.settings.themeLabel': 'Theme',
+        'modal.settings.themeAuto': 'Auto',
+        'modal.settings.kioskLabel': 'Kiosk mode',
+        'modal.settings.kioskDesc': 'Auto fullscreen when playing',
+        'modal.settings.historyLabel': 'Clear history',
+        'modal.settings.historyDesc': 'Remove watch history',
+        'modal.settings.historyBtn': 'Clear',
+        'modal.settings.bugLabel': 'Report bug',
+        'modal.settings.bugDesc': 'Report an issue on GitHub',
+        'modal.settings.bugBtn': 'Open',
+        'modal.settings.aboutLabel': 'About',
+        'modal.settings.aboutDesc': 'Flux - IPTV Player v1.0',
+
+        'modal.confirm.title': 'Confirm',
+        'modal.confirm.cancelBtn': 'Cancel',
+        'modal.confirm.acceptBtn': 'Accept',
+
+        'toast.url.invalid': 'Please enter a valid URL',
+        'toast.url.selectFile': 'Please select a file',
+        'toast.url.copied': 'URL copied to clipboard',
+        'toast.url.copyFailed': 'Could not copy URL',
+        'toast.playlist.deleteConfirm': 'Delete this list?',
+        'toast.playlist.channelUnavailable': 'Channel is no longer available in the current list',
+        'toast.history.cleared': 'History cleared',
+
+        'loader.urlInvalid': 'The entered URL is not valid',
+        'loader.noM3UHeader': 'Content is not a valid M3U list (missing #EXTM3U header)',
+        'loader.noChannels': 'No channels found in the list',
+        'loader.timeout': 'The request timed out. Check that the server responds.',
+        'loader.connectionError': 'Connection error. Check the URL or internet connection.',
+        'loader.tooLarge': 'The list is too large (over 50 MB)',
+        'loader.empty': 'The file is empty or too small',
+        'loader.unexpectedError': 'Unexpected error: ',
+        'loader.fileTooLarge': 'The file is too large (max 50 MB)',
+        'loader.loading': 'Loading list...',
+        'loading.nested': 'Loading nested list: ',
+
+        'ui.noName': 'Unnamed',
+        'ui.noPlaylists': 'No saved lists',
+        'ui.noHistory': 'No recent history',
+        'ui.noGroups': 'No groups found',
+        'ui.noChannels': 'No channels found',
+        'ui.removeFav': 'Remove from favorites',
+        'ui.addFav': 'Add to favorites',
+        'ui.unlock': 'Unlock',
+        'ui.lock': 'Lock',
+        'ui.updateList': 'Update list',
+        'ui.viewDetails': 'View details',
+        'ui.deleteList': 'Delete list',
+        'ui.retryBtn': 'Retry',
+        'ui.confirmClearHistory': 'Clear watch history?',
+
+        'epg.noTitle': 'No title',
+        'epg.downloadError': 'Error downloading EPG',
+        'epg.noPrograms': 'No program data available for this channel',
+        'epg.noTvgId': 'Channel has no tvg-id assigned',
+        'epg.loadedFrom': 'EPG loaded from:',
+        'epg.loadPrompt': 'Load an XMLTV file from the list menu',
+        'epg.now': 'NOW',
+
+        'settings.pin.invalidLength': 'New PIN must be 4 digits',
+        'settings.pin.mismatch': 'PINs do not match',
+        'settings.pin.currentIncorrect': 'Current PIN is incorrect',
+        'settings.pin.saved': 'PIN saved successfully',
+        'settings.pin.removeTitle': 'Remove PIN',
+        'settings.pin.removeMessage': 'Enter your current PIN to remove protection',
+        'settings.pin.removeBtn': 'Remove',
+        'settings.history.clearConfirm': 'Clear watch history?',
+        'settings.history.cleared': 'History cleared',
+        'settings.kioskOn': 'Kiosk mode activated',
+        'settings.kioskOff': 'Kiosk mode deactivated',
+        'settings.themeAuto': 'Auto',
+        'settings.themeLight': 'Light',
+        'settings.kiosk.enabled': 'Kiosk mode enabled',
+        'settings.kiosk.disabled': 'Kiosk mode disabled',
+        'settings.themeDark': 'Dark',
+        'settings.pin.changeBtn': 'Change',
+        'settings.pin.setBtn': 'Set'
+    }
+};
+
+function t(key: string, params?: Record<string, string | number>): string {
+    var lang = translations[currentLang];
+    if (!lang) return key;
+    var val = lang[key];
+    if (val === undefined && currentLang !== 'es') {
+        val = translations.es[key];
+    }
+    if (val === undefined) return key;
+    if (typeof val === 'string' && params) {
+        return val.replace(/\{(\w+)\}/g, function (_, k) {
+            return params[k] !== undefined ? String(params[k]) : '{' + k + '}';
+        });
+    }
+    return val;
+}
+
+function setLocale(lang: string) {
+    if (translations[lang]) {
+        currentLang = lang;
+        document.documentElement.setAttribute('lang', lang);
+        document.title = t('app.title');
+        initI18n();
+    }
+}
+
+function getLocale(): string {
+    return currentLang;
+}
+
+function initI18n(): void {
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var text = t(el.getAttribute('data-i18n')!);
+        if (text) el.textContent = text;
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+        var text = t(el.getAttribute('data-i18n-placeholder')!);
+        if (text) (el as any).placeholder = text;
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+        var text = t(el.getAttribute('data-i18n-aria')!);
+        if (text) el.setAttribute('aria-label', text);
+    });
+    document.querySelectorAll('[data-i18n-tooltip]').forEach(function (el) {
+        var text = t(el.getAttribute('data-i18n-tooltip')!);
+        if (text) el.setAttribute('data-tooltip', text);
+    });
+}
+
+export { t, setLocale, getLocale, initI18n };

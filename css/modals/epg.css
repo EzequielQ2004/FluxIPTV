@@ -1,0 +1,73 @@
+.epg-modal {
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.epg-channel-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.epg-channel-logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+
+.epg-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.epg-item {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background: var(--bg-card);
+    transition: var(--transition);
+}
+
+.epg-item:hover {
+    background: var(--bg-secondary);
+    transform: scale(1.01);
+}
+
+.epg-item-current {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+}
+
+.epg-item-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+}
+
+.epg-item-time {
+    font-size: 0.75rem;
+    color: var(--flux-cyan-dim);
+    margin-bottom: 0.25rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+}
+
+.epg-item-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.epg-item-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}

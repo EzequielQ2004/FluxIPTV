@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta name="description" content="Flux IPTV - Reproductor de listas M3U">
+    <title>Flux - Reproductor IPTV</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet"></noscript>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/modals.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📺</text></svg>">
+</head>
+<body>
+    <a href="#main-content" class="skip-link" data-i18n="skipLink">Saltar al contenido principal</a>
+    <div class="app-container">
+        <header class="header">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" data-tooltip="Abrir menú" data-i18n-aria="header.menuToggle" data-i18n-tooltip="header.menuToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="logo">
+                    <img src="img/logo-flux.png" alt="Flux" class="logo-img">
+                    <span class="logo-text">FLUX</span>
+                </div>
+            </div>
+            <div class="header-controls">
+                <button class="btn" id="themeToggle" aria-label="Cambiar tema" data-tooltip="Cambiar tema" data-i18n-aria="header.themeToggle" data-i18n-tooltip="header.themeToggle">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <button class="btn" id="loadM3uBtn" aria-label="Cargar lista M3U" data-tooltip="Cargar lista" data-i18n-aria="header.loadM3u" data-i18n-tooltip="header.loadM3uTooltip">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </button>
+                <button class="btn" id="settingsBtn" aria-label="Ajustes" data-tooltip="Ajustes" data-i18n-aria="header.settings" data-i18n-tooltip="header.settings">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </button>
+                <button class="btn btn-primary" id="pipBtn" aria-label="Picture in Picture" data-tooltip="Picture in Picture" data-i18n-aria="header.pip" data-i18n-tooltip="header.pip">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>
+                        <rect x="8" y="8" width="8" height="8" rx="1" ry="1"></rect>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2 data-i18n="sidebar.title">Canales</h2>
+                <input type="text" class="search-input" id="searchInput" placeholder="Buscar canales..." aria-label="Buscar canales" data-i18n-placeholder="sidebar.searchPlaceholder" data-i18n-aria="sidebar.searchAria">
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all" data-i18n="filter.all">Todos</button>
+                <button class="filter-tab" data-filter="favorites">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:0.2rem">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span data-i18n="filter.favorites">Favoritos</span>
+                </button>
+                <button class="filter-tab" data-filter="recent">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:0.2rem">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span data-i18n="filter.recent">Recientes</span>
+                </button>
+                <button class="filter-tab" data-filter="groups">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:0.2rem">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span data-i18n="filter.groups">Grupos</span>
+                </button>
+            </div>
+            <div class="channel-list" id="channelList" role="list" aria-live="polite" aria-label="Lista de canales" data-i18n-aria="sidebar.channelListAria">
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <p data-i18n="app.noChannels">No hay canales cargados</p>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem;" data-i18n="app.noChannelsHint">Haz clic en "Cargar Lista" para comenzar</p>
+                </div>
+                <div class="skeleton-list" id="skeletonList">
+                    <div class="skeleton-row"><div class="skeleton-logo"></div><div class="skeleton-lines"><div class="skeleton-line skeleton-line--name"></div><div class="skeleton-line skeleton-line--group"></div></div></div>
+                    <div class="skeleton-row"><div class="skeleton-logo"></div><div class="skeleton-lines"><div class="skeleton-line skeleton-line--name"></div><div class="skeleton-line skeleton-line--group"></div></div></div>
+                    <div class="skeleton-row"><div class="skeleton-logo"></div><div class="skeleton-lines"><div class="skeleton-line skeleton-line--name"></div><div class="skeleton-line skeleton-line--group"></div></div></div>
+                    <div class="skeleton-row"><div class="skeleton-logo"></div><div class="skeleton-lines"><div class="skeleton-line skeleton-line--name"></div><div class="skeleton-line skeleton-line--group"></div></div></div>
+                    <div class="skeleton-row"><div class="skeleton-logo"></div><div class="skeleton-lines"><div class="skeleton-line skeleton-line--name"></div><div class="skeleton-line skeleton-line--group"></div></div></div>
+                    <div class="skeleton-row"><div class="skeleton-logo"></div><div class="skeleton-lines"><div class="skeleton-line skeleton-line--name"></div><div class="skeleton-line skeleton-line--group"></div></div></div>
+                    <div class="skeleton-row"><div class="skeleton-logo"></div><div class="skeleton-lines"><div class="skeleton-line skeleton-line--name"></div><div class="skeleton-line skeleton-line--group"></div></div></div>
+                    <div class="skeleton-row"><div class="skeleton-logo"></div><div class="skeleton-lines"><div class="skeleton-line skeleton-line--name"></div><div class="skeleton-line skeleton-line--group"></div></div></div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <main class="player-area" id="main-content">
+            <div class="video-container" id="videoContainer" aria-live="polite" aria-label="Reproductor de video" data-i18n-aria="player.videoAria">
+                <video id="videoPlayer" playsinline></video>
+                <div id="youtubeContainer" class="youtube-container hidden">
+                    <div id="youtubePlayer"></div>
+                </div>
+                <div id="embedContainer" class="youtube-container hidden">
+                    <div id="embedPlayer"></div>
+                </div>
+                <div class="list-loading-overlay" id="listLoadingOverlay">
+                    <div class="spinner"></div>
+                    <div class="loading-text" id="listLoadingText" data-i18n="app.loadingList">Cargando lista...</div>
+                </div>
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="spinner"></div>
+                    <div class="loading-text" id="loadingText" data-i18n="app.loadingStream">Cargando stream...</div>
+                </div>
+                <div class="error-overlay" id="errorOverlay">
+                    <div class="error-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2L2 22h20L12 2z"></path>
+                            <line x1="12" y1="10" x2="12" y2="16"></line>
+                            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                        </svg>
+                    </div>
+                    <div class="error-message" id="errorMessage" data-i18n="app.streamError">No se pudo cargar el stream</div>
+                    <button class="error-retry" id="retryBtn" data-i18n="ui.retryBtn">Reintentar</button>
+                </div>
+                <div class="player-controls" id="playerControls">
+                <button class="control-btn" id="prevBtn" aria-label="Canal anterior" data-tooltip="Canal anterior" data-i18n-aria="player.prev" data-i18n-tooltip="player.prev">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <button class="control-btn play-pause" id="playPauseBtn" aria-label="Reproducir/Pausar" data-tooltip="Reproducir/Pausar" data-i18n-aria="player.playPause" data-i18n-tooltip="player.playPause">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" id="playIcon">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" id="pauseIcon" class="hidden">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                </button>
+                <button class="control-btn" id="nextBtn" aria-label="Siguiente canal" data-tooltip="Siguiente canal" data-i18n-aria="player.next" data-i18n-tooltip="player.next">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+                <div class="volume-group">
+                    <button class="control-btn volume-btn" id="volumeBtn" aria-label="Silenciar" data-tooltip="Silenciar" data-i18n-aria="player.volume" data-i18n-tooltip="player.volume">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="volumeIcon">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        </svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="muteIcon" class="hidden">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <line x1="23" y1="9" x2="17" y2="15"></line>
+                            <line x1="17" y1="9" x2="23" y2="15"></line>
+                        </svg>
+                    </button>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="1" aria-label="Volumen" data-i18n-aria="player.volumeSlider">
+                </div>
+                <button class="control-btn" id="fullscreenBtn" aria-label="Pantalla completa" data-tooltip="Pantalla completa" data-i18n-aria="player.fullscreen" data-i18n-tooltip="player.fullscreen">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                </button>
+                <button class="control-btn" id="epgBtn" aria-label="Guía de programación" data-tooltip="Guía de programación" data-i18n-aria="player.epg" data-i18n-tooltip="player.epg">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </button>
+                <button class="control-btn" id="kioskBtn" aria-label="Modo kiosko" data-tooltip="Modo kiosko" data-i18n-aria="player.kiosk" data-i18n-tooltip="player.kiosk">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                </button>
+                </div>
+            </div>
+            <div class="history-bar" id="historyBar"></div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <div class="modal-overlay" id="m3uModal" role="dialog" aria-modal="true" aria-labelledby="m3uModalTitle">
+        <div class="modal m3u-modal-content">
+            <div class="modal-header">
+                <h2 id="m3uModalTitle" data-i18n="modal.m3u.title">Gestionar Listas M3U</h2>
+            </div>
+            <div class="modal-body">
+                <div class="m3u-modal-tabs">
+                    <button class="m3u-modal-tab active" data-m3u-tab="saved" data-i18n="modal.m3u.savedTab">Mis Listas</button>
+                    <button class="m3u-modal-tab" data-m3u-tab="add" data-i18n="modal.m3u.addTab">Agregar Nueva</button>
+                </div>
+
+                <div id="m3uSavedTab" class="m3u-tab-content active">
+                    <div id="savedPlaylistsSection">
+                        <div class="modal-section-title" data-i18n="modal.m3u.savedSection">Mis Listas</div>
+                        <div id="playlistList"></div>
+                    </div>
+                </div>
+
+                <div id="m3uAddTab" class="m3u-tab-content">
+                    <div class="modal-section-title" data-i18n="modal.m3u.addSection">Agregar Nueva Lista</div>
+                    <input type="text" class="modal-input" id="m3uName" placeholder="Nombre (opcional)" aria-label="Nombre de la lista" data-i18n-placeholder="modal.m3u.namePlaceholder" data-i18n-aria="modal.m3u.namePlaceholder">
+                    <div class="modal-tabs">
+                        <button class="modal-tab active" data-tab="url" data-i18n="modal.m3u.urlTab">Desde URL</button>
+                        <button class="modal-tab" data-tab="file" data-i18n="modal.m3u.fileTab">Archivo Local</button>
+                    </div>
+                    <div id="urlTab">
+                        <input type="text" class="modal-input" id="m3uUrl" placeholder="https://ejemplo.com/playlist.m3u" aria-label="URL de la lista M3U" data-i18n-placeholder="modal.m3u.urlPlaceholder" data-i18n-aria="modal.m3u.urlPlaceholder">
+                    </div>
+                    <div id="fileTab" class="hidden">
+                        <input type="file" class="modal-input" id="m3uFile" accept=".m3u,.m3u8" aria-label="Seleccionar archivo M3U" data-i18n-aria="modal.m3u.fileAria">
+                    </div>
+
+                    <div class="modal-divider"></div>
+
+                    <div class="modal-section-title" data-i18n="modal.m3u.epgSection">EPG (Guía de Programación)</div>
+                    <input type="text" class="modal-input" id="epgUrl" placeholder="URL del archivo XMLTV (opcional)" aria-label="URL del archivo EPG" data-i18n-placeholder="modal.m3u.epgPlaceholder" data-i18n-aria="modal.m3u.epgPlaceholder">
+                    <p style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem; margin-bottom: 0;" data-i18n="modal.m3u.epgHint">Si no se especifica, se intentará cargar desde la misma URL reemplazando .m3u por .xml</p>
+
+                    <div class="modal-actions" style="margin-top: 1.5rem;">
+                        <button class="btn" id="cancelM3uBtn" data-i18n="modal.m3u.cancelBtn">Cancelar</button>
+                        <button class="btn btn-primary" id="confirmM3uBtn" data-i18n="modal.m3u.confirmBtn">Cargar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="pinModal" role="dialog" aria-modal="true" aria-labelledby="pinModalTitle" aria-describedby="pinModalMessage">
+        <div class="modal" style="max-width: 400px;">
+            <h2 id="pinModalTitle" data-i18n="modal.pin.title">Control Parental</h2>
+            <p id="pinModalMessage" style="margin-bottom: 1rem; color: var(--text-secondary);" data-i18n="modal.pin.unlockMessage">Ingresa el PIN para desbloquear este canal</p>
+            <input type="password" class="pin-input" id="pinInput" maxlength="4" inputmode="numeric" pattern="\d*" placeholder="****" aria-label="PIN" data-i18n-placeholder="modal.pin.placeholder" data-i18n-aria="modal.pin.placeholder">
+            <input type="password" class="pin-input" id="pinConfirmInput" maxlength="4" inputmode="numeric" pattern="\d*" placeholder="Confirmar PIN" aria-label="Confirmar PIN" style="display:none" data-i18n-placeholder="modal.pin.confirmPlaceholder" data-i18n-aria="modal.pin.confirmPlaceholder">
+            <div class="modal-actions">
+                <button class="btn" id="cancelPinBtn" data-i18n="modal.pin.cancelBtn">Cancelar</button>
+                <button class="btn btn-primary" id="confirmPinBtn" data-i18n="modal.pin.confirmBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="epgModal" role="dialog" aria-modal="true" aria-labelledby="epgModalTitle">
+        <div class="modal epg-modal">
+            <h2 id="epgModalTitle" data-i18n="modal.epg.title">Guía de Programación</h2>
+            <div class="epg-channel-info" id="epgChannelInfo"></div>
+            <div class="epg-list" id="epgList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <p data-i18n="modal.epg.empty">No hay información de programación disponible</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn" id="closeEpgBtn" data-i18n="modal.epg.closeBtn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="playlistDetailsModal" role="dialog" aria-modal="true" aria-labelledby="playlistDetailTitle">
+        <div class="modal" style="max-width: 500px;">
+            <h2 id="playlistDetailTitle" data-i18n="modal.playlistDetail.title">Detalles de la Lista</h2>
+            <div class="pl-detail-section">
+                <label class="pl-detail-label" data-i18n="modal.playlistDetail.nameLabel">Nombre</label>
+                <input type="text" class="modal-input" id="plDetailName" placeholder="Nombre de la lista" data-i18n-placeholder="modal.playlistDetail.namePlaceholder">
+            </div>
+            <div class="pl-detail-section">
+                <label class="pl-detail-label" data-i18n="modal.playlistDetail.urlLabel">URL</label>
+                <div class="pl-url-row">
+                    <span class="pl-url-label" id="plDetailUrl"></span>
+                    <button class="pl-copy-btn" id="plCopyUrlBtn" aria-label="Copiar URL" data-tooltip="Copiar URL" data-i18n-aria="modal.playlistDetail.copyBtn" data-i18n-tooltip="modal.playlistDetail.copyBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="pl-details-grid">
+                <div class="pl-detail-section">
+                    <span class="pl-detail-label" data-i18n="modal.playlistDetail.channelsLabel">Canales</span>
+                    <span class="pl-detail-value" id="plDetailCount">0</span>
+                </div>
+                <div class="pl-detail-section">
+                    <span class="pl-detail-label" data-i18n="modal.playlistDetail.importedLabel">Importada</span>
+                    <span class="pl-detail-value" id="plDetailDate">—</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn" id="closePlDetailBtn" data-i18n="modal.playlistDetail.closeBtn">Cerrar</button>
+                <button class="btn btn-primary" id="savePlDetailBtn" data-i18n="modal.playlistDetail.saveBtn">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+        <div class="modal settings-modal">
+            <div class="settings-header">
+                <h2 id="settingsModalTitle" data-i18n="modal.settings.title">Configuraciones</h2>
+                <button class="settings-close" id="closeSettingsBtn" aria-label="Cerrar ajustes" data-i18n-aria="modal.settings.closeBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="settings-section-title" data-i18n="modal.settings.section.parental">Control Parental</h3>
+                <div class="settings-row" id="changePinRow">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.settings.pin.changeLabel">Cambiar PIN</span>
+                        <span class="settings-row-desc" data-i18n="modal.settings.pin.changeDesc">Modifica el PIN de bloqueo de canales</span>
+                    </div>
+                    <button class="btn" id="changePinBtn">Cambiar</button>
+                </div>
+                <div class="settings-row" id="removePinRow" style="display:none">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.settings.pin.removeLabel">Eliminar PIN</span>
+                        <span class="settings-row-desc" data-i18n="modal.settings.pin.removeDesc">Desactiva la protección por PIN</span>
+                    </div>
+                    <button class="btn btn-danger" id="removePinBtn">Eliminar</button>
+                </div>
+                <div id="changePinForm" style="display:none">
+                    <input type="password" class="settings-pin-input" id="changeOldPin" maxlength="4" inputmode="numeric" pattern="\d*" placeholder="PIN actual" data-i18n-placeholder="modal.settings.pin.changeOldPlaceholder">
+                    <input type="password" class="settings-pin-input" id="changeNewPin" maxlength="4" inputmode="numeric" pattern="\d*" placeholder="Nuevo PIN" data-i18n-placeholder="modal.settings.pin.changeNewPlaceholder">
+                    <input type="password" class="settings-pin-input" id="changeConfirmPin" maxlength="4" inputmode="numeric" pattern="\d*" placeholder="Confirmar nuevo PIN" data-i18n-placeholder="modal.settings.pin.changeConfirmPlaceholder">
+                    <div class="settings-pin-actions">
+                        <button class="btn" id="cancelChangePinBtn" data-i18n="modal.settings.pin.cancelBtn">Cancelar</button>
+                        <button class="btn btn-primary" id="saveChangePinBtn" data-i18n="modal.settings.pin.saveBtn">Guardar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="settings-section-title" data-i18n="modal.settings.section.appearance">Apariencia</h3>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.settings.themeLabel">Tema</span>
+                    </div>
+                    <select class="settings-select" id="themeSelect">
+                        <option value="auto" data-i18n="modal.settings.themeAuto">Automático</option>
+                        <option value="light" data-i18n="settings.themeLight">Claro</option>
+                        <option value="dark" data-i18n="settings.themeDark">Oscuro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="settings-section-title" data-i18n="modal.settings.section.playback">Reproducción</h3>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.settings.kioskLabel">Modo kiosko</span>
+                        <span class="settings-row-desc" data-i18n="modal.settings.kioskDesc">Pantalla completa automática al reproducir</span>
+                    </div>
+                    <label class="settings-toggle">
+                        <input type="checkbox" id="kioskToggle">
+                        <span class="settings-toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="settings-section-title" data-i18n="modal.settings.section.data">Datos</h3>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.settings.historyLabel">Limpiar historial</span>
+                        <span class="settings-row-desc" data-i18n="modal.settings.historyDesc">Elimina el historial de canales vistos</span>
+                    </div>
+                    <button class="btn" id="clearHistoryBtn" data-i18n="modal.settings.historyBtn">Limpiar</button>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="settings-section-title" data-i18n="modal.settings.section.info">Información</h3>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.settings.bugLabel">Reportar bug</span>
+                        <span class="settings-row-desc" data-i18n="modal.settings.bugDesc">Notifica un problema en GitHub</span>
+                    </div>
+                    <a class="btn" href="https://github.com/anomalyco/opencode/issues" target="_blank" rel="noopener noreferrer" data-i18n="modal.settings.bugBtn">Abrir</a>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.settings.aboutLabel">Acerca de</span>
+                        <span class="settings-row-desc" data-i18n="modal.settings.aboutDesc">Flux - Reproductor IPTV v1.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+        <div class="modal" style="max-width: 400px;">
+            <h2 id="confirmTitle" data-i18n="modal.confirm.title">Confirmar</h2>
+            <p id="confirmMessage" style="margin-bottom: 1rem; color: var(--text-secondary);"></p>
+            <div class="modal-actions">
+                <button class="btn" id="cancelConfirmBtn" data-i18n="modal.confirm.cancelBtn">Cancelar</button>
+                <button class="btn btn-primary" id="acceptConfirmBtn" data-i18n="modal.confirm.acceptBtn">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/js/app.ts"></script>
+</body>
+</html>
