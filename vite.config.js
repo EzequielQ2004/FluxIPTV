@@ -35,6 +35,12 @@ export default defineConfig({
           { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
           { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
           { src: '/icon-512-maskable.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        ],
+        screenshots: [
+          { src: '/screenshot-1.png', sizes: '1365x766', type: 'image/png', form_factor: 'wide', label: 'Reproduciendo canal' },
+          { src: '/screenshot-2.png', sizes: '1357x636', type: 'image/png', form_factor: 'wide', label: 'Lista de canales' },
+          { src: '/screenshot-3.png', sizes: '1365x634', type: 'image/png', form_factor: 'wide', label: 'Configuración' },
+          { src: '/screenshot-4.png', sizes: '1365x634', type: 'image/png', form_factor: 'wide', label: 'Cargar lista M3U' }
         ]
       },
       workbox: {
