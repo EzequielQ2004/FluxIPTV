@@ -1,0 +1,211 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 340px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0f0f1a;
+  color: #e0e0e0;
+  font-size: 14px;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #1e1e32;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+}
+
+.header h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.playlist-list {
+  flex: 1;
+  padding: 0.5rem;
+  overflow-y: auto;
+  max-height: 280px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #888;
+}
+
+.empty-state .hint {
+  font-size: 0.75rem;
+  margin-top: 0.3rem;
+  color: #666;
+}
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border: 1px solid transparent;
+}
+
+.playlist-item:hover {
+  background: #1a1a2e;
+  border-color: #2a2a3e;
+}
+
+.playlist-item .info {
+  flex: 1;
+  min-width: 0;
+}
+
+.playlist-item .name {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-item .url {
+  color: #888;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-item .channels {
+  color: #7b2ff7;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.playlist-item .delete-btn {
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  line-height: 1;
+  font-size: 16px;
+}
+
+.playlist-item .delete-btn:hover {
+  background: #2a1a1a;
+  color: #ff4444;
+}
+
+.add-form {
+  padding: 0.75rem;
+  border-top: 1px solid #1e1e32;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.url-input,
+.name-input {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #2a2a3e;
+  background: #14142a;
+  color: #e0e0e0;
+  font-size: 0.8rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.url-input:focus,
+.name-input:focus {
+  border-color: #7b2ff7;
+}
+
+.url-input::placeholder,
+.name-input::placeholder {
+  color: #555;
+}
+
+.form-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.name-input {
+  flex: 1;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: #2a2a3e;
+  color: #e0e0e0;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background: #3a3a4e;
+}
+
+.btn-primary {
+  background: #7b2ff7;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #6a20e0;
+}
+
+.btn-primary:disabled {
+  background: #3a1a7a;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #ff4444;
+  font-size: 0.75rem;
+  min-height: 1em;
+}
+
+.footer {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  border-top: 1px solid #1e1e32;
+}
+
+.link {
+  color: #7b2ff7;
+  text-decoration: none;
+  font-size: 0.75rem;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

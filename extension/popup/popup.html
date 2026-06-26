@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flux IPTV</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <img src="../icons/icon-48.png" alt="Flux" class="logo">
+      <h1>Flux IPTV</h1>
+    </header>
+
+    <div class="playlist-list" id="playlistList">
+      <div class="empty-state" id="emptyState">
+        <p>No hay listas guardadas</p>
+        <p class="hint">Agregá una URL de lista M3U abajo</p>
+      </div>
+    </div>
+
+    <div class="add-form">
+      <input type="text" id="urlInput" placeholder="https://ejemplo.com/lista.m3u" class="url-input">
+      <div class="form-row">
+        <input type="text" id="nameInput" placeholder="Nombre (opcional)" class="name-input">
+        <button id="addBtn" class="btn btn-primary">Agregar</button>
+      </div>
+      <p class="error" id="errorMsg"></p>
+    </div>
+
+    <footer class="footer">
+      <a href="https://fluxiptv.qzz.io" target="_blank" class="link">Abrir Flux IPTV</a>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
