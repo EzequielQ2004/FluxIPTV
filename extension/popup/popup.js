@@ -189,10 +189,17 @@ function savePlaylists() {
 function openPlaylist(url, name) {
   const targetUrl = FLUX_URL + '/?m3u=' + encodeURIComponent(url);
 
-  chrome.tabs.query({ url: FLUX_URL + '/*' }, function (tabs) {
-    if (tabs.length > 0) {
-      chrome.tabs.update(tabs[0].id, { url: targetUrl, active: true });
-      chrome.windows.update(tabs[0].windowId, { focused: true });
+  chrome.tabs.query({}, function (tabs) {
+    var fluxTab = null;
+    for (var i = 0; i < tabs.length; i++) {
+      if (tabs[i].url && tabs[i].url.indexOf(FLUX_URL) === 0) {
+        fluxTab = tabs[i];
+        break;
+      }
+    }
+    if (fluxTab) {
+      chrome.tabs.update(fluxTab.id, { url: targetUrl, active: true });
+      chrome.windows.update(fluxTab.windowId, { focused: true });
     } else {
       chrome.tabs.create({ url: targetUrl });
     }

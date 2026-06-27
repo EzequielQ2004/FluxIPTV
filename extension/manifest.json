@@ -7,6 +7,9 @@
     "storage",
     "contextMenus"
   ],
+  "host_permissions": [
+    "https://fluxiptv.qzz.io/*"
+  ],
   "action": {
     "default_popup": "popup/popup.html",
     "default_title": "Flux IPTV",
