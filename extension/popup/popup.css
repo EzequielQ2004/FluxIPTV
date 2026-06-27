@@ -1,211 +1,286 @@
+:root {
+    --flux-black: #000000;
+    --flux-dark-gray: #0A0A0A;
+    --flux-cyan: #00FFFF;
+    --flux-cyan-dim: #00B4D8;
+    --flux-white: #FFFFFF;
+    --flux-gray-light: #B0B0B0;
+    --flux-gray-mid: #6C6C6C;
+    --flux-border: #2A2A2A;
+    --flux-error: #FF4D4D;
+    --bg-primary: #000000;
+    --bg-secondary: #0A0A0A;
+    --bg-card: #111111;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --accent: #00FFFF;
+    --accent-hover: #00B4D8;
+    --accent-bg: rgba(0, 255, 255, 0.15);
+    --font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  width: 340px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #0f0f1a;
-  color: #e0e0e0;
-  font-size: 14px;
+    width: 340px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    background: var(--flux-black);
+    color: var(--text-primary);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--flux-border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--flux-gray-light);
 }
 
 .app {
-  display: flex;
-  flex-direction: column;
-  min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
 }
 
 .header {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #1e1e32;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--flux-border);
 }
 
 .logo {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
 }
 
 .header h1 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--flux-white);
+    letter-spacing: 0.02em;
 }
 
 .playlist-list {
-  flex: 1;
-  padding: 0.5rem;
-  overflow-y: auto;
-  max-height: 280px;
+    flex: 1;
+    padding: 0.5rem;
+    overflow-y: auto;
+    max-height: 260px;
 }
 
 .empty-state {
-  text-align: center;
-  padding: 2rem 1rem;
-  color: #888;
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-secondary);
 }
 
 .empty-state .hint {
-  font-size: 0.75rem;
-  margin-top: 0.3rem;
-  color: #666;
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
+    color: var(--flux-gray-mid);
 }
 
 .playlist-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s;
-  border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
 }
 
 .playlist-item:hover {
-  background: #1a1a2e;
-  border-color: #2a2a3e;
+    background: var(--bg-card);
+    border-color: var(--flux-border);
 }
 
 .playlist-item .info {
-  flex: 1;
-  min-width: 0;
+    flex: 1;
+    min-width: 0;
 }
 
 .playlist-item .name {
-  color: #fff;
-  font-weight: 500;
-  font-size: 0.85rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    color: var(--flux-white);
+    font-weight: 500;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .playlist-item .url {
-  color: #888;
-  font-size: 0.7rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    color: var(--flux-gray-mid);
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .playlist-item .channels {
-  color: #7b2ff7;
-  font-size: 0.7rem;
-  font-weight: 500;
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 500;
 }
 
 .playlist-item .delete-btn {
-  background: none;
-  border: none;
-  color: #555;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  line-height: 1;
-  font-size: 16px;
+    background: none;
+    border: none;
+    color: var(--flux-gray-mid);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    line-height: 1;
+    font-size: 16px;
+    transition: all 0.15s ease;
 }
 
 .playlist-item .delete-btn:hover {
-  background: #2a1a1a;
-  color: #ff4444;
+    background: rgba(255, 77, 77, 0.15);
+    color: var(--flux-error);
 }
 
 .add-form {
-  padding: 0.75rem;
-  border-top: 1px solid #1e1e32;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--flux-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    background: var(--bg-secondary);
 }
 
 .url-input,
 .name-input {
-  width: 100%;
-  padding: 0.5rem 0.6rem;
-  border-radius: 6px;
-  border: 1px solid #2a2a3e;
-  background: #14142a;
-  color: #e0e0e0;
-  font-size: 0.8rem;
-  outline: none;
-  transition: border-color 0.15s;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--flux-border);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    outline: none;
+    transition: all 0.15s ease;
 }
 
 .url-input:focus,
 .name-input:focus {
-  border-color: #7b2ff7;
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--accent-bg);
 }
 
 .url-input::placeholder,
 .name-input::placeholder {
-  color: #555;
+    color: var(--flux-gray-mid);
 }
 
 .form-row {
-  display: flex;
-  gap: 0.4rem;
+    display: flex;
+    gap: 0.4rem;
 }
 
 .name-input {
-  flex: 1;
+    flex: 1;
 }
 
 .btn {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: none;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  background: #2a2a3e;
-  color: #e0e0e0;
-  transition: background 0.15s;
-  white-space: nowrap;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--flux-border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn:hover {
-  background: #3a3a4e;
+    transform: scale(1.02);
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--flux-black);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--accent-bg);
+    transform: scale(1.05);
 }
 
 .btn-primary {
-  background: #7b2ff7;
-  color: #fff;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--flux-black);
+    font-weight: 600;
 }
 
 .btn-primary:hover {
-  background: #6a20e0;
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
 }
 
 .btn-primary:disabled {
-  background: #3a1a7a;
-  cursor: not-allowed;
+    background: var(--accent-bg);
+    border-color: transparent;
+    color: var(--flux-gray-light);
+    cursor: not-allowed;
+    transform: none;
 }
 
 .error {
-  color: #ff4444;
-  font-size: 0.75rem;
-  min-height: 1em;
+    color: var(--flux-error);
+    font-size: 0.75rem;
+    min-height: 1em;
 }
 
 .footer {
-  padding: 0.5rem 1rem;
-  text-align: center;
-  border-top: 1px solid #1e1e32;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    border-top: 1px solid var(--flux-border);
+    background: var(--bg-secondary);
 }
 
 .link {
-  color: #7b2ff7;
-  text-decoration: none;
-  font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    transition: opacity 0.15s ease;
 }
 
 .link:hover {
-  text-decoration: underline;
+    text-decoration: underline;
+    opacity: 0.85;
 }
