@@ -83,6 +83,89 @@ body {
     letter-spacing: 0.02em;
 }
 
+.suggestion {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.6rem;
+    margin: 0.4rem 0.5rem 0 0.5rem;
+    background: var(--accent-bg);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.suggestion-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.suggestion-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.suggestion-label {
+    font-size: 0.7rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.1rem;
+}
+
+.suggestion-url {
+    font-size: 0.7rem;
+    color: var(--flux-gray-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggestion-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-shrink: 0;
+}
+
+.suggestion-btn {
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.suggestion-btn--add {
+    background: var(--accent);
+    color: var(--flux-black);
+}
+
+.suggestion-btn--add:hover {
+    background: var(--accent-hover);
+}
+
+.suggestion-btn--dismiss {
+    background: transparent;
+    color: var(--flux-gray-mid);
+    padding: 0.3rem 0.4rem;
+    font-size: 0.9rem;
+}
+
+.suggestion-btn--dismiss:hover {
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
 .playlist-list {
     flex: 1;
     padding: 0.5rem;

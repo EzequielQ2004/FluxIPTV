@@ -13,6 +13,23 @@
       <h1>Flux IPTV</h1>
     </header>
 
+    <div class="suggestion hidden" id="suggestion">
+      <div class="suggestion-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </div>
+      <div class="suggestion-body">
+        <div class="suggestion-label">URL detectada en clipboard</div>
+        <div class="suggestion-url" id="suggestionUrl"></div>
+      </div>
+      <div class="suggestion-actions">
+        <button class="suggestion-btn suggestion-btn--add" id="suggestionAdd">Agregar</button>
+        <button class="suggestion-btn suggestion-btn--dismiss" id="suggestionDismiss">×</button>
+      </div>
+    </div>
+
     <div class="playlist-list" id="playlistList">
       <div class="empty-state" id="emptyState">
         <p>No hay listas guardadas</p>

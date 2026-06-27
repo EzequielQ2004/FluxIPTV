@@ -1,7 +1,7 @@
 const FLUX_URL = 'https://fluxiptv.qzz.io';
 
 let playlists = [];
-let tabId = null;
+let clipboardUrl = '';
 
 document.addEventListener('DOMContentLoaded', function () {
   loadPlaylists();
@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('urlInput').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') addPlaylist();
   });
+  document.getElementById('suggestionAdd').addEventListener('click', acceptClipboard);
+  document.getElementById('suggestionDismiss').addEventListener('click', dismissClipboard);
+  checkClipboard();
 });
 
 function loadPlaylists() {
@@ -70,6 +73,57 @@ function renderPlaylists() {
 
     list.appendChild(item);
   });
+}
+
+function checkClipboard() {
+  if (!navigator.clipboard || !navigator.clipboard.readText) return;
+
+  navigator.clipboard.readText().then(function (text) {
+    var url = text.trim();
+
+    try { new URL(url); } catch (_) { return; }
+
+    if (!url.match(/\.m3u8?$/i)) return;
+
+    clipboardUrl = url;
+
+    var suggestion = document.getElementById('suggestion');
+    var urlEl = document.getElementById('suggestionUrl');
+    urlEl.textContent = url;
+    suggestion.classList.remove('hidden');
+
+    var existing = playlists.findIndex(function (p) { return p.url === url; });
+    var addBtn = document.getElementById('suggestionAdd');
+    addBtn.textContent = existing >= 0 ? 'Abrir' : 'Agregar';
+  }).catch(function () {
+    // Silently fail if clipboard read is not allowed
+  });
+}
+
+function acceptClipboard() {
+  if (!clipboardUrl) return;
+
+  var existing = playlists.findIndex(function (p) { return p.url === clipboardUrl; });
+  if (existing >= 0) {
+    openPlaylist(clipboardUrl, playlists[existing].name);
+    return;
+  }
+
+  playlists.push({
+    url: clipboardUrl,
+    name: '',
+    channelCount: 0,
+    addedAt: new Date().toISOString()
+  });
+  savePlaylists();
+  renderPlaylists();
+  openPlaylist(clipboardUrl, '');
+  dismissClipboard();
+}
+
+function dismissClipboard() {
+  clipboardUrl = '';
+  document.getElementById('suggestion').classList.add('hidden');
 }
 
 function addPlaylist() {
