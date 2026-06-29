@@ -122,6 +122,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
         scrollToChannel(channel.index);
         renderHistory();
         updatePlayPauseButton();
+        setLoadTimeout(null);
         return;
     }
 
@@ -133,6 +134,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
         scrollToChannel(channel.index);
         renderHistory();
         updatePlayPauseButton();
+        setLoadTimeout(null);
         return;
     }
 
@@ -144,6 +146,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
         scrollToChannel(channel.index);
         renderHistory();
         updatePlayPauseButton();
+        setLoadTimeout(null);
         return;
     }
 
@@ -179,6 +182,8 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
     }
 
     video.addEventListener('playing', function () {
+        setLoadTimeout(null);
+        hideLoading();
         autoKiosk();
     }, { once: true });
 
