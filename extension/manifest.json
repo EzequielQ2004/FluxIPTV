@@ -5,7 +5,8 @@
   "description": "Guarda y abre tus listas M3U en Flux IPTV",
   "permissions": [
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "clipboardRead"
   ],
   "host_permissions": [
     "https://fluxiptv.qzz.io/*"
