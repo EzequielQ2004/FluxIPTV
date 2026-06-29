@@ -76,28 +76,70 @@ function renderPlaylists() {
 }
 
 function checkClipboard() {
-  if (!navigator.clipboard || !navigator.clipboard.readText) return;
-
-  navigator.clipboard.readText().then(function (text) {
-    var url = text.trim();
-
-    try { new URL(url); } catch (_) { return; }
-
-    if (!url.match(/\.m3u8?$/i)) return;
-
-    clipboardUrl = url;
-
-    var suggestion = document.getElementById('suggestion');
-    var urlEl = document.getElementById('suggestionUrl');
-    urlEl.textContent = url;
-    suggestion.classList.remove('hidden');
-
-    var existing = playlists.findIndex(function (p) { return p.url === url; });
-    var addBtn = document.getElementById('suggestionAdd');
-    addBtn.textContent = existing >= 0 ? 'Abrir' : 'Agregar';
+  readClipboardAsync().then(function (text) {
+    processClipboardText(text);
   }).catch(function () {
-    // Silently fail if clipboard read is not allowed
+    readClipboardLegacy(function (text) {
+      processClipboardText(text);
+    });
   });
+}
+
+function readClipboardAsync() {
+  return new Promise(function (resolve, reject) {
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+      reject(new Error('Clipboard API not available'));
+      return;
+    }
+    navigator.clipboard.readText().then(function (text) {
+      resolve(text);
+    }).catch(function (err) {
+      console.warn('Flux: clipboard.readText failed', err);
+      reject(err);
+    });
+  });
+}
+
+function readClipboardLegacy(callback) {
+  try {
+    var ta = document.createElement('textarea');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '0';
+    ta.style.width = '1px';
+    ta.style.height = '1px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    var ok = document.execCommand('paste');
+    var text = ta.value;
+    document.body.removeChild(ta);
+    if (ok && text) {
+      callback(text);
+    } else {
+      console.warn('Flux: execCommand paste returned', ok, text);
+    }
+  } catch (err) {
+    console.warn('Flux: execCommand paste threw', err);
+  }
+}
+
+function processClipboardText(text) {
+  if (!text) return;
+  var url = text.trim();
+  try { new URL(url); } catch (_) { return; }
+  if (!url.match(/\.m3u8?$/i)) return;
+
+  clipboardUrl = url;
+
+  var suggestion = document.getElementById('suggestion');
+  var urlEl = document.getElementById('suggestionUrl');
+  urlEl.textContent = url;
+  suggestion.classList.remove('hidden');
+
+  var existing = playlists.findIndex(function (p) { return p.url === url; });
+  var addBtn = document.getElementById('suggestionAdd');
+  addBtn.textContent = existing >= 0 ? 'Abrir' : 'Agregar';
 }
 
 function acceptClipboard() {
