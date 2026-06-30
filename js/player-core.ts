@@ -92,6 +92,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
     hideError();
 
     setLoadTimeout(setTimeout(() => {
+        if (state.isPlaying) return;
         if (state.hls) {
             state.hls.destroy();
             state.hls = null;

@@ -33,6 +33,7 @@ import {
 } from './player-core.ts';
 import { showEpg } from './epg.ts';
 import { navigateFocus } from './keyboard.ts';
+import { setLoadTimeout } from './player-shared.ts';
 import { loadM3UFromUrl, loadM3UFromFile, deletePlaylist } from './loader.ts';
 import { openSettings, closeSettings, setupSettings } from './settings.ts';
 
@@ -45,6 +46,7 @@ function setupEventListeners() {
         updatePlayPauseButton();
         hideLoading();
         clearTimeout(waitingTimeout);
+        setLoadTimeout(null);
     });
 
     elements.video.addEventListener('pause', () => {
