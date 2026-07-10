@@ -31,6 +31,9 @@ function setupHls(video: HTMLVideoElement, channel: Channel): void {
             if (channel.referrer) {
                 xhr.setRequestHeader('Referer', channel.referrer);
             }
+            if (channel.userAgent) {
+                xhr.setRequestHeader('User-Agent', channel.userAgent);
+            }
         };
     }
 

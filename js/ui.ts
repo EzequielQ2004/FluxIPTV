@@ -542,6 +542,10 @@ function hideError(): void {
 }
 
 function showToast(message: string, type?: string): void {
+    while (elements.toastContainer.children.length >= 3) {
+        var first = elements.toastContainer.firstChild;
+        if (first) elements.toastContainer.removeChild(first);
+    }
     var toast = document.createElement('div');
     toast.className = 'toast' + (type === 'error' ? ' toast-error' : '');
     toast.textContent = message;

@@ -22,6 +22,7 @@ import { setupDash, dashManifestLoaded, dashError } from './dash.ts';
 
 let streamTypeCache: Map<string, string> = new Map();
 let streamTypeController: AbortController | null = null;
+let onPlayingHandler: (() => void) | null = null;
 
 function probeStreamType(url: string): Promise<string> {
     if (streamTypeCache.has(url)) {
@@ -182,11 +183,15 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
         });
     }
 
-    video.addEventListener('playing', function () {
+    if (onPlayingHandler) {
+        video.removeEventListener('playing', onPlayingHandler);
+    }
+    onPlayingHandler = function () {
         setLoadTimeout(null);
         hideLoading();
         autoKiosk();
-    }, { once: true });
+    };
+    video.addEventListener('playing', onPlayingHandler);
 
     updateActiveChannel(channel.index);
     scrollToChannel(channel.index);
@@ -312,8 +317,18 @@ function updateVolumeSlider(): void {
 function toggleFullscreen(): void {
     const container = elements.videoContainer;
 
+    if (typeof window !== 'undefined' && '__TAURI__' in window) {
+        import('@tauri-apps/api/window').then(function (win) {
+            var w = win.getCurrentWindow();
+            w.isFullscreen().then(function (fs) {
+                w.setFullscreen(!fs);
+            });
+        });
+        return;
+    }
+
     if (!document.fullscreenElement) {
-        container.requestFullscreen().catch(e => console.error('Error al entrar en fullscreen:', e));
+        container.requestFullscreen().catch(function () {});
     } else {
         document.exitFullscreen();
     }
@@ -321,10 +336,26 @@ function toggleFullscreen(): void {
 
 function toggleKioskMode(): void {
     state.kioskMode = !state.kioskMode;
-    const msg = state.kioskMode ? t('player.kioskOn') : t('player.kioskOff');
-    showToast(msg, '');
-    const btn = document.getElementById('kioskBtn');
+    var btn = document.getElementById('kioskBtn');
     if (btn) btn.classList.toggle('active', state.kioskMode);
+
+    if (typeof window !== 'undefined' && '__TAURI__' in window) {
+        import('@tauri-apps/api/window').then(function (win) {
+            var currentWindow = win.getCurrentWindow();
+            currentWindow.setAlwaysOnTop(state.kioskMode);
+            if (state.kioskMode) {
+                currentWindow.setFullscreen(true);
+            } else {
+                currentWindow.setFullscreen(false);
+            }
+        });
+    } else if (state.kioskMode) {
+        elements.videoContainer.requestFullscreen().catch(function () {});
+    } else if (document.fullscreenElement === elements.videoContainer) {
+        document.exitFullscreen().catch(function () {});
+    }
+    var msg = state.kioskMode ? t('player.kioskOn') : t('player.kioskOff');
+    showToast(msg, '');
 }
 
 function togglePiP(): void {
@@ -422,7 +453,16 @@ async function onVerifyPin(): Promise<void> {
     }
 }
 
+function clearStreamTypeCache(): void {
+    streamTypeCache.clear();
+    if (streamTypeController) {
+        streamTypeController.abort();
+        streamTypeController = null;
+    }
+}
+
 export {
+    clearStreamTypeCache,
     playChannel,
     togglePlayPause,
     updatePlayPauseButton,

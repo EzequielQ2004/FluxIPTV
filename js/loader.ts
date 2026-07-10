@@ -3,6 +3,7 @@ import { t } from './i18n.ts';
 import { state, saveState } from './state.ts';
 import { elements, renderChannelList, renderPlaylistList, showLoading, hideLoading, showListLoading, closeModal, showError, showToast } from './ui.ts';
 import { loadEpgFromUrl } from './epg.ts';
+import { clearStreamTypeCache } from './player-core.ts';
 
 function savePlaylist(url: string, name: string | undefined, channelCount: number): void {
     const existing = state.playlists.findIndex(p => p.url === url);
@@ -106,6 +107,7 @@ async function loadM3UFromUrl(url: string, name?: string, epgUrl?: string): Prom
 
         // 8. Success path
         state.channels = channels;
+        clearStreamTypeCache();
         state.expandedGroups.clear();
         savePlaylist(url, name, channels.length);
         renderChannelList();
@@ -177,6 +179,7 @@ function loadM3UFromFile(file: File, name: string): Promise<void> {
                 }
 
                 state.channels = channels;
+                clearStreamTypeCache();
                 state.expandedGroups.clear();
                 if (file.name) {
                     const playlistName = name || file.name.replace(/\.[^/.]+$/, '');

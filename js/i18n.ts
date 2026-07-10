@@ -149,7 +149,7 @@ var translations: Record<string, Record<string, string>> = {
         'modal.settings.bugDesc': 'Notifica un problema en GitHub',
         'modal.settings.bugBtn': 'Abrir',
         'modal.settings.aboutLabel': 'Acerca de',
-        'modal.settings.aboutDesc': 'Flux - Reproductor IPTV v1.0',
+        'modal.settings.aboutDesc': 'Flux - Reproductor IPTV v1.1.0',
 
         'modal.confirm.title': 'Confirmar',
         'modal.confirm.cancelBtn': 'Cancelar',
@@ -367,7 +367,7 @@ var translations: Record<string, Record<string, string>> = {
         'modal.settings.bugDesc': 'Report an issue on GitHub',
         'modal.settings.bugBtn': 'Open',
         'modal.settings.aboutLabel': 'About',
-        'modal.settings.aboutDesc': 'Flux - IPTV Player v1.0',
+        'modal.settings.aboutDesc': 'Flux - IPTV Player v1.1.0',
 
         'modal.confirm.title': 'Confirm',
         'modal.confirm.cancelBtn': 'Cancel',

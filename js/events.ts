@@ -61,7 +61,7 @@ function setupEventListeners() {
             if (elements.video.style.display === 'none') return;
             if (!elements.youtubeContainer.classList.contains('hidden')) return;
             hideLoading();
-            showError('El stream se ha interrumpido');
+            showError(t('player.streamInterrupted'));
         }, 20000);
     });
 
@@ -71,7 +71,7 @@ function setupEventListeners() {
     });
 
     elements.video.addEventListener('error', () => {
-        showError('Error al cargar el stream');
+        showError(t('player.streamError'));
         hideLoading();
     });
 
@@ -330,14 +330,21 @@ function setupEventListeners() {
             if (e.key !== 'Escape') return;
         }
 
+        const activeEl = document.activeElement;
+        const inChannelList = activeEl && (activeEl.closest('.channel-list') || activeEl.closest('#filterTabs'));
+
         switch (e.key) {
             case 'ArrowUp':
-                e.preventDefault();
-                navigateFocus(-1, 'vertical');
+                if (inChannelList) {
+                    e.preventDefault();
+                    navigateFocus(-1, 'vertical');
+                }
                 break;
             case 'ArrowDown':
-                e.preventDefault();
-                navigateFocus(1, 'vertical');
+                if (inChannelList) {
+                    e.preventDefault();
+                    navigateFocus(1, 'vertical');
+                }
                 break;
             case 'ArrowLeft':
                 e.preventDefault();
