@@ -29,6 +29,7 @@ const elements = {
     get pauseIcon() { return byId('pauseIcon'); },
     get prevBtn() { return byId('prevBtn'); },
     get nextBtn() { return byId('nextBtn'); },
+    get stopBtn() { return byId('stopBtn'); },
     get volumeBtn() { return byId('volumeBtn'); },
     get volumeIcon() { return byId('volumeIcon'); },
     get muteIcon() { return byId('muteIcon'); },

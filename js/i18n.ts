@@ -35,6 +35,7 @@ var translations: Record<string, Record<string, string>> = {
         'player.fullscreen': 'Pantalla completa',
         'player.epg': 'Guía de programación',
         'player.kiosk': 'Modo kiosko',
+        'player.stop': 'Detener',
 
         'filter.all': 'Todos',
         'filter.favorites': 'Favoritos',
@@ -262,6 +263,7 @@ var translations: Record<string, Record<string, string>> = {
         'player.fullscreen': 'Fullscreen',
         'player.epg': 'Program guide',
         'player.kiosk': 'Kiosk mode',
+        'player.stop': 'Stop',
 
         'filter.all': 'All',
         'filter.favorites': 'Favorites',

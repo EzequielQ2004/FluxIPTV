@@ -8,6 +8,7 @@ import { openSettings } from './settings.ts';
 import { t } from './i18n.ts';
 import {
     setLoadTimeout,
+    clearLoadTimeout,
     resetHlsRetry,
     resetNonFatalErrors,
     clearNonFatalErrorTimer,
@@ -243,6 +244,40 @@ function togglePlayPause(): void {
     updatePlayPauseButton();
 }
 
+function stopPlayback(): void {
+    if (state.hls) {
+        state.hls.destroy();
+        state.hls = null;
+    }
+    if (state.dash) {
+        try {
+            state.dash.off(dashjs.MediaPlayer.events.MANIFEST_LOADED, dashManifestLoaded);
+            state.dash.off(dashjs.MediaPlayer.events.ERROR, dashError);
+        } catch (e) {}
+        state.dash.reset();
+        state.dash = null;
+    }
+    destroyYoutubePlayer();
+    clearLoadTimeout();
+    resetHlsRetry();
+    resetNonFatalErrors();
+    clearNonFatalErrorTimer();
+
+    var video = elements.video;
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+    (video as HTMLElement).style.display = '';
+
+    state.isPlaying = false;
+    state.currentChannelIndex = -1;
+
+    hideLoading();
+    hideError();
+    updateActiveChannel(-1);
+    updatePlayPauseButton();
+}
+
 function getOrigin(iframe: HTMLIFrameElement): string {
     try {
         return new URL(iframe.src).origin;
@@ -463,6 +498,7 @@ function clearStreamTypeCache(): void {
 
 export {
     clearStreamTypeCache,
+    stopPlayback,
     playChannel,
     togglePlayPause,
     updatePlayPauseButton,

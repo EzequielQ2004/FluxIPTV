@@ -20,6 +20,7 @@ import {
 } from './ui.ts';
 import {
     playChannel,
+    stopPlayback,
     togglePlayPause,
     updatePlayPauseButton,
     toggleMute,
@@ -78,6 +79,7 @@ function setupEventListeners() {
     elements.playPauseBtn.addEventListener('click', togglePlayPause);
     elements.prevBtn.addEventListener('click', prevChannel);
     elements.nextBtn.addEventListener('click', nextChannel);
+    elements.stopBtn.addEventListener('click', stopPlayback);
     elements.volumeBtn.addEventListener('click', toggleMute);
     elements.volumeSlider.addEventListener('input', function () {
         setVolume(parseFloat(elements.volumeSlider.value));
@@ -412,6 +414,11 @@ function setupEventListeners() {
             case 'K':
                 e.preventDefault();
                 toggleKioskMode();
+                break;
+            case 's':
+            case 'S':
+                e.preventDefault();
+                stopPlayback();
                 break;
             case '+':
             case '=':
