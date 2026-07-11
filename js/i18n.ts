@@ -216,7 +216,16 @@ var translations: Record<string, Record<string, string>> = {
         'settings.themeLight': 'Claro',
         'settings.themeDark': 'Oscuro',
         'settings.pin.changeBtn': 'Cambiar',
-        'settings.pin.setBtn': 'Configurar'
+        'settings.pin.setBtn': 'Configurar',
+        'settings.export.label': 'Exportar configuración',
+        'settings.export.desc': 'Descarga un archivo con tus ajustes',
+        'settings.export.btn': 'Exportar',
+        'settings.import.label': 'Importar configuración',
+        'settings.import.desc': 'Restaura ajustes desde un archivo',
+        'settings.import.btn': 'Importar',
+        'settings.import.confirm': '¿Restaurar configuración? Se sobrescribirán tus ajustes actuales',
+        'settings.import.success': 'Configuración importada correctamente',
+        'settings.import.invalid': 'Archivo de configuración inválido'
     },
 
     en: {
@@ -433,7 +442,16 @@ var translations: Record<string, Record<string, string>> = {
         'settings.kiosk.disabled': 'Kiosk mode disabled',
         'settings.themeDark': 'Dark',
         'settings.pin.changeBtn': 'Change',
-        'settings.pin.setBtn': 'Set'
+        'settings.pin.setBtn': 'Set',
+        'settings.export.label': 'Export settings',
+        'settings.export.desc': 'Download your settings as a file',
+        'settings.export.btn': 'Export',
+        'settings.import.label': 'Import settings',
+        'settings.import.desc': 'Restore settings from a file',
+        'settings.import.btn': 'Import',
+        'settings.import.confirm': 'Restore settings? Your current configuration will be overwritten',
+        'settings.import.success': 'Settings imported successfully',
+        'settings.import.invalid': 'Invalid settings file'
     }
 };
 

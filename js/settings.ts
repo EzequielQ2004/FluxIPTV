@@ -1,6 +1,6 @@
 import { t } from './i18n.ts';
-import { state, saveState, isPinConfigured, setPin, changePin, removePin, setPinContext } from './state.ts';
-import { elements, openModal, closeModal, showToast, showConfirmModal, applyTheme, renderHistory } from './ui.ts';
+import { state, saveState, loadState, isPinConfigured, setPin, changePin, removePin, setPinContext } from './state.ts';
+import { elements, openModal, closeModal, showToast, showConfirmModal, applyTheme, renderHistory, renderChannelList, renderPlaylistList } from './ui.ts';
 
 function openSettings(): void {
     updateSettingsState();
@@ -95,6 +95,101 @@ function clearHistory(): void {
     });
 }
 
+function exportSettings(): void {
+    var data = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        data: {
+            theme: state.theme,
+            favorites: [...state.favorites],
+            lockedChannels: [...state.lockedChannels],
+            history: state.history,
+            playlists: state.playlists,
+            kioskMode: state.kioskMode,
+            parentalPinHash: localStorage.getItem('parentalPinHash'),
+            pinConfigured: localStorage.getItem('pinConfigured') === 'true'
+        }
+    };
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'flux-iptv-settings-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function importSettingsAction(): void {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.addEventListener('change', function () {
+        if (!input.files || !input.files[0]) return;
+        var file = input.files[0];
+        var reader = new FileReader();
+        reader.onload = function () {
+            try {
+                var parsed = JSON.parse(reader.result as string);
+                if (!parsed || !parsed.version || !parsed.data) {
+                    showToast(t('settings.import.invalid'), 'error');
+                    return;
+                }
+                showConfirmModal(t('settings.import.confirm'), function (confirmed: boolean) {
+                    if (!confirmed) return;
+                    applyImportedData(parsed.data);
+                });
+            } catch (e) {
+                showToast(t('settings.import.invalid'), 'error');
+            }
+        };
+        reader.readAsText(file);
+    });
+    input.click();
+}
+
+function applyImportedData(data: any): void {
+    var strKeys: Record<string, string> = {
+        theme: 'theme',
+        kioskMode: 'kioskMode'
+    };
+    var jsonKeys: Record<string, string> = {
+        favorites: 'favorites',
+        lockedChannels: 'lockedChannels',
+        history: 'history',
+        playlists: 'playlists'
+    };
+
+    for (var key in strKeys) {
+        if (data[key] !== undefined) {
+            localStorage.setItem(strKeys[key], String(data[key]));
+        }
+    }
+
+    for (var key in jsonKeys) {
+        if (data[key] !== undefined) {
+            localStorage.setItem(jsonKeys[key], JSON.stringify(data[key]));
+        }
+    }
+
+    if (data.parentalPinHash) {
+        localStorage.setItem('parentalPinHash', data.parentalPinHash);
+        localStorage.setItem('pinConfigured', data.pinConfigured ? 'true' : 'false');
+    } else {
+        localStorage.removeItem('parentalPinHash');
+        localStorage.removeItem('pinConfigured');
+    }
+
+    loadState();
+    renderChannelList();
+    renderPlaylistList();
+    renderHistory();
+    applyTheme();
+    updateSettingsState();
+    showToast(t('settings.import.success'));
+}
+
 function setupSettings(): void {
     document.getElementById('closeSettingsBtn')!.addEventListener('click', closeSettings);
     document.getElementById('changePinBtn')!.addEventListener('click', showChangePinForm);
@@ -102,6 +197,8 @@ function setupSettings(): void {
     document.getElementById('saveChangePinBtn')!.addEventListener('click', saveChangePin);
     document.getElementById('removePinBtn')!.addEventListener('click', removePinAction);
     document.getElementById('clearHistoryBtn')!.addEventListener('click', clearHistory);
+    document.getElementById('exportSettingsBtn')!.addEventListener('click', exportSettings);
+    document.getElementById('importSettingsBtn')!.addEventListener('click', importSettingsAction);
 
     (document.getElementById('themeSelect') as HTMLSelectElement).addEventListener('change', function (this: HTMLSelectElement) {
         state.theme = this.value;
@@ -123,4 +220,4 @@ function setupSettings(): void {
     });
 }
 
-export { openSettings, closeSettings, setupSettings, updateSettingsState };
+export { openSettings, closeSettings, setupSettings, updateSettingsState, exportSettings, importSettingsAction };
