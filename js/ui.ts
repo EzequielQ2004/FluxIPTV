@@ -3,6 +3,11 @@ import { getFallbackImage, handleImageError, escapeHtml, getCachedLogoUrl } from
 import { t } from './i18n.ts';
 import { Channel } from './types.ts';
 
+const SVG_FAV_FILLED = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+const SVG_FAV_OUTLINE = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+const SVG_LOCK_CLOSED = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V6a4 4 0 1 1 8 0v4"></path></svg>';
+const SVG_LOCK_OPEN = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V6a4 4 0 0 1 8 0v1"></path></svg>';
+
 function byId(id: string): HTMLElement {
     return document.getElementById(id)!;
 }
@@ -147,18 +152,14 @@ function buildRowHTML(row: VirtualRow): string {
                         data-index="${channel.index}"
                         aria-label="${isFavorite ? t('ui.removeFav') : t('ui.addFav')}"
                         data-tooltip="${isFavorite ? t('ui.removeFav') : t('ui.addFav')}">
-                    ${isFavorite
-                        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>'
-                        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>'}
+                    ${isFavorite ? SVG_FAV_FILLED : SVG_FAV_OUTLINE}
                 </button>
                 <button class="channel-action-btn ${isLocked ? 'locked' : ''}" 
                         data-action="lock" 
                         data-index="${channel.index}"
                         aria-label="${isLocked ? t('ui.unlock') : t('ui.lock')}"
                         data-tooltip="${isLocked ? t('ui.unlock') : t('ui.lock')}">
-                    ${isLocked
-                        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V6a4 4 0 1 1 8 0v4"></path></svg>'
-                        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V6a4 4 0 0 1 8 0v1"></path></svg>'}
+                    ${isLocked ? SVG_LOCK_CLOSED : SVG_LOCK_OPEN}
                 </button>
             </div>
         </div>
@@ -699,9 +700,7 @@ function toggleFavorite(index: number): void {
         if (btn) {
             const isFav = state.favorites.has(index);
             btn.classList.toggle('favorite', isFav);
-            btn.innerHTML = isFav
-                ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>'
-                : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+            btn.innerHTML = isFav ? SVG_FAV_FILLED : SVG_FAV_OUTLINE;
             btn.setAttribute('aria-label', isFav ? t('ui.removeFav') : t('ui.addFav'));
             btn.setAttribute('data-tooltip', isFav ? t('ui.removeFav') : t('ui.addFav'));
         }
@@ -715,9 +714,7 @@ function updateLockBtn(index: number): void {
     if (!btn) return;
     const isLocked = state.lockedChannels.has(index);
     btn.classList.toggle('locked', isLocked);
-    btn.innerHTML = isLocked
-        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V6a4 4 0 1 1 8 0v4"></path></svg>'
-        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V6a4 4 0 0 1 8 0v1"></path></svg>';
+    btn.innerHTML = isLocked ? SVG_LOCK_CLOSED : SVG_LOCK_OPEN;
     btn.setAttribute('aria-label', isLocked ? t('ui.unlock') : t('ui.lock'));
     btn.setAttribute('data-tooltip', isLocked ? t('ui.unlock') : t('ui.lock'));
 }
