@@ -17,8 +17,8 @@ async function hashPin(pin: string): Promise<string> {
 const INITIAL_STATE: AppState = {
     channels: [],
     currentChannelIndex: -1,
-    favorites: new Set<number>(),
-    lockedChannels: new Set<number>(),
+    favorites: new Set<string>(),
+    lockedChannels: new Set<string>(),
     history: [],
     hls: null,
     dash: null,
@@ -62,14 +62,14 @@ function loadState() {
     try {
         var favorites = localStorage.getItem('favorites');
         if (favorites) {
-            state.favorites = new Set(JSON.parse(favorites) as number[]);
+            state.favorites = new Set(JSON.parse(favorites) as string[]);
         }
     } catch (e) {}
 
     try {
         var locked = localStorage.getItem('lockedChannels');
         if (locked) {
-            state.lockedChannels = new Set(JSON.parse(locked) as number[]);
+            state.lockedChannels = new Set(JSON.parse(locked) as string[]);
         }
     } catch (e) {}
 

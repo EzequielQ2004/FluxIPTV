@@ -127,8 +127,8 @@ function buildRowHTML(row: VirtualRow): string {
         </div>`;
     }
     const channel = row.data;
-    const isFavorite = state.favorites.has(channel.index);
-    const isLocked = state.lockedChannels.has(channel.index);
+    const isFavorite = state.favorites.has(channel.url);
+    const isLocked = state.lockedChannels.has(channel.url);
     const isActive = channel.index === state.currentChannelIndex;
     return `
         <div class="channel-item ${isActive ? 'active' : ''}" 
@@ -339,7 +339,7 @@ function renderChannelList(): void {
 
     if (state.currentFilter === 'favorites') {
         filteredChannels = filteredChannels.filter(function (ch) {
-            return state.favorites.has(ch.index);
+            return state.favorites.has(ch.url);
         });
     } else if (state.currentFilter === 'recent') {
         var recentUrls = new Set(state.history.map(function (h) { return h.url; }));
@@ -689,17 +689,20 @@ function toggleSidebar(): void {
 }
 
 function toggleFavorite(index: number): void {
-    if (state.favorites.has(index)) {
-        state.favorites.delete(index);
+    var ch = state.channels[index];
+    if (!ch) return;
+    var url = ch.url;
+    if (state.favorites.has(url)) {
+        state.favorites.delete(url);
     } else {
-        state.favorites.add(index);
+        state.favorites.add(url);
     }
     saveState();
     const item = elements.channelList.querySelector(`.channel-item[data-index="${index}"]`);
     if (item) {
         const btn = item.querySelector('.channel-action-btn[data-action="favorite"]');
         if (btn) {
-            const isFav = state.favorites.has(index);
+            const isFav = state.favorites.has(url);
             btn.classList.toggle('favorite', isFav);
             btn.innerHTML = isFav ? SVG_FAV_FILLED : SVG_FAV_OUTLINE;
             btn.setAttribute('aria-label', isFav ? t('ui.removeFav') : t('ui.addFav'));
@@ -709,11 +712,13 @@ function toggleFavorite(index: number): void {
 }
 
 function updateLockBtn(index: number): void {
+    var ch = state.channels[index];
+    if (!ch) return;
     const item = elements.channelList.querySelector(`.channel-item[data-index="${index}"]`);
     if (!item) return;
     const btn = item.querySelector('.channel-action-btn[data-action="lock"]');
     if (!btn) return;
-    const isLocked = state.lockedChannels.has(index);
+    const isLocked = state.lockedChannels.has(ch.url);
     btn.classList.toggle('locked', isLocked);
     btn.innerHTML = isLocked ? SVG_LOCK_CLOSED : SVG_LOCK_OPEN;
     btn.setAttribute('aria-label', isLocked ? t('ui.unlock') : t('ui.lock'));
@@ -721,7 +726,9 @@ function updateLockBtn(index: number): void {
 }
 
 function toggleLock(index: number): void {
-    if (state.lockedChannels.has(index)) {
+    var ch = state.channels[index];
+    if (!ch) return;
+    if (state.lockedChannels.has(ch.url)) {
         state.pendingChannelIndex = index;
         setPinContext('unlock');
         document.getElementById('pinModalTitle')!.textContent = t('modal.pin.unlockTitle');
@@ -736,7 +743,7 @@ function toggleLock(index: number): void {
     }
 
     if (isPinConfigured()) {
-        state.lockedChannels.add(index);
+        state.lockedChannels.add(ch.url);
         saveState();
         updateLockBtn(index);
         return;

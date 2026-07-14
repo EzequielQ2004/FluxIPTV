@@ -60,7 +60,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
 
     const channel = state.channels[index];
 
-    if (!skipLockCheck && state.lockedChannels.has(index)) {
+    if (!skipLockCheck && state.lockedChannels.has(channel.url)) {
         state.pendingChannelIndex = index;
         setPinContext('play');
         document.getElementById('pinModalTitle')!.textContent = t('player.pin.playTitle');
@@ -451,7 +451,8 @@ async function onVerifyPin(): Promise<void> {
         closeModal(elements.pinModal);
         elements.pinInput.value = '';
         (document.getElementById('pinConfirmInput') as HTMLInputElement).value = '';
-        state.lockedChannels.add(state.pendingChannelIndex!);
+        var chAdd = state.channels[state.pendingChannelIndex!];
+        if (chAdd) state.lockedChannels.add(chAdd.url);
         saveState();
         updateLockBtn(state.pendingChannelIndex!);
         state.pendingChannelIndex = null;
@@ -475,7 +476,8 @@ async function onVerifyPin(): Promise<void> {
     if (ctx === 'play' && idx !== null) {
         playChannel(idx, true);
     } else if (ctx === 'unlock' && idx !== null) {
-        state.lockedChannels.delete(idx);
+        var chDel = state.channels[idx];
+        if (chDel) state.lockedChannels.delete(chDel.url);
         saveState();
         updateLockBtn(idx);
         showToast(t('player.pin.unlocked'));

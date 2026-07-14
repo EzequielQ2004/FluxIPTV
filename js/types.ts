@@ -26,8 +26,8 @@ export interface Playlist {
 export interface AppState {
     channels: Channel[];
     currentChannelIndex: number;
-    favorites: Set<number>;
-    lockedChannels: Set<number>;
+    favorites: Set<string>;
+    lockedChannels: Set<string>;
     history: HistoryEntry[];
     hls: any;
     dash: any;

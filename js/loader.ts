@@ -5,6 +5,37 @@ import { elements, renderChannelList, renderPlaylistList, showLoading, hideLoadi
 import { loadEpgFromUrl } from './epg.ts';
 import { clearStreamTypeCache } from './player-core.ts';
 
+function migrateFavoritesAndLocks(): void {
+    try {
+        var rawFav = localStorage.getItem('favorites');
+        if (rawFav) {
+            var parsed = JSON.parse(rawFav);
+            if (parsed.length > 0 && typeof parsed[0] === 'number') {
+                var migrated = new Set<string>();
+                for (var i = 0; i < parsed.length; i++) {
+                    var idx = parsed[i];
+                    if (state.channels[idx]) migrated.add(state.channels[idx].url);
+                }
+                state.favorites = migrated;
+            }
+        }
+    } catch (e) {}
+    try {
+        var rawLock = localStorage.getItem('lockedChannels');
+        if (rawLock) {
+            var parsed = JSON.parse(rawLock);
+            if (parsed.length > 0 && typeof parsed[0] === 'number') {
+                var migrated = new Set<string>();
+                for (var i = 0; i < parsed.length; i++) {
+                    var idx = parsed[i];
+                    if (state.channels[idx]) migrated.add(state.channels[idx].url);
+                }
+                state.lockedChannels = migrated;
+            }
+        }
+    } catch (e) {}
+}
+
 function savePlaylist(url: string, name: string | undefined, channelCount: number): void {
     const existing = state.playlists.findIndex(p => p.url === url);
     if (existing >= 0) {
@@ -108,6 +139,7 @@ async function loadM3UFromUrl(url: string, name?: string, epgUrl?: string): Prom
         // 8. Success path
         state.channels = channels;
         clearStreamTypeCache();
+        migrateFavoritesAndLocks();
         state.expandedGroups.clear();
         savePlaylist(url, name, channels.length);
         renderChannelList();
@@ -180,6 +212,7 @@ function loadM3UFromFile(file: File, name: string): Promise<void> {
 
                 state.channels = channels;
                 clearStreamTypeCache();
+                migrateFavoritesAndLocks();
                 state.expandedGroups.clear();
                 if (file.name) {
                     const playlistName = name || file.name.replace(/\.[^/.]+$/, '');
