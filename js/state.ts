@@ -5,6 +5,7 @@ type StateChangeCallback = (...args: any[]) => void;
 let pinHash: string | null = null;
 let pinContext: string | null = null;
 let pendingChangePinCallback: ((success: boolean) => void) | null = null;
+const PIN_ATTEMPTS_KEY = 'pinFailedAttempts';
 
 async function hashPin(pin: string): Promise<string> {
     var encoder = new TextEncoder();
@@ -137,6 +138,7 @@ async function setPin(newPin: string) {
     pinHash = await hashPin(newPin);
     localStorage.setItem('parentalPinHash', pinHash);
     localStorage.setItem('pinConfigured', 'true');
+    resetPinFailedAttempts();
 }
 
 function setPinContext(ctx: string | null) {
@@ -145,6 +147,30 @@ function setPinContext(ctx: string | null) {
 
 function getPinContext(): string | null {
     return pinContext;
+}
+
+function getPinFailedAttempts(): number {
+    var val = localStorage.getItem(PIN_ATTEMPTS_KEY);
+    return val ? parseInt(val, 10) : 0;
+}
+
+function incrementPinFailedAttempts(): void {
+    var attempts = getPinFailedAttempts() + 1;
+    localStorage.setItem(PIN_ATTEMPTS_KEY, String(attempts));
+}
+
+function resetPinFailedAttempts(): void {
+    localStorage.removeItem(PIN_ATTEMPTS_KEY);
+}
+
+function getPinLockoutSeconds(): number {
+    var attempts = getPinFailedAttempts();
+    if (attempts >= 15) return 1800;
+    if (attempts >= 10) return 300;
+    if (attempts >= 7) return 30;
+    if (attempts >= 5) return 5;
+    if (attempts >= 3) return 1;
+    return 0;
 }
 
 async function verifyPin(inputPin: string): Promise<boolean> {
@@ -165,6 +191,7 @@ function removePin() {
     localStorage.removeItem('parentalPinHash');
     localStorage.removeItem('pinConfigured');
     pinHash = null;
+    resetPinFailedAttempts();
 }
 
 function setPendingChangePinCallback(fn: ((success: boolean) => void) | null) {
@@ -234,6 +261,10 @@ export {
     removePin,
     setPendingChangePinCallback,
     getPendingChangePinCallback,
+    getPinFailedAttempts,
+    incrementPinFailedAttempts,
+    resetPinFailedAttempts,
+    getPinLockoutSeconds,
     onStateChange,
     offStateChange
 };

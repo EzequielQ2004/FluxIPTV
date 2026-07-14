@@ -76,6 +76,7 @@ var translations: Record<string, Record<string, string>> = {
         'player.pin.playTitle': 'Canal bloqueado',
         'player.pin.playMessage': 'Ingresa el PIN para reproducir este canal',
         'player.pin.playBtn': 'Reproducir',
+        'player.pin.locked': 'Demasiados intentos. Espera {seconds} segundos.',
 
         'modal.m3u.title': 'Gestionar Listas M3U',
         'modal.m3u.savedTab': 'Mis Listas',
@@ -304,6 +305,7 @@ var translations: Record<string, Record<string, string>> = {
         'player.pin.playTitle': 'Channel locked',
         'player.pin.playMessage': 'Enter the PIN to play this channel',
         'player.pin.playBtn': 'Play',
+        'player.pin.locked': 'Too many attempts. Wait {seconds} seconds.',
 
         'modal.m3u.title': 'Manage M3U Lists',
         'modal.m3u.savedTab': 'My Lists',

@@ -1,6 +1,6 @@
 import Hls from 'hls.js';
 import * as dashjs from 'dashjs';
-import { state, saveState, addToHistory, verifyPin, setPin, removePin, setPinContext, getPinContext } from './state.ts';
+import { state, saveState, addToHistory, verifyPin, setPin, removePin, setPinContext, getPinContext, getPinLockoutSeconds, incrementPinFailedAttempts, resetPinFailedAttempts } from './state.ts';
 import { elements, updateActiveChannel, scrollToChannel, renderHistory, showLoading, hideLoading, showError, hideError, openModal, closeModal, showToast, updateLockBtn } from './ui.ts';
 import { escapeHtml } from './fallback-image.ts';
 import { loadM3UFromUrl } from './loader.ts';
@@ -434,6 +434,13 @@ async function onVerifyPin(): Promise<void> {
     const inputPin = elements.pinInput.value;
     const ctx = getPinContext();
 
+    var lockoutSeconds = getPinLockoutSeconds();
+    if (lockoutSeconds > 0) {
+        elements.pinInput.value = '';
+        showToast(t('player.pin.locked', { seconds: String(lockoutSeconds) }), 'error');
+        return;
+    }
+
     if (ctx === 'set-lock') {
         const confirmPin = (document.getElementById('pinConfirmInput') as HTMLInputElement).value;
         if (inputPin.length !== 4 || !/^\d{4}$/.test(inputPin)) {
@@ -464,10 +471,12 @@ async function onVerifyPin(): Promise<void> {
     if (!ok) {
         elements.pinInput.value = '';
         elements.pinInput.focus();
+        incrementPinFailedAttempts();
         showToast(t('player.pin.incorrect'), 'error');
         return;
     }
 
+    resetPinFailedAttempts();
     closeModal(elements.pinModal);
     elements.pinInput.value = '';
     const idx = state.pendingChannelIndex;
