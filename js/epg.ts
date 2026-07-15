@@ -149,7 +149,7 @@ function showEpg(): void {
             html += [
                 '<div class="epg-item epg-item-current">',
                 '<div class="epg-item-label">' + t('epg.now') + '</div>',
-                '<div class="epg-item-time">' + endTime + '</div>',
+                '<div class="epg-item-time">' + escapeHtml(endTime) + '</div>',
                 '<div class="epg-item-title">' + escapeHtml(current.title) + '</div>',
                 current.description ? '<div class="epg-item-desc">' + escapeHtml(current.description) + '</div>' : '',
                 '</div>'
@@ -161,7 +161,7 @@ function showEpg(): void {
             var endTime = prog.stop ? prog.stop.toLocaleTimeString(getLocale(), { hour: '2-digit', minute: '2-digit' }) : '';
             html += [
                 '<div class="epg-item">',
-                '<div class="epg-item-time">' + startTime + ' - ' + endTime + '</div>',
+                '<div class="epg-item-time">' + escapeHtml(startTime) + ' - ' + escapeHtml(endTime) + '</div>',
                 '<div class="epg-item-title">' + escapeHtml(prog.title) + '</div>',
                 prog.description ? '<div class="epg-item-desc">' + escapeHtml(prog.description) + '</div>' : '',
                 '</div>'
