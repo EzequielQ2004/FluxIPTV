@@ -58,51 +58,55 @@ function saveState() {
 }
 
 function loadState() {
-    state.theme = localStorage.getItem('theme') || 'auto';
-
     try {
-        var favorites = localStorage.getItem('favorites');
-        if (favorites) {
-            state.favorites = new Set(JSON.parse(favorites) as string[]);
-        }
-    } catch (e) {}
+        state.theme = localStorage.getItem('theme') || 'auto';
 
-    try {
-        var locked = localStorage.getItem('lockedChannels');
-        if (locked) {
-            state.lockedChannels = new Set(JSON.parse(locked) as string[]);
-        }
-    } catch (e) {}
+        try {
+            var favorites = localStorage.getItem('favorites');
+            if (favorites) {
+                state.favorites = new Set(JSON.parse(favorites) as string[]);
+            }
+        } catch (e) {}
 
-    try {
-        var history = localStorage.getItem('history');
-        if (history) {
-            state.history = JSON.parse(history) as HistoryEntry[];
-        }
-    } catch (e) {}
+        try {
+            var locked = localStorage.getItem('lockedChannels');
+            if (locked) {
+                state.lockedChannels = new Set(JSON.parse(locked) as string[]);
+            }
+        } catch (e) {}
 
-    var storedHash = localStorage.getItem('parentalPinHash');
-    var storedPlain = localStorage.getItem('parentalPin');
-    if (storedHash) {
-        if (localStorage.getItem('pinConfigured') === 'true') {
-            pinHash = storedHash;
-        } else {
-            localStorage.removeItem('parentalPinHash');
-        }
-    } else if (storedPlain) {
-        localStorage.removeItem('parentalPin');
-    }
+        try {
+            var history = localStorage.getItem('history');
+            if (history) {
+                state.history = JSON.parse(history) as HistoryEntry[];
+            }
+        } catch (e) {}
 
-    try {
-        var playlists = localStorage.getItem('playlists');
-        if (playlists) {
-            state.playlists = JSON.parse(playlists) as Playlist[];
+        var storedHash = localStorage.getItem('parentalPinHash');
+        var storedPlain = localStorage.getItem('parentalPin');
+        if (storedHash) {
+            if (localStorage.getItem('pinConfigured') === 'true') {
+                pinHash = storedHash;
+            } else {
+                localStorage.removeItem('parentalPinHash');
+            }
+        } else if (storedPlain) {
+            localStorage.removeItem('parentalPin');
         }
-    } catch (e) {}
 
-    var kiosk = localStorage.getItem('kioskMode');
-    if (kiosk !== null) {
-        state.kioskMode = kiosk === 'true';
+        try {
+            var playlists = localStorage.getItem('playlists');
+            if (playlists) {
+                state.playlists = JSON.parse(playlists) as Playlist[];
+            }
+        } catch (e) {}
+
+        var kiosk = localStorage.getItem('kioskMode');
+        if (kiosk !== null) {
+            state.kioskMode = kiosk === 'true';
+        }
+    } catch (e) {
+        console.warn('loadState: error al leer localStorage', e);
     }
 }
 
