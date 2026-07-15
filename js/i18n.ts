@@ -63,6 +63,8 @@ var translations: Record<string, Record<string, string>> = {
         'player.youtubeNotAllowed': 'La reproducción no está permitida en este sitio',
         'player.youtubeError': 'Error de YouTube: ',
         'player.youtubeUnknown': 'Error desconocido',
+        'player.youtubeLiveFallback': 'No se pudo obtener el stream en vivo automáticamente.',
+        'player.openInYoutube': 'Abrir en YouTube',
         'player.embedContainerNotFound': 'Error interno: contenedor embed no encontrado',
         'player.twitchExtractError': 'No se pudo extraer el nombre del canal de Twitch',
         'player.dailymotionExtractError': 'No se pudo extraer el ID del video de Dailymotion',
@@ -178,6 +180,8 @@ var translations: Record<string, Record<string, string>> = {
         'loader.loading': 'Cargando lista...',
         'loading.nested': 'Cargando lista anidada: ',
 
+        'ui.channelCount': '{count} canales',
+        'parser.defaultName': 'Canal sin nombre',
         'ui.noName': 'Sin nombre',
         'ui.noPlaylists': 'No hay listas guardadas',
         'ui.noHistory': 'Sin historial reciente',
@@ -292,6 +296,8 @@ var translations: Record<string, Record<string, string>> = {
         'player.youtubeNotAllowed': 'Playback is not allowed on this site',
         'player.youtubeError': 'YouTube Error: ',
         'player.youtubeUnknown': 'Unknown error',
+        'player.youtubeLiveFallback': 'Could not get the live stream automatically.',
+        'player.openInYoutube': 'Open in YouTube',
         'player.embedContainerNotFound': 'Internal error: embed container not found',
         'player.twitchExtractError': 'Could not extract Twitch channel name',
         'player.dailymotionExtractError': 'Could not extract Dailymotion video ID',
@@ -406,6 +412,8 @@ var translations: Record<string, Record<string, string>> = {
         'loader.loading': 'Loading list...',
         'loading.nested': 'Loading nested list: ',
 
+        'ui.channelCount': '{count} channels',
+        'parser.defaultName': 'Unnamed channel',
         'ui.noName': 'Unnamed',
         'ui.noPlaylists': 'No saved lists',
         'ui.noHistory': 'No recent history',
@@ -489,6 +497,10 @@ function getLocale(): string {
 }
 
 function initI18n(): void {
+    if (currentLang === 'es' && navigator.language && navigator.language.startsWith('en')) {
+        setLocale('en');
+        return;
+    }
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
         var text = t(el.getAttribute('data-i18n')!);
         if (text) el.textContent = text;

@@ -1,5 +1,7 @@
 import { Channel } from './types.ts';
 
+const DEFAULT_CHANNEL_NAME = 'Canal sin nombre';
+
 function parseM3U(content: string, baseUrl?: string): Channel[] {
     if (!content || !content.trim().startsWith('#EXTM3U')) {
         return [];
@@ -15,7 +17,7 @@ function parseM3U(content: string, baseUrl?: string): Channel[] {
 
         if (line.startsWith('#EXTINF:')) {
             currentChannel = {
-                name: 'Canal sin nombre',
+                name: DEFAULT_CHANNEL_NAME,
                 logo: '',
                 group: 'General',
                 url: '',
@@ -32,7 +34,7 @@ function parseM3U(content: string, baseUrl?: string): Channel[] {
                 }
             }
 
-            if (currentChannel.name === 'Canal sin nombre') {
+            if (currentChannel.name === DEFAULT_CHANNEL_NAME) {
                 const nameMatch = line.match(/tvg-name="([^"]*)"/);
                 if (nameMatch && nameMatch[1]) {
                     currentChannel.name = nameMatch[1];
@@ -86,4 +88,4 @@ function parseM3U(content: string, baseUrl?: string): Channel[] {
     return channels;
 }
 
-export { parseM3U };
+export { parseM3U, DEFAULT_CHANNEL_NAME };

@@ -78,10 +78,8 @@ function renderPlaylists() {
 function checkClipboard() {
   readClipboardAsync().then(function (text) {
     processClipboardText(text);
-  }).catch(function () {
-    readClipboardLegacy(function (text) {
-      processClipboardText(text);
-    });
+  }).catch(function (err) {
+    console.warn('Flux: clipboard read failed', err);
   });
 }
 
@@ -98,30 +96,6 @@ function readClipboardAsync() {
       reject(err);
     });
   });
-}
-
-function readClipboardLegacy(callback) {
-  try {
-    var ta = document.createElement('textarea');
-    ta.style.position = 'fixed';
-    ta.style.left = '-9999px';
-    ta.style.top = '0';
-    ta.style.width = '1px';
-    ta.style.height = '1px';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.focus();
-    var ok = document.execCommand('paste');
-    var text = ta.value;
-    document.body.removeChild(ta);
-    if (ok && text) {
-      callback(text);
-    } else {
-      console.warn('Flux: execCommand paste returned', ok, text);
-    }
-  } catch (err) {
-    console.warn('Flux: execCommand paste threw', err);
-  }
 }
 
 function processClipboardText(text) {

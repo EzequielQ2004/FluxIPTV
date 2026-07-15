@@ -49,12 +49,12 @@ function scheduleSave() {
 }
 
 function saveState() {
-    localStorage.setItem('theme', state.theme);
-    localStorage.setItem('favorites', JSON.stringify([...state.favorites]));
-    localStorage.setItem('lockedChannels', JSON.stringify([...state.lockedChannels]));
-    localStorage.setItem('history', JSON.stringify(state.history));
-    localStorage.setItem('playlists', JSON.stringify(state.playlists));
-    localStorage.setItem('kioskMode', String(state.kioskMode));
+    try { localStorage.setItem('theme', state.theme); } catch (e) { console.warn('saveState: theme falló', e); }
+    try { localStorage.setItem('favorites', JSON.stringify([...state.favorites])); } catch (e) { console.warn('saveState: favorites falló', e); }
+    try { localStorage.setItem('lockedChannels', JSON.stringify([...state.lockedChannels])); } catch (e) { console.warn('saveState: lockedChannels falló', e); }
+    try { localStorage.setItem('history', JSON.stringify(state.history)); } catch (e) { console.warn('saveState: history falló', e); }
+    try { localStorage.setItem('playlists', JSON.stringify(state.playlists)); } catch (e) { console.warn('saveState: playlists falló', e); }
+    try { localStorage.setItem('kioskMode', String(state.kioskMode)); } catch (e) { console.warn('saveState: kioskMode falló', e); }
 }
 
 function loadState() {

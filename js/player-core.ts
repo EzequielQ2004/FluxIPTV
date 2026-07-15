@@ -85,7 +85,6 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
     state.currentChannelIndex = index;
     addToHistory(channel);
 
-    let hlsRetryCount_ = 0;
     setLoadTimeout(null);
     resetHlsRetry();
     resetNonFatalErrors();

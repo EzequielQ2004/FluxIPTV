@@ -340,8 +340,8 @@ function playYoutubeChannel(channel: Channel): void {
                 document.getElementById('youtubePlayer')!.innerHTML = [
                     '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;padding:2rem;text-align:center">',
                     '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
-                    '<p style="color:var(--text-secondary)">No se pudo obtener el stream en vivo automáticamente.</p>',
-                    '<a href="' + escapeHtml(channelUrl) + '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:var(--accent);color:var(--flux-black);border-radius:0.5rem;text-decoration:none;font-weight:600">Abrir en YouTube</a>',
+                    '<p style="color:var(--text-secondary)">' + t('player.youtubeLiveFallback') + '</p>',
+                    '<a href="' + escapeHtml(channelUrl) + '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:var(--accent);color:var(--flux-black);border-radius:0.5rem;text-decoration:none;font-weight:600">' + t('player.openInYoutube') + '</a>',
                     '</div>'
                 ].join('');
                 state.isPlaying = true;

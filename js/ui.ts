@@ -2,6 +2,7 @@ import { state, saveState, isPinConfigured, setPinContext } from './state.ts';
 import { getFallbackImage, handleImageError, escapeHtml, getCachedLogoUrl } from './fallback-image.ts';
 import { t } from './i18n.ts';
 import { Channel } from './types.ts';
+import { DEFAULT_CHANNEL_NAME } from './parser.ts';
 
 const SVG_FAV_FILLED = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
 const SVG_FAV_OUTLINE = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
@@ -119,7 +120,7 @@ function buildRowHTML(row: VirtualRow): string {
         return `<div class="channel-item group-item" data-group="${escapeHtml(row.data.name)}" role="button" tabindex="0" aria-expanded="${expanded}">
             <div class="channel-info">
                 <div class="channel-name" style="font-weight:600">${escapeHtml(row.data.name)}</div>
-                <div class="channel-group">${row.data.count} canales</div>
+                <div class="channel-group">${t('ui.channelCount', { count: row.data.count })}</div>
             </div>
             <svg class="group-expand-icon ${expanded ? 'expanded' : ''}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -130,21 +131,22 @@ function buildRowHTML(row: VirtualRow): string {
     const isFavorite = state.favorites.has(channel.url);
     const isLocked = state.lockedChannels.has(channel.url);
     const isActive = channel.index === state.currentChannelIndex;
+    const displayName = channel.name === DEFAULT_CHANNEL_NAME ? t('parser.defaultName') : channel.name;
     return `
         <div class="channel-item ${isActive ? 'active' : ''}" 
              data-index="${channel.index}" 
              role="listitem" 
              tabindex="0"
-             aria-label="${escapeHtml(channel.name)}">
+             aria-label="${escapeHtml(displayName)}">
              <img class="channel-logo" 
                   src="${getChannelLogo(channel)}" 
-                  alt="${escapeHtml(channel.name)}"
+                  alt="${escapeHtml(displayName)}"
                   loading="lazy"
                   decoding="async"
                   referrerpolicy="no-referrer"
                   onerror="handleImageError(this)">
             <div class="channel-info">
-                <div class="channel-name">${escapeHtml(channel.name)}</div>
+                <div class="channel-name">${escapeHtml(displayName)}</div>
                 <div class="channel-group">${escapeHtml(channel.group)}</div>
             </div>
             <div class="channel-actions">
@@ -434,7 +436,7 @@ function renderPlaylistList(): void {
                 <div class="playlist-info">
                     <div class="playlist-name">${escapeHtml(displayName)}</div>
                     <div class="playlist-meta">
-                        <span>${count} canales</span>
+                        <span>${t('ui.channelCount', { count: count })}</span>
                         <span>${escapeHtml(dateStr)}</span>
                     </div>
                 </div>
@@ -468,7 +470,7 @@ function renderPlaylistList(): void {
 function showPlaylistDetails(url: string): void {
     var pl = state.playlists.find(function (p) { return p.url === url; });
     if (!pl) return;
-    var displayName = pl.name || pl.url.split('/').pop() || 'Sin nombre';
+    var displayName = pl.name || pl.url.split('/').pop() || t('ui.noName');
     var count = pl.channelCount != null ? pl.channelCount : 0;
     var dateStr = '—';
     if (pl.addedAt) {
