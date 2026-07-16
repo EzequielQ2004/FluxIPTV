@@ -22,6 +22,12 @@
     --shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
     --transition: all 0.3s ease;
 
+    --ctrl-btn-bg: rgba(255,255,255,0.1);
+    --ctrl-btn-border: rgba(255,255,255,0.15);
+    --ctrl-btn-color: #fff;
+    --ctrl-gradient: linear-gradient(transparent, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.85));
+    --ctrl-vol-accent: #fff;
+
     --font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     --font-logo: 'Space Grotesk', 'Montserrat', system-ui, sans-serif;
@@ -39,5 +45,10 @@
     --accent-bg: rgba(0, 153, 204, 0.1);
     --flux-cyan: #0099CC;
     --flux-cyan-dim: #0077AA;
+    --ctrl-btn-bg: rgba(0,0,0,0.07);
+    --ctrl-btn-border: rgba(0,0,0,0.12);
+    --ctrl-btn-color: #1a1a1a;
+    --ctrl-gradient: linear-gradient(transparent, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.6));
+    --ctrl-vol-accent: #1a1a1a;
     --shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
 }

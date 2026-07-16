@@ -169,7 +169,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.85));
+    background: var(--ctrl-gradient);
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -182,9 +182,9 @@
 }
 
 .player-controls .control-btn {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.15);
-    color: #fff;
+    background: var(--ctrl-btn-bg);
+    border-color: var(--ctrl-btn-border);
+    color: var(--ctrl-btn-color);
 }
 .player-controls .control-btn:hover {
     background: var(--accent);
@@ -192,12 +192,12 @@
     color: var(--flux-black);
 }
 .player-controls .volume-slider {
-    accent-color: #fff;
+    accent-color: var(--ctrl-vol-accent);
 }
 .player-controls .volume-btn {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.15);
-    color: #fff;
+    background: var(--ctrl-btn-bg);
+    border-color: var(--ctrl-btn-border);
+    color: var(--ctrl-btn-color);
 }
 .player-controls .volume-btn:hover {
     background: var(--accent);
