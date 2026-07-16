@@ -397,6 +397,10 @@ function setupEventListeners() {
                 }
                 break;
             case ' ':
+                var el = document.activeElement;
+                if (el && (el as HTMLElement).matches('button, input, select, textarea, a[href], [role="button"], [contenteditable]')) {
+                    break;
+                }
                 e.preventDefault();
                 togglePlayPause();
                 break;
