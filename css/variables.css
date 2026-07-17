@@ -30,6 +30,10 @@
 
     --fav-color: #fbbf24;
     --lock-color: #ef4444;
+    --text-on-accent: #fff;
+    --danger-hover: #CC0000;
+    --text-on-accent: #fff;
+    --danger-hover: #CC0000;
 
     --font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;

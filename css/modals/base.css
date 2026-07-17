@@ -60,7 +60,7 @@
 .modal-tab.active {
     background: var(--accent);
     border-color: var(--accent);
-    color: white;
+    color: var(--text-on-accent);
 }
 
 .modal-input {
@@ -116,11 +116,11 @@
 .btn-danger {
     background: var(--flux-error);
     border: 1px solid var(--flux-error);
-    color: white;
+    color: var(--text-on-accent);
     font-weight: 600;
 }
 
 .btn-danger:hover {
-    background: #CC0000;
-    border-color: #CC0000;
+    background: var(--danger-hover);
+    border-color: var(--danger-hover);
 }
