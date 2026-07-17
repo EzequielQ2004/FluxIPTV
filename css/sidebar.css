@@ -163,11 +163,11 @@
 }
 
 .channel-action-btn.favorite {
-    color: #fbbf24;
+    color: var(--fav-color);
 }
 
 .channel-action-btn.locked {
-    color: #ef4444;
+    color: var(--lock-color);
 }
 
 .sidebar-overlay {
