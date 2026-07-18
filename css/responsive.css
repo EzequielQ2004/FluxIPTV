@@ -25,7 +25,7 @@
 
 @media (min-width: 1920px) and (orientation: landscape) {
     body {
-        font-size: 5vw;
+        font-size: 1.25vw;
     }
 
     .app-container {
