@@ -5,6 +5,24 @@
     }
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+    .menu-toggle {
+        display: flex !important;
+    }
+    .sidebar {
+        max-height: 40vh;
+        overflow-y: auto;
+    }
+    .control-btn {
+        width: 44px;
+        height: 44px;
+    }
+    .control-btn.play-pause {
+        width: 60px;
+        height: 60px;
+    }
+}
+
 @media (min-width: 1920px) and (orientation: landscape) {
     body {
         font-size: 5vw;
