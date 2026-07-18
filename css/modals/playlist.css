@@ -75,7 +75,7 @@
 .pl-action-btn.pl-action-danger:hover {
     color: var(--flux-error);
     border-color: var(--flux-error);
-    background: rgba(255, 77, 77, 0.1);
+    background: var(--danger-bg);
 }
 
 .pl-detail-section {
