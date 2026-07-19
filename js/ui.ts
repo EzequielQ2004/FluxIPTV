@@ -10,7 +10,9 @@ const SVG_LOCK_CLOSED = '<svg width="16" height="16" viewBox="0 0 24 24" fill="n
 const SVG_LOCK_OPEN = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V6a4 4 0 0 1 8 0v1"></path></svg>';
 
 function byId(id: string): HTMLElement {
-    return document.getElementById(id)!;
+    const el = document.getElementById(id);
+    if (!el) console.warn(`Elemento #${id} no encontrado en el DOM`);
+    return el!;
 }
 
 const elements = {
