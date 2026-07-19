@@ -129,3 +129,27 @@
         font-size: 1.25rem;
     }
 }
+
+/* Pantallas muy pequeñas (< 480px) */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 90%;
+    }
+
+    .control-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.875rem;
+    }
+
+    .control-btn.play-pause {
+        width: 48px;
+        height: 48px;
+        font-size: 1rem;
+    }
+
+    .modal {
+        padding: 1.25rem;
+        width: 95%;
+    }
+}
