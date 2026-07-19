@@ -83,6 +83,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
     }
 
     state.currentChannelIndex = index;
+    elements.nowPlaying.textContent = channel.name;
     addToHistory(channel);
 
     setLoadTimeout(null);

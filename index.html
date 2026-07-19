@@ -141,13 +141,14 @@
                 <div id="embedContainer" class="youtube-container hidden">
                     <div id="embedPlayer"></div>
                 </div>
+                <span id="nowPlaying" class="sr-only" aria-live="polite"></span>
                 <div class="list-loading-overlay" id="listLoadingOverlay">
                     <div class="spinner"></div>
                     <div class="loading-text" id="listLoadingText" data-i18n="app.loadingList">Cargando lista...</div>
                 </div>
                 <div class="loading-overlay" id="loadingOverlay">
                     <div class="spinner"></div>
-                    <div class="loading-text" id="loadingText" data-i18n="app.loadingStream">Cargando stream...</div>
+                    <div class="loading-text" id="loadingText" aria-live="polite" data-i18n="app.loadingStream">Cargando stream...</div>
                 </div>
                 <div class="error-overlay" id="errorOverlay">
                     <div class="error-icon">
@@ -157,7 +158,7 @@
                             <line x1="12" y1="18" x2="12.01" y2="18"></line>
                         </svg>
                     </div>
-                    <div class="error-message" id="errorMessage" data-i18n="app.streamError">No se pudo cargar el stream</div>
+                    <div class="error-message" id="errorMessage" aria-live="assertive" data-i18n="app.streamError">No se pudo cargar el stream</div>
                     <button class="error-retry" id="retryBtn" data-i18n="ui.retryBtn">Reintentar</button>
                 </div>
                 <div class="player-controls" id="playerControls">

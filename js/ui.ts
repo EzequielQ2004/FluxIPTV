@@ -77,7 +77,8 @@ const elements = {
     get kioskBtn() { return byId('kioskBtn'); },
     get playerControls() { return byId('playerControls'); },
     get settingsModal() { return byId('settingsModal'); },
-    get settingsBtn() { return byId('settingsBtn'); }
+    get settingsBtn() { return byId('settingsBtn'); },
+    get nowPlaying() { return byId('nowPlaying'); }
 };
 
 function getChannelLogo(channel: Channel): string {
