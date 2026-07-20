@@ -1,27 +1,33 @@
 function navigateFocus(direction: number, axis: string): void {
-    const focusableElements = document.querySelectorAll<HTMLElement>(
-        'button[tabindex="0"], .channel-item[tabindex="0"], .history-item[tabindex="0"], input'
+    const activeEl = document.activeElement as HTMLElement | null;
+    if (!activeEl) return;
+
+    const inVerticalList = !!activeEl.closest('.channel-list, .history-bar');
+
+    if (axis === 'horizontal' && inVerticalList) return;
+
+    const container = axis === 'vertical'
+        ? activeEl.closest('.channel-list, .history-bar')
+        : activeEl.closest('.filter-tabs, .player-controls, .modal, .header-controls');
+
+    if (!container) return;
+
+    const focusable = container.querySelectorAll<HTMLElement>(
+        'button:not([disabled]):not([tabindex="-1"]), ' +
+        '.channel-item:not([tabindex="-1"]), ' +
+        'input:not([disabled]):not([tabindex="-1"]), ' +
+        'select:not([disabled]), a[href]'
     );
 
-    const currentIndex = Array.from(focusableElements).indexOf(document.activeElement as HTMLElement);
-
+    const currentIndex = Array.from(focusable).indexOf(activeEl);
     if (currentIndex === -1) {
-        if (focusableElements.length > 0) {
-            focusableElements[0].focus();
-        }
+        if (focusable.length > 0) focusable[0].focus();
         return;
     }
 
-    let newIndex = currentIndex;
-
-    if (axis === 'vertical') {
-        newIndex += direction;
-    } else {
-        newIndex += direction;
-    }
-
-    if (newIndex >= 0 && newIndex < focusableElements.length) {
-        focusableElements[newIndex].focus();
+    const newIndex = currentIndex + direction;
+    if (newIndex >= 0 && newIndex < focusable.length) {
+        focusable[newIndex].focus();
     }
 }
 
