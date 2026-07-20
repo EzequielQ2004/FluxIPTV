@@ -2,15 +2,7 @@ import { t, getLocale } from './i18n.ts';
 import { state } from './state.ts';
 import { elements, openModal } from './ui.ts';
 import { getFallbackImage, escapeHtml } from './fallback-image.ts';
-
-interface EpgProgramme {
-    start: Date | null;
-    stop: Date | null;
-    title: string;
-    description: string;
-    category: string;
-    icon: string;
-}
+import { EpgProgramme } from './types.ts';
 
 function parseXmltvDate(xmltvDate: string): Date {
     var match = xmltvDate.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\s*([+-]\d{2})(\d{2})?$/);
@@ -129,7 +121,7 @@ function showEpg(): void {
     ].join('');
 
     var epgList = document.getElementById('epgList')!;
-    var programmes = state.epgData && tvgId ? (state.epgData as Record<string, EpgProgramme[]>)[tvgId] : null;
+    var programmes = state.epgData && tvgId ? state.epgData[tvgId] : null;
 
     if (!programmes || programmes.length === 0) {
         epgList.innerHTML = [
