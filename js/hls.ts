@@ -17,7 +17,7 @@ import {
 import { Channel } from './types.ts';
 
 function setupHls(video: HTMLVideoElement, channel: Channel): void {
-    var hlsConfig: any = {
+    var hlsConfig: Partial<Hls.Config> = {
         enableWorker: true,
         lowLatencyMode: true,
         backBufferLength: 90,
