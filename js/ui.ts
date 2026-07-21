@@ -101,6 +101,32 @@ let totalHeight = 0;
 let virtualScrollHandler: (() => void) | null = null;
 let renderedRange: { start: number; end: number } = { start: -1, end: -1 };
 
+function ensureVirtualSpacer(): void {
+    var spacer = elements.channelList.querySelector('.virtual-spacer') as HTMLElement | null;
+    if (spacer) {
+        spacer.style.height = totalHeight + 'px';
+    } else {
+        elements.channelList.innerHTML = [
+            '<div class="virtual-spacer" style="position:relative;height:' + totalHeight + 'px">',
+            '<div class="virtual-viewport" style="position:absolute;top:0;left:0;right:0;will-change:transform"></div>',
+            '</div>'
+        ].join('');
+    }
+}
+
+function ensureScrollHandler(): void {
+    if (virtualScrollHandler) return;
+    virtualScrollHandler = function () { renderVisibleRows(); };
+    elements.channelList.addEventListener('scroll', virtualScrollHandler);
+}
+
+function removeScrollHandler(): void {
+    if (virtualScrollHandler) {
+        elements.channelList.removeEventListener('scroll', virtualScrollHandler);
+        virtualScrollHandler = null;
+    }
+}
+
 function findRow(offset: number): number {
     if (offset <= 0) return 0;
     if (offset >= totalHeight) return Math.max(0, virtualRows.length - 1);
@@ -269,10 +295,7 @@ function renderChannelList(): void {
     if (state.currentFilter === 'groups') {
         var savedScrollTop = elements.channelList.scrollTop;
 
-        if (virtualScrollHandler) {
-            elements.channelList.removeEventListener('scroll', virtualScrollHandler);
-            virtualScrollHandler = null;
-        }
+        removeScrollHandler();
 
         var groupCounts: Record<string, number> = {};
         state.channels.forEach(function (ch) { groupCounts[ch.group] = (groupCounts[ch.group] || 0) + 1; });
@@ -316,20 +339,14 @@ function renderChannelList(): void {
         totalHeight = cumulativeHeights[cumulativeHeights.length - 1];
 
         renderedRange = { start: -1, end: -1 };
-        elements.channelList.innerHTML = [
-            '<div class="virtual-spacer" style="position:relative;height:' + totalHeight + 'px">',
-            '<div class="virtual-viewport" style="position:absolute;top:0;left:0;right:0;will-change:transform"></div>',
-            '</div>'
-        ].join('');
+        ensureVirtualSpacer();
 
         var maxScroll = totalHeight - elements.channelList.clientHeight;
         if (maxScroll > 0 && savedScrollTop > maxScroll) savedScrollTop = maxScroll;
         if (savedScrollTop > 0) elements.channelList.scrollTop = savedScrollTop;
 
         renderVisibleRows();
-
-        virtualScrollHandler = function () { renderVisibleRows(); };
-        elements.channelList.addEventListener('scroll', virtualScrollHandler);
+        ensureScrollHandler();
         return;
     }
 
@@ -353,10 +370,7 @@ function renderChannelList(): void {
     }
 
     if (filteredChannels.length === 0) {
-        if (virtualScrollHandler) {
-            elements.channelList.removeEventListener('scroll', virtualScrollHandler);
-            virtualScrollHandler = null;
-        }
+        removeScrollHandler();
         virtualRows = [];
         cumulativeHeights = [0];
         totalHeight = 0;
@@ -396,24 +410,10 @@ function renderChannelList(): void {
     }
     totalHeight = cumulativeHeights[cumulativeHeights.length - 1];
 
-    // Build virtual scroller DOM
     renderedRange = { start: -1, end: -1 };
-    elements.channelList.innerHTML = [
-        '<div class="virtual-spacer" style="position:relative;height:' + totalHeight + 'px">',
-        '<div class="virtual-viewport" style="position:absolute;top:0;left:0;right:0;will-change:transform"></div>',
-        '</div>'
-    ].join('');
-
+    ensureVirtualSpacer();
     renderVisibleRows();
-
-    // Setup scroll listener
-    if (virtualScrollHandler) {
-        elements.channelList.removeEventListener('scroll', virtualScrollHandler);
-    }
-    virtualScrollHandler = function () {
-        renderVisibleRows();
-    };
-    elements.channelList.addEventListener('scroll', virtualScrollHandler);
+    ensureScrollHandler();
 }
 
 function renderPlaylistList(): void {
