@@ -85,11 +85,10 @@ function getChannelLogo(channel: Channel): string {
     return getCachedLogoUrl(channel.logo) || getFallbackImage(48);
 }
 
-interface VirtualRow {
-    type: string;
-    data: any;
-    height: number;
-}
+type VirtualRow =
+    | { type: 'header'; data: string; height: number }
+    | { type: 'group'; data: { name: string; count: number; expanded: boolean }; height: number }
+    | { type: 'channel'; data: Channel; height: number };
 
 // --- Virtual Scroller ---
 const HEADER_HEIGHT = 36;
