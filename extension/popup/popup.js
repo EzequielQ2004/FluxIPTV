@@ -4,6 +4,7 @@ let playlists = [];
 let clipboardUrl = '';
 
 document.addEventListener('DOMContentLoaded', function () {
+  applyTranslations();
   loadPlaylists();
   document.getElementById('addBtn').addEventListener('click', addPlaylist);
   document.getElementById('urlInput').addEventListener('keydown', function (e) {
@@ -13,6 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('suggestionDismiss').addEventListener('click', dismissClipboard);
   checkClipboard();
 });
+
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+}
 
 function loadPlaylists() {
   chrome.storage.sync.get('playlists', function (data) {
@@ -41,7 +51,7 @@ function renderPlaylists() {
 
     const name = document.createElement('div');
     name.className = 'name';
-    name.textContent = p.name || 'Sin nombre';
+    name.textContent = p.name || t('noName');
 
     const url = document.createElement('div');
     url.className = 'url';
@@ -49,7 +59,7 @@ function renderPlaylists() {
 
     const channels = document.createElement('div');
     channels.className = 'channels';
-    channels.textContent = p.channelCount ? p.channelCount + ' canales' : '';
+    channels.textContent = p.channelCount ? p.channelCount + ' ' + t('channels') : '';
 
     info.appendChild(name);
     info.appendChild(url);
@@ -58,7 +68,7 @@ function renderPlaylists() {
     const del = document.createElement('button');
     del.className = 'delete-btn';
     del.textContent = '\u00d7';
-    del.title = 'Eliminar';
+    del.title = t('delete');
     del.addEventListener('click', function (e) {
       e.stopPropagation();
       removePlaylist(i);
@@ -113,7 +123,7 @@ function processClipboardText(text) {
 
   var existing = playlists.findIndex(function (p) { return p.url === url; });
   var addBtn = document.getElementById('suggestionAdd');
-  addBtn.textContent = existing >= 0 ? 'Abrir' : 'Agregar';
+  addBtn.textContent = existing >= 0 ? t('open') : t('add');
 }
 
 function acceptClipboard() {
@@ -152,25 +162,25 @@ function addPlaylist() {
   errorEl.textContent = '';
 
   if (!url) {
-    errorEl.textContent = 'Ingresá una URL';
+    errorEl.textContent = t('errEmptyUrl');
     return;
   }
 
   try {
     new URL(url);
   } catch (_) {
-    errorEl.textContent = 'URL inválida';
+    errorEl.textContent = t('errInvalidUrl');
     return;
   }
 
   if (!url.match(/\.m3u8?$/i)) {
-    errorEl.textContent = 'La URL debe terminar en .m3u o .m3u8';
+    errorEl.textContent = t('errWrongExt');
     return;
   }
 
   const existing = playlists.findIndex(function (p) { return p.url === url; });
   if (existing >= 0) {
-    errorEl.textContent = 'Ya tenés guardada esta lista';
+    errorEl.textContent = t('errDuplicate');
     return;
   }
 

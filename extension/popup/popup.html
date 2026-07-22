@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flux IPTV</title>
+  <title data-i18n="title">Flux IPTV</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="app">
     <header class="header">
       <img src="../icons/icon-48.png" alt="Flux" class="logo">
-      <h1>Flux IPTV</h1>
+      <h1 data-i18n="title">Flux IPTV</h1>
     </header>
 
     <div class="suggestion hidden" id="suggestion">
@@ -21,35 +21,36 @@
         </svg>
       </div>
       <div class="suggestion-body">
-        <div class="suggestion-label">URL detectada en clipboard</div>
+        <div class="suggestion-label" data-i18n="clipboardSuggestion">URL detectada en clipboard</div>
         <div class="suggestion-url" id="suggestionUrl"></div>
       </div>
       <div class="suggestion-actions">
-        <button class="suggestion-btn suggestion-btn--add" id="suggestionAdd">Agregar</button>
+        <button class="suggestion-btn suggestion-btn--add" id="suggestionAdd" data-i18n="add">Agregar</button>
         <button class="suggestion-btn suggestion-btn--dismiss" id="suggestionDismiss">×</button>
       </div>
     </div>
 
     <div class="playlist-list" id="playlistList">
       <div class="empty-state" id="emptyState">
-        <p>No hay listas guardadas</p>
-        <p class="hint">Agregá una URL de lista M3U abajo</p>
+        <p data-i18n="emptyState">No hay listas guardadas</p>
+        <p class="hint" data-i18n="emptyHint">Agregá una URL de lista M3U abajo</p>
       </div>
     </div>
 
     <div class="add-form">
-      <input type="text" id="urlInput" placeholder="https://ejemplo.com/lista.m3u" class="url-input">
+      <input type="text" id="urlInput" data-i18n-placeholder="urlPlaceholder" placeholder="https://ejemplo.com/lista.m3u" class="url-input">
       <div class="form-row">
-        <input type="text" id="nameInput" placeholder="Nombre (opcional)" class="name-input">
-        <button id="addBtn" class="btn btn-primary">Agregar</button>
+        <input type="text" id="nameInput" data-i18n-placeholder="namePlaceholder" placeholder="Nombre (opcional)" class="name-input">
+        <button id="addBtn" class="btn btn-primary" data-i18n="add">Agregar</button>
       </div>
       <p class="error" id="errorMsg"></p>
     </div>
 
     <footer class="footer">
-      <a href="https://fluxiptv.qzz.io" target="_blank" class="link">Abrir Flux IPTV</a>
+      <a href="https://fluxiptv.qzz.io" target="_blank" class="link" data-i18n="openFlux">Abrir Flux IPTV</a>
     </footer>
   </div>
+  <script src="i18n.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

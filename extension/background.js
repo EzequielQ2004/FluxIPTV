@@ -1,9 +1,18 @@
 const FLUX_URL = 'https://fluxiptv.qzz.io';
 
+const CONTEXT_MENU = { es: 'Abrir en Flux IPTV', en: 'Open in Flux IPTV' };
+
+function getLocale() {
+  var lang = typeof chrome !== 'undefined' && chrome.i18n && chrome.i18n.getUILanguage
+    ? chrome.i18n.getUILanguage()
+    : 'es';
+  return lang.startsWith('en') ? 'en' : 'es';
+}
+
 chrome.runtime.onInstalled.addListener(function () {
   chrome.contextMenus.create({
     id: 'openInFlux',
-    title: 'Abrir en Flux IPTV',
+    title: CONTEXT_MENU[getLocale()],
     contexts: ['link'],
     targetUrlPatterns: ['*://*/*.m3u*', '*://*/*.m3u8*']
   });
