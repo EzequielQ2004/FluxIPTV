@@ -206,4 +206,59 @@ describe('loadState / saveState', () => {
         loadState();
         expect(state.kioskMode).toBe(true);
     });
+
+    it('persists and restores lockedChannels', () => {
+        state.lockedChannels.add('http://example.com/ch1');
+        state.lockedChannels.add('http://example.com/ch2');
+        saveState();
+        state.lockedChannels = new Set();
+        loadState();
+        expect(state.lockedChannels.has('http://example.com/ch1')).toBe(true);
+        expect(state.lockedChannels.has('http://example.com/ch2')).toBe(true);
+    });
+
+    it('persists and restores playlists', () => {
+        state.playlists = [{ url: 'http://example.com/list.m3u', name: 'Test', channelCount: 10, addedAt: '2025-01-01' }];
+        saveState();
+        state.playlists = [];
+        loadState();
+        expect(state.playlists).toHaveLength(1);
+        expect(state.playlists[0].name).toBe('Test');
+    });
+
+    it('does not crash when localStorage.setItem throws', () => {
+        Object.defineProperty(globalThis, 'localStorage', {
+            value: {
+                getItem: (k: string) => null,
+                setItem: () => { throw new Error('QuotaExceeded'); },
+                removeItem: () => {},
+                clear: () => {},
+            },
+            writable: true,
+            configurable: true,
+        });
+        expect(() => saveState()).not.toThrow();
+    });
+
+    it('loads default state when localStorage is unavailable', () => {
+        Object.defineProperty(globalThis, 'localStorage', {
+            value: {
+                getItem: () => { throw new Error('not available'); },
+                setItem: () => { throw new Error('not available'); },
+                removeItem: () => { throw new Error('not available'); },
+                clear: () => { throw new Error('not available'); },
+            },
+            writable: true,
+            configurable: true,
+        });
+        loadState();
+        expect(state.theme).toBe('auto');
+        expect(state.favorites.size).toBe(0);
+    });
+
+    it('loads default state when history JSON is corrupted', () => {
+        localStorage.setItem('history', '{bad json');
+        loadState();
+        expect(state.history).toEqual([]);
+    });
 });
