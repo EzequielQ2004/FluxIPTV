@@ -16,6 +16,7 @@
     --accent: #00FFFF;
     --accent-hover: #00B4D8;
     --accent-bg: rgba(0, 255, 255, 0.15);
+    --danger-bg: rgba(255, 77, 77, 0.15);
     --font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
@@ -242,7 +243,7 @@ body {
 }
 
 .playlist-item .delete-btn:hover {
-    background: rgba(255, 77, 77, 0.15);
+    background: var(--danger-bg);
     color: var(--flux-error);
 }
 
@@ -370,4 +371,24 @@ body {
 
 .hidden {
     display: none !important;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-primary: #FFFFFF;
+        --bg-secondary: #F5F5F5;
+        --bg-card: #FFFFFF;
+        --text-primary: #1A1A2E;
+        --text-secondary: #6B7280;
+        --accent: #0099CC;
+        --accent-hover: #0077AA;
+        --accent-bg: rgba(0, 153, 204, 0.1);
+        --danger-bg: rgba(220, 38, 38, 0.1);
+        --flux-black: #FFFFFF;
+        --flux-white: #000000;
+        --flux-gray-light: #4B5563;
+        --flux-gray-mid: #9CA3AF;
+        --flux-border: #E0E0E0;
+        --flux-error: #DC2626;
+    }
 }
