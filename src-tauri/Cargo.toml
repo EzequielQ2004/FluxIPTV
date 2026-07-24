@@ -1,6 +1,6 @@
 [package]
 name = "flux-iptv"
-version = "1.1.0"
+version = "1.2.0"
 description = "Flux IPTV - Reproductor de listas M3U"
 authors = ["EzequielQ2004"]
 license = "MIT"
