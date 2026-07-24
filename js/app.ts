@@ -3,7 +3,7 @@ import { initI18n } from './i18n.ts';
 import { applyTheme, renderHistory, elements, startSystemThemeListener } from './ui.ts';
 import { setupEventListeners } from './events.ts';
 import { updateVolumeSlider } from './player-core.ts';
-import { createLocalStorageProvider, setSyncProvider } from './sync.ts';
+import { createLocalStorageProvider, setSyncProvider } from './backup.ts';
 import { loadM3UFromUrl } from './loader.ts';
 
 function init(): void {
