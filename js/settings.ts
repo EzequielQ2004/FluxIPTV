@@ -190,6 +190,14 @@ function applyImportedData(data: any): void {
     showToast(t('settings.import.success'));
 }
 
+function openAbout(): void {
+    openModal(elements.aboutModal);
+}
+
+function closeAbout(): void {
+    closeModal(elements.aboutModal);
+}
+
 function setupSettings(): void {
     document.getElementById('closeSettingsBtn')!.addEventListener('click', closeSettings);
     document.getElementById('changePinBtn')!.addEventListener('click', showChangePinForm);
@@ -199,6 +207,11 @@ function setupSettings(): void {
     document.getElementById('clearHistoryBtn')!.addEventListener('click', clearHistory);
     document.getElementById('exportSettingsBtn')!.addEventListener('click', exportSettings);
     document.getElementById('importSettingsBtn')!.addEventListener('click', importSettingsAction);
+    document.getElementById('openAboutBtn')!.addEventListener('click', openAbout);
+    elements.closeAboutBtn.addEventListener('click', closeAbout);
+    elements.aboutModal.addEventListener('click', function (e: MouseEvent) {
+        if (e.target === this) closeAbout();
+    });
 
     (document.getElementById('themeSelect') as HTMLSelectElement).addEventListener('change', function (this: HTMLSelectElement) {
         state.theme = this.value;

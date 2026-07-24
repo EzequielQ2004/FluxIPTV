@@ -78,7 +78,9 @@ const elements = {
     get playerControls() { return byId('playerControls'); },
     get settingsModal() { return byId('settingsModal'); },
     get settingsBtn() { return byId('settingsBtn'); },
-    get nowPlaying() { return byId('nowPlaying'); }
+    get nowPlaying() { return byId('nowPlaying'); },
+    get aboutModal() { return byId('aboutModal'); },
+    get closeAboutBtn() { return byId('closeAboutBtn'); }
 };
 
 function getChannelLogo(channel: Channel): string {

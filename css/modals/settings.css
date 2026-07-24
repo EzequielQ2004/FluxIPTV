@@ -156,3 +156,53 @@
     justify-content: flex-end;
     margin-top: 0.75rem;
 }
+
+.about-hero {
+    text-align: center;
+    padding: 1rem 0 0.5rem;
+}
+
+.about-statement {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    text-align: center;
+    margin: 0;
+}
+
+.about-values {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.about-value {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.about-value-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    width: 1.5rem;
+    text-align: center;
+}
+
+.about-value strong {
+    color: var(--text-primary);
+}
+
+.about-privacy {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+    padding: 0.75rem;
+    background: var(--bg-primary);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+}

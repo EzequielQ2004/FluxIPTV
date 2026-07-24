@@ -453,6 +453,7 @@
                         <span class="settings-row-label" data-i18n="modal.settings.aboutLabel">Acerca de</span>
                         <span class="settings-row-desc" data-i18n="modal.settings.aboutDesc">Flux - Reproductor IPTV v1.1.0</span>
                     </div>
+                    <button class="btn" id="openAboutBtn" data-i18n="modal.settings.aboutBtn">Ver</button>
                 </div>
             </div>
         </div>
@@ -465,6 +466,73 @@
             <div class="modal-actions">
                 <button class="btn" id="cancelConfirmBtn" data-i18n="modal.confirm.cancelBtn">Cancelar</button>
                 <button class="btn btn-primary" id="acceptConfirmBtn" data-i18n="modal.confirm.acceptBtn">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="aboutModal" role="dialog" aria-modal="true" aria-atomic="true" aria-labelledby="aboutModalTitle">
+        <div class="modal settings-modal">
+            <div class="settings-header">
+                <h2 id="aboutModalTitle" data-i18n="modal.about.title">Acerca de Flux</h2>
+                <button class="settings-close" id="closeAboutBtn" aria-label="Cerrar" data-i18n-aria="modal.about.closeBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="about-hero">
+                <img src="img/logo-flux.png" alt="Flux" style="height: 64px; width: auto; margin-bottom: 0.5rem;">
+                <div style="font-size: 1.25rem; font-weight: 700; letter-spacing: 2px;">FLUX</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary);" data-i18n="modal.about.version">v1.1.0</div>
+            </div>
+
+            <div class="settings-section">
+                <p class="about-statement" data-i18n="modal.about.statement">FluxIPTV nace como una herramienta libre, segura y universal para disfrutar de la televisión sin ataduras. Sin anuncios, sin tracking, sin suscripciones. Código abierto, privacidad absoluta y siempre pensada para la comunidad. Porque la televisión debería ser de todos, sin condiciones.</p>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="settings-section-title" data-i18n="modal.about.valuesTitle">Nuestros Valores</h3>
+                <div class="about-values">
+                    <div class="about-value"><span class="about-value-icon">&#128274;</span><div><strong data-i18n="modal.about.value1Title">Libre</strong> <span data-i18n="modal.about.value1Desc">Sin anuncios, sin suscripciones, sin condiciones</span></div></div>
+                    <div class="about-value"><span class="about-value-icon">&#128737;</span><div><strong data-i18n="modal.about.value2Title">Privado</strong> <span data-i18n="modal.about.value2Desc">Cero datos, cero cookies, cero tracking</span></div></div>
+                    <div class="about-value"><span class="about-value-icon">&#128737;</span><div><strong data-i18n="modal.about.value3Title">Seguro</strong> <span data-i18n="modal.about.value3Desc">Código abierto y auditable</span></div></div>
+                    <div class="about-value"><span class="about-value-icon">&#127758;</span><div><strong data-i18n="modal.about.value4Title">Universal</strong> <span data-i18n="modal.about.value4Desc">Funciona en cualquier dispositivo</span></div></div>
+                    <div class="about-value"><span class="about-value-icon">&#129309;</span><div><strong data-i18n="modal.about.value5Title">Comunitario</strong> <span data-i18n="modal.about.value5Desc">Hecho por y para la comunidad</span></div></div>
+                    <div class="about-value"><span class="about-value-icon">&#10024;</span><div><strong data-i18n="modal.about.value6Title">Simple</strong> <span data-i18n="modal.about.value6Desc">Interfaz limpia, fácil de usar</span></div></div>
+                    <div class="about-value"><span class="about-value-icon">&#9878;</span><div><strong data-i18n="modal.about.value7Title">Ética</strong> <span data-i18n="modal.about.value7Desc">Neutral, transparente, sin intereses ocultos</span></div></div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="settings-section-title" data-i18n="modal.about.privacyTitle">Privacidad</h3>
+                <p class="about-privacy" data-i18n="modal.about.privacyDesc">Tus datos se guardan únicamente en tu navegador. No recopilamos, almacenamos ni transmitimos ninguna información personal. Sin servidores, sin cuentas, sin rastreo.</p>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="settings-section-title" data-i18n="modal.about.linksTitle">Enlaces</h3>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.about.githubLabel">Código fuente</span>
+                        <span class="settings-row-desc" data-i18n="modal.about.githubDesc">GitHub - MIT License</span>
+                    </div>
+                    <a class="btn" href="https://github.com/EzequielQ2004/FluxIPTV" target="_blank" rel="noopener noreferrer" data-i18n="modal.about.githubBtn">Abrir</a>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.about.contributingLabel">Contribuir</span>
+                        <span class="settings-row-desc" data-i18n="modal.about.contributingDesc">Sugerencias, bugs y código</span>
+                    </div>
+                    <a class="btn" href="https://github.com/EzequielQ2004/FluxIPTV/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" data-i18n="modal.about.contributingBtn">Abrir</a>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label" data-i18n="modal.about.donateLabel">Donar</span>
+                        <span class="settings-row-desc" data-i18n="modal.about.donateDesc">Ayuda a mantener el proyecto vivo</span>
+                    </div>
+                    <a class="btn btn-primary" href="https://github.com/sponsors/EzequielQ2004" target="_blank" rel="noopener noreferrer" data-i18n="modal.about.donateBtn">Donar</a>
+                </div>
             </div>
         </div>
     </div>
