@@ -451,7 +451,7 @@ function setupEventListeners() {
         elements.playerControls.classList.add('visible');
         elements.videoContainer.classList.remove('hide-cursor');
         clearTimeout(controlsTimer);
-        if (keep || !state.isPlaying) return;
+        if (keep || !state.isPlaying || state.kioskMode) return;
         controlsTimer = setTimeout(function () {
             elements.playerControls.classList.remove('visible');
             if (document.fullscreenElement) {

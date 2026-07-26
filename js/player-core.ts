@@ -373,6 +373,7 @@ function toggleKioskMode(): void {
     state.kioskMode = !state.kioskMode;
     var btn = document.getElementById('kioskBtn');
     if (btn) btn.classList.toggle('active', state.kioskMode);
+    document.body.classList.toggle('tv-mode', state.kioskMode);
 
     if (typeof window !== 'undefined' && '__TAURI__' in window) {
         import('@tauri-apps/api/window').then(function (win) {

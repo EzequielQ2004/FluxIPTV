@@ -1,0 +1,140 @@
+/* ============================================
+   TV Mode — 10-foot UI overrides
+   Activated via .tv-mode on <body> when kiosk mode is enabled
+   ============================================ */
+
+/* Base font size for 3-meter readability */
+.tv-mode {
+    font-size: 24px;
+    cursor: none;
+}
+
+.tv-mode * {
+    cursor: none !important;
+}
+
+/* ---- Player Controls ---- */
+.tv-mode .control-btn {
+    width: 64px;
+    height: 64px;
+    font-size: 1.5rem;
+}
+
+.tv-mode .control-btn.play-pause {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+}
+
+.tv-mode .player-controls {
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+}
+
+.tv-mode .volume-group {
+    gap: 0.75rem;
+}
+
+.tv-mode .volume-slider {
+    display: none;
+}
+
+/* ---- Channel List ---- */
+.tv-mode .channel-item {
+    min-height: 72px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.tv-mode .channel-logo {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.tv-mode .channel-name {
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+.tv-mode .channel-group-label {
+    font-size: 0.85rem;
+}
+
+/* ---- Filter Tabs ---- */
+.tv-mode .filter-tab {
+    min-height: 44px;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+}
+
+/* ---- Focus Indicators — large and visible at 3m ---- */
+.tv-mode *:focus-visible {
+    outline: 4px solid var(--accent);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 8px var(--accent-bg);
+}
+
+.tv-mode .channel-item:focus-visible {
+    transform: scale(1.03);
+}
+
+/* ---- Header ---- */
+.tv-mode .header {
+    padding: 0.75rem 1.5rem;
+}
+
+.tv-mode .header-controls .btn {
+    min-width: 48px;
+    min-height: 48px;
+}
+
+.tv-mode .logo {
+    font-size: 1.5rem;
+}
+
+/* ---- Sidebar ---- */
+.tv-mode .sidebar {
+    min-width: 380px;
+}
+
+/* ---- Modal overrides for TV ---- */
+.tv-mode .modal {
+    max-width: 600px;
+    padding: 2.5rem;
+}
+
+.tv-mode .modal h2 {
+    font-size: 1.75rem;
+}
+
+.tv-mode .modal-tab {
+    min-height: 48px;
+    font-size: 1rem;
+}
+
+.tv-mode .modal-input {
+    font-size: 1rem;
+    padding: 0.875rem 1.25rem;
+}
+
+.tv-mode .pin-input {
+    font-size: 2rem;
+}
+
+.tv-mode .modal-actions .btn {
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* ---- Now Playing / Info Overlay ---- */
+.tv-mode .now-playing-info {
+    font-size: 1.25rem;
+    padding: 0.75rem 1.25rem;
+}
+
+/* ---- Scrollbar — thicker for visibility ---- */
+.tv-mode ::-webkit-scrollbar {
+    width: 10px;
+}

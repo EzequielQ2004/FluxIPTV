@@ -22,6 +22,7 @@ function init(): void {
 
     const kioskBtn = document.getElementById('kioskBtn');
     if (kioskBtn) kioskBtn.classList.toggle('active', state.kioskMode);
+    if (state.kioskMode) document.body.classList.add('tv-mode');
 
     const params = new URLSearchParams(window.location.search);
     const m3uUrl = params.get('m3u');
