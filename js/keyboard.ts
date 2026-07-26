@@ -7,7 +7,7 @@ function navigateFocus(direction: number, axis: string): void {
     if (axis === 'horizontal' && inVerticalList) return;
 
     const container = axis === 'vertical'
-        ? activeEl.closest('.channel-list, .history-bar')
+        ? activeEl.closest('.channel-list, .history-bar, .player-controls, .modal, .header-controls')
         : activeEl.closest('.filter-tabs, .player-controls, .modal, .header-controls');
 
     if (!container) return;
@@ -16,7 +16,7 @@ function navigateFocus(direction: number, axis: string): void {
         'button:not([disabled]):not([tabindex="-1"]), ' +
         '.channel-item:not([tabindex="-1"]), ' +
         'input:not([disabled]):not([tabindex="-1"]), ' +
-        'select:not([disabled]), a[href]'
+        'select:not([disabled]), a[href], [role="button"]:not([tabindex="-1"])'
     );
 
     const currentIndex = Array.from(focusable).indexOf(activeEl);
@@ -31,4 +31,32 @@ function navigateFocus(direction: number, axis: string): void {
     }
 }
 
-export { navigateFocus };
+function handleDpadSidebar(
+    direction: 'left' | 'right',
+    sidebar: HTMLElement,
+    sidebarOverlay: HTMLElement,
+    onOpen: () => void,
+    onClose: () => void
+): boolean {
+    if (!document.body.classList.contains('tv-mode')) return false;
+
+    const isOpen = sidebar.classList.contains('open');
+
+    if (direction === 'left' && !isOpen) {
+        sidebar.classList.add('open');
+        sidebarOverlay.classList.add('active');
+        onOpen();
+        return true;
+    }
+
+    if (direction === 'right' && isOpen) {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+        onClose();
+        return true;
+    }
+
+    return false;
+}
+
+export { navigateFocus, handleDpadSidebar };

@@ -33,7 +33,7 @@ import {
     verifyPin
 } from './player-core.ts';
 import { showEpg } from './epg.ts';
-import { navigateFocus } from './keyboard.ts';
+import { navigateFocus, handleDpadSidebar } from './keyboard.ts';
 import { setLoadTimeout } from './player-shared.ts';
 import { loadM3UFromUrl, loadM3UFromFile, deletePlaylist } from './loader.ts';
 import { openSettings, closeSettings, setupSettings } from './settings.ts';
@@ -337,22 +337,32 @@ function setupEventListeners() {
 
         switch (e.key) {
             case 'ArrowUp':
-                if (inChannelList) {
+                if (inChannelList || state.kioskMode) {
                     e.preventDefault();
                     navigateFocus(-1, 'vertical');
                 }
                 break;
             case 'ArrowDown':
-                if (inChannelList) {
+                if (inChannelList || state.kioskMode) {
                     e.preventDefault();
                     navigateFocus(1, 'vertical');
                 }
                 break;
             case 'ArrowLeft':
+                if (handleDpadSidebar('left', elements.sidebar, elements.sidebarOverlay,
+                    function () {
+                        var first = elements.channelList.querySelector('.channel-item') as HTMLElement;
+                        if (first) first.focus();
+                    }, function () {})) break;
                 e.preventDefault();
                 navigateFocus(-1, 'horizontal');
                 break;
             case 'ArrowRight':
+                if (handleDpadSidebar('right', elements.sidebar, elements.sidebarOverlay,
+                    function () {}, function () {
+                        var first = elements.playerControls?.querySelector('.control-btn') as HTMLElement;
+                        if (first) first.focus();
+                    })) break;
                 e.preventDefault();
                 navigateFocus(1, 'horizontal');
                 break;
