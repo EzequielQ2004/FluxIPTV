@@ -461,6 +461,7 @@ function setupEventListeners() {
     }
 
     function hideControls() {
+        if (state.kioskMode) return;
         elements.playerControls.classList.remove('visible');
         elements.videoContainer.classList.remove('hide-cursor');
         clearTimeout(controlsTimer);
@@ -483,7 +484,7 @@ function setupEventListeners() {
         }
     });
     elements.videoContainer.addEventListener('mouseleave', function () {
-        if (!state.isPlaying || document.fullscreenElement) return;
+        if (!state.isPlaying || document.fullscreenElement || state.kioskMode) return;
         hideControls();
     });
     elements.videoContainer.addEventListener('touchstart', function () { showControls(true); });

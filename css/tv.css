@@ -27,6 +27,8 @@
 }
 
 .tv-mode .player-controls {
+    opacity: 1;
+    pointer-events: auto;
     padding: 1rem 1.5rem;
     gap: 1rem;
 }
