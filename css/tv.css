@@ -125,6 +125,16 @@
     font-size: 1rem;
 }
 
+/* ---- Settings — simplified in TV mode ---- */
+.tv-mode .settings-section:nth-child(3) {
+    display: none;
+}
+
+.tv-mode .settings-section:nth-child(5) .settings-row:nth-child(2),
+.tv-mode .settings-section:nth-child(5) .settings-row:nth-child(3) {
+    display: none;
+}
+
 /* ---- Channel Info Overlay ---- */
 .channel-info-overlay {
     position: absolute;
