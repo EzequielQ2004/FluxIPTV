@@ -206,3 +206,26 @@
     border-radius: 0.5rem;
     border: 1px solid var(--border-color);
 }
+
+.about-changelog {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.about-changelog-entry {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-primary);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.about-changelog-entry strong {
+    color: var(--flux-cyan);
+    white-space: nowrap;
+}
