@@ -171,3 +171,23 @@
 .tv-mode ::-webkit-scrollbar {
     width: 10px;
 }
+
+/* ---- Empty State ---- */
+.tv-mode .empty-state {
+    padding: 4rem 2rem;
+}
+
+.tv-mode .empty-state-icon {
+    font-size: 4rem;
+}
+
+.tv-mode .empty-state p {
+    font-size: 1.25rem;
+    max-width: 400px;
+}
+
+.tv-mode .empty-state .btn {
+    font-size: 1.1rem;
+    padding: 0.875rem 2rem;
+    min-height: 48px;
+}

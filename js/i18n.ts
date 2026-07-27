@@ -9,6 +9,7 @@ var translations: Record<string, Record<string, string>> = {
         'app.streamError': 'No se pudo cargar el stream',
         'app.noChannels': 'No hay canales cargados',
         'app.noChannelsHint': 'Haz clic en "Cargar Lista" para comenzar',
+        'app.loadList': 'Cargar Lista',
         'app.menuOpen': 'Abrir menú',
         'app.menuClose': 'Cerrar menú',
 
@@ -276,6 +277,7 @@ var translations: Record<string, Record<string, string>> = {
         'app.streamError': 'Could not load the stream',
         'app.noChannels': 'No channels loaded',
         'app.noChannelsHint': 'Click "Load List" to get started',
+        'app.loadList': 'Load List',
         'app.menuOpen': 'Open menu',
         'app.menuClose': 'Close menu',
 

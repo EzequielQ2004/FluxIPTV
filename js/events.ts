@@ -92,6 +92,8 @@ function setupEventListeners() {
     elements.settingsBtn.addEventListener('click', openSettings);
     elements.themeToggle.addEventListener('click', toggleTheme);
     elements.loadM3uBtn.addEventListener('click', () => openModal(elements.m3uModal));
+    var emptyLoadBtn = document.getElementById('emptyLoadBtn');
+    if (emptyLoadBtn) emptyLoadBtn.addEventListener('click', function () { openModal(elements.m3uModal); });
     elements.menuToggle.addEventListener('click', toggleSidebar);
     elements.sidebarOverlay.addEventListener('click', toggleSidebar);
 
