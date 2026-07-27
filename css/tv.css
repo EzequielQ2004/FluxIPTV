@@ -130,10 +130,41 @@
     font-size: 1rem;
 }
 
-/* ---- Now Playing / Info Overlay ---- */
-.tv-mode .now-playing-info {
-    font-size: 1.25rem;
+/* ---- Channel Info Overlay ---- */
+.channel-info-overlay {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 25;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    border-radius: 0.5rem;
     padding: 0.75rem 1.25rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.channel-info-overlay.visible {
+    opacity: 1;
+}
+
+.tv-mode .channel-info-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.tv-mode .channel-info-group {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.tv-mode .channel-info-number {
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-top: 0.25rem;
 }
 
 /* ---- Scrollbar — thicker for visibility ---- */

@@ -23,6 +23,19 @@ import { setupDash, dashManifestLoaded, dashError } from './dash.ts';
 
 let streamTypeCache: Map<string, string> = new Map();
 let streamTypeController: AbortController | null = null;
+let channelInfoTimer: ReturnType<typeof setTimeout> | undefined;
+
+function showChannelInfo(channel: { name: string; group: string; index: number }): void {
+    if (!state.kioskMode) return;
+    clearTimeout(channelInfoTimer);
+    elements.channelInfoName.textContent = channel.name;
+    elements.channelInfoGroup.textContent = channel.group;
+    elements.channelInfoNumber.textContent = t('player.channelNumber', { number: String(channel.index + 1) });
+    elements.channelInfoOverlay.classList.add('visible');
+    channelInfoTimer = setTimeout(function () {
+        elements.channelInfoOverlay.classList.remove('visible');
+    }, 5000);
+}
 let onPlayingHandler: (() => void) | null = null;
 
 function probeStreamType(url: string): Promise<string> {
@@ -84,6 +97,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
 
     state.currentChannelIndex = index;
     elements.nowPlaying.textContent = channel.name;
+    showChannelInfo(channel);
     addToHistory(channel);
 
     setLoadTimeout(null);

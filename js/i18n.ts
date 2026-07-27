@@ -54,6 +54,7 @@ var translations: Record<string, Record<string, string>> = {
         'player.loadingNested': 'Cargando lista anidada: ',
         'player.kioskOn': 'Modo kiosko activado',
         'player.kioskOff': 'Modo kiosko desactivado',
+        'player.channelNumber': 'Canal {number}',
 
         'player.youtubeLoadError': 'No se pudo cargar el reproductor de YouTube',
         'player.youtubeExtractError': 'No se pudo extraer el ID del video de YouTube',
@@ -320,6 +321,7 @@ var translations: Record<string, Record<string, string>> = {
         'player.loadingNested': 'Loading nested list: ',
         'player.kioskOn': 'Kiosk mode activated',
         'player.kioskOff': 'Kiosk mode deactivated',
+        'player.channelNumber': 'Channel {number}',
 
         'player.youtubeLoadError': 'Could not load the YouTube player',
         'player.youtubeExtractError': 'Could not extract YouTube video ID',
