@@ -1,7 +1,7 @@
 @media (max-width: 1024px) {
     .app-container {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto 1fr;
+        grid-template-rows: auto auto 1fr auto;
     }
 }
 

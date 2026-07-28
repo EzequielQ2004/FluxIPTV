@@ -31,7 +31,7 @@ h1, h2, h3, h4, h5, h6 {
 .app-container {
     display: grid;
     grid-template-columns: 350px 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto 1fr auto;
     gap: 1rem;
     height: 100vh;
     padding: 1rem;
