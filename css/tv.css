@@ -86,6 +86,10 @@
     display: none;
 }
 
+.tv-mode .app-footer {
+    display: none;
+}
+
 .tv-mode .app-container {
     grid-template-rows: 1fr;
 }
