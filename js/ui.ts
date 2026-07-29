@@ -485,7 +485,7 @@ function renderViewLists(): void {
     if (!container) return;
 
     if (state.playlists.length === 0) {
-        container.innerHTML = '';
+        container.innerHTML = '<div class="view-lists-empty">' + t('ui.noPlaylists') + '</div>';
         return;
     }
 
