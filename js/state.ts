@@ -33,7 +33,8 @@ const INITIAL_STATE: AppState = {
     epgSource: '',
     playlists: [],
     kioskMode: false,
-    expandedGroups: new Set<string>()
+    expandedGroups: new Set<string>(),
+    currentView: 'lists'
 };
 
 const PERSIST_KEYS = new Set<string>(['theme', 'favorites', 'lockedChannels', 'history', 'playlists', 'kioskMode']);

@@ -23,10 +23,7 @@ var translations: Record<string, Record<string, string>> = {
 
         'header.menuToggle': 'Abrir menú',
         'header.themeToggle': 'Cambiar tema',
-        'header.loadM3u': 'Cargar lista M3U',
-        'header.loadM3uTooltip': 'Cargar lista',
         'header.settings': 'Ajustes',
-        'header.pip': 'Picture in Picture',
 
         'player.videoAria': 'Reproductor de video',
         'player.prev': 'Canal anterior',
@@ -295,10 +292,7 @@ var translations: Record<string, Record<string, string>> = {
 
         'header.menuToggle': 'Open menu',
         'header.themeToggle': 'Toggle theme',
-        'header.loadM3u': 'Load M3U list',
-        'header.loadM3uTooltip': 'Load list',
         'header.settings': 'Settings',
-        'header.pip': 'Picture in Picture',
 
         'player.videoAria': 'Video player',
         'player.prev': 'Previous channel',

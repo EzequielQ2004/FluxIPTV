@@ -1,0 +1,11 @@
+.view {
+    display: none;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    min-height: 0;
+}
+
+.view.active {
+    display: flex;
+    flex-direction: column;
+}

@@ -26,7 +26,6 @@ import {
     toggleMute,
     toggleFullscreen,
     toggleKioskMode,
-    togglePiP,
     nextChannel,
     prevChannel,
     setVolume,
@@ -87,11 +86,9 @@ function setupEventListeners() {
     elements.fullscreenBtn.addEventListener('click', toggleFullscreen);
     elements.kioskBtn.addEventListener('click', toggleKioskMode);
     elements.epgBtn.addEventListener('click', showEpg);
-    elements.pipBtn.addEventListener('click', togglePiP);
 
     elements.settingsBtn.addEventListener('click', openSettings);
     elements.themeToggle.addEventListener('click', toggleTheme);
-    elements.loadM3uBtn.addEventListener('click', () => openModal(elements.m3uModal));
     var emptyLoadBtn = document.getElementById('emptyLoadBtn');
     if (emptyLoadBtn) emptyLoadBtn.addEventListener('click', function () { openModal(elements.m3uModal); });
     elements.menuToggle.addEventListener('click', toggleSidebar);

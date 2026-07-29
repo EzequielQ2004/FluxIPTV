@@ -1,6 +1,6 @@
 import { state, loadState } from './state.ts';
 import { initI18n } from './i18n.ts';
-import { applyTheme, renderHistory, elements, startSystemThemeListener } from './ui.ts';
+import { applyTheme, renderHistory, elements, startSystemThemeListener, showView } from './ui.ts';
 import { setupEventListeners } from './events.ts';
 import { updateVolumeSlider } from './player-core.ts';
 import { createLocalStorageProvider, setSyncProvider } from './backup.ts';
@@ -8,6 +8,7 @@ import { loadM3UFromUrl } from './loader.ts';
 
 function init(): void {
     loadState();
+    showView('lists');
     initI18n();
     setupEventListeners();
     startSystemThemeListener();
