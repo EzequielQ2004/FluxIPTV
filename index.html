@@ -123,7 +123,22 @@
 
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <section class="view view-lists active" id="viewLists"></section>
+        <section class="view view-lists active" id="viewLists">
+            <div class="view-lists-inner">
+                <div class="view-lists-header">
+                    <picture class="view-lists-logo-wrapper">
+                        <img src="img/logo-flux.png" alt="Flux" class="view-lists-logo">
+                    </picture>
+                    <h1 class="view-lists-title">FLUX</h1>
+                    <p class="view-lists-subtitle" data-i18n="viewLists.subtitle">Reproductor IPTV</p>
+                    <button class="btn btn-primary view-lists-add-btn" id="addListBtn" data-i18n="viewLists.addList">+ Agregar Lista</button>
+                </div>
+                <div class="view-lists-body">
+                    <div class="view-lists-section-title" data-i18n="viewLists.savedTitle">Mis Listas</div>
+                    <div id="viewListsList"></div>
+                </div>
+            </div>
+        </section>
         <section class="view view-channels" id="viewChannels"></section>
         <section class="view view-player" id="viewPlayer"></section>
 

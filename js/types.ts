@@ -54,5 +54,5 @@ export interface AppState {
     playlists: Playlist[];
     kioskMode: boolean;
     expandedGroups: Set<string>;
-    currentView: 'lists' | 'channels' | 'player';
+    currentView: 'lists' | 'channels' | 'player' | null;
 }

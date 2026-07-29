@@ -9,3 +9,74 @@
     display: flex;
     flex-direction: column;
 }
+
+/* View 1: Playlist Manager */
+.view-lists {
+    padding: 2rem;
+    overflow-y: auto;
+    align-items: center;
+}
+
+.view-lists-inner {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: auto 0;
+}
+
+.view-lists-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+}
+
+.view-lists-logo {
+    max-height: 96px;
+    width: auto;
+    opacity: 0.9;
+}
+
+.view-lists-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+}
+
+.view-lists-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.view-lists-add-btn {
+    font-size: 1rem;
+    padding: 0.75rem 2rem;
+}
+
+.view-lists-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.view-lists-section-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+/* Hide sidebar and player when viewing lists */
+.app-container.viewing-lists .sidebar,
+.app-container.viewing-lists .sidebar-overlay,
+.app-container.viewing-lists .player-area {
+    display: none;
+}

@@ -14,6 +14,10 @@ var translations: Record<string, Record<string, string>> = {
         'app.menuClose': 'Cerrar menú',
         'app.footer': 'FluxIPTV — TV libre, segura y universal. Creada por y para la comunidad.',
 
+        'viewLists.subtitle': 'Reproductor IPTV',
+        'viewLists.addList': '+ Agregar Lista',
+        'viewLists.savedTitle': 'Mis Listas',
+
         'skipLink': 'Saltar al contenido principal',
 
         'sidebar.title': 'Canales',
@@ -282,6 +286,10 @@ var translations: Record<string, Record<string, string>> = {
         'app.menuOpen': 'Open menu',
         'app.menuClose': 'Close menu',
         'app.footer': 'FluxIPTV — Free, secure and universal TV. Made by and for the community.',
+
+        'viewLists.subtitle': 'IPTV Player',
+        'viewLists.addList': '+ Add List',
+        'viewLists.savedTitle': 'My Lists',
 
         'skipLink': 'Skip to main content',
 

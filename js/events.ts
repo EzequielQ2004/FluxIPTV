@@ -16,7 +16,10 @@ import {
     toggleTheme,
     toggleSidebar,
     toggleFavorite,
-    toggleLock
+    toggleLock,
+    showClassicUI,
+    renderViewLists,
+    showView
 } from './ui.ts';
 import {
     playChannel,
@@ -250,8 +253,41 @@ function setupEventListeners() {
                 });
             }
         } else {
-            loadM3UFromUrl(url);
+            loadM3UFromUrl(url).then(showClassicUI);
         }
+    });
+
+    elements.addListBtn?.addEventListener('click', () => {
+        openModal(elements.m3uModal);
+        document.querySelector<HTMLElement>('.m3u-modal-tab[data-m3u-tab="add"]')?.click();
+    });
+
+    elements.viewListsList.addEventListener('click', (e: MouseEvent) => {
+        const actionBtn = (e.target as Element).closest('.pl-action-btn');
+        const playlistItem = (e.target as Element).closest('.playlist-item');
+        if (!playlistItem) return;
+        const url = actionBtn ? actionBtn.getAttribute('data-url')! : playlistItem.getAttribute('data-url')!;
+
+        if (actionBtn) {
+            const action = actionBtn.getAttribute('data-action')!;
+            if (action === 'update') {
+                loadM3UFromUrl(url).then(showClassicUI);
+            } else if (action === 'details') {
+                showPlaylistDetails(url);
+            } else if (action === 'delete') {
+                showConfirmModal(t('toast.playlist.deleteConfirm'), function (confirmed) {
+                    if (confirmed) {
+                        deletePlaylist(url);
+                    }
+                });
+            }
+        } else {
+            loadM3UFromUrl(url).then(showClassicUI);
+        }
+    });
+
+    document.querySelector('.logo')?.addEventListener('click', () => {
+        if (state.currentView === null) showView('lists');
     });
 
     elements.plCopyUrlBtn.addEventListener('click', function () {

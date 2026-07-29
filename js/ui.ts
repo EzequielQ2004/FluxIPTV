@@ -85,7 +85,9 @@ const elements = {
     get settingsBtn() { return byId('settingsBtn'); },
     get nowPlaying() { return byId('nowPlaying'); },
     get aboutModal() { return byId('aboutModal'); },
-    get closeAboutBtn() { return byId('closeAboutBtn'); }
+    get closeAboutBtn() { return byId('closeAboutBtn'); },
+    get addListBtn() { return byId('addListBtn'); },
+    get viewListsList() { return byId('viewListsList'); }
 };
 
 function getChannelLogo(channel: Channel): string {
@@ -475,6 +477,60 @@ function renderPlaylistList(): void {
         `);
     }
     container.innerHTML = parts.join('');
+    renderViewLists();
+}
+
+function renderViewLists(): void {
+    const container = elements.viewListsList;
+    if (!container) return;
+
+    if (state.playlists.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+
+    const parts = [];
+    for (const pl of state.playlists) {
+        const displayName = pl.name || pl.url.split('/').pop() || t('ui.noName');
+        const count = pl.channelCount != null ? pl.channelCount : 0;
+        var dateStr = '—';
+        if (pl.addedAt) {
+            try { dateStr = new Date(pl.addedAt).toLocaleDateString(); } catch (e) {}
+        }
+        parts.push(`
+            <div class="playlist-item" data-url="${escapeHtml(pl.url)}">
+                <div class="playlist-info">
+                    <div class="playlist-name">${escapeHtml(displayName)}</div>
+                    <div class="playlist-meta">
+                        <span>${t('ui.channelCount', { count: count })}</span>
+                        <span>${escapeHtml(dateStr)}</span>
+                    </div>
+                </div>
+                <div class="playlist-actions">
+                    <button class="pl-action-btn" data-action="update" data-url="${escapeHtml(pl.url)}" aria-label="${t('ui.updateList')}" data-tooltip="${t('ui.updateList')}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                        </svg>
+                    </button>
+                    <button class="pl-action-btn" data-action="details" data-url="${escapeHtml(pl.url)}" aria-label="${t('ui.viewDetails')}" data-tooltip="${t('ui.viewDetails')}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </button>
+                    <button class="pl-action-btn pl-action-danger" data-action="delete" data-url="${escapeHtml(pl.url)}" aria-label="${t('ui.deleteList')}" data-tooltip="${t('ui.deleteList')}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `);
+    }
+    container.innerHTML = parts.join('');
 }
 
 function showPlaylistDetails(url: string): void {
@@ -778,6 +834,15 @@ function showView(viewName: 'lists' | 'channels' | 'player'): void {
     elements.viewChannels.classList.toggle('active', viewName === 'channels');
     elements.viewPlayer.classList.toggle('active', viewName === 'player');
     state.currentView = viewName;
+    document.querySelector('.app-container')?.classList.toggle('viewing-lists', viewName === 'lists');
+}
+
+function showClassicUI(): void {
+    elements.viewLists.classList.remove('active');
+    elements.viewChannels.classList.remove('active');
+    elements.viewPlayer.classList.remove('active');
+    document.querySelector('.app-container')?.classList.remove('viewing-lists');
+    state.currentView = null;
 }
 
 export {
@@ -804,5 +869,7 @@ export {
     toggleFavorite,
     toggleLock,
     updateLockBtn,
-    showView
+    showView,
+    showClassicUI,
+    renderViewLists
 };

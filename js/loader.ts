@@ -1,7 +1,7 @@
 import { parseM3U } from './parser.ts';
 import { t } from './i18n.ts';
 import { state, saveState } from './state.ts';
-import { elements, renderChannelList, renderPlaylistList, showLoading, hideLoading, showListLoading, closeModal, showError, showToast } from './ui.ts';
+import { elements, renderChannelList, renderPlaylistList, renderViewLists, showClassicUI, showLoading, hideLoading, showListLoading, closeModal, showError, showToast } from './ui.ts';
 import { loadEpgFromUrl } from './epg.ts';
 import { clearStreamTypeCache } from './player-core.ts';
 
@@ -56,6 +56,7 @@ function deletePlaylist(url: string): void {
     state.playlists = state.playlists.filter(p => p.url !== url);
     saveState();
     renderPlaylistList();
+    renderViewLists();
 }
 
 async function loadM3UFromUrl(url: string, name?: string, epgUrl?: string): Promise<void> {
@@ -144,6 +145,8 @@ async function loadM3UFromUrl(url: string, name?: string, epgUrl?: string): Prom
         savePlaylist(url, name, channels.length);
         renderChannelList();
         renderPlaylistList();
+        renderViewLists();
+        showClassicUI();
 
         var epgUrlToLoad = epgUrl || state.epgSource || autoDetectEpgUrl(url);
         if (epgUrlToLoad) {
@@ -220,6 +223,8 @@ function loadM3UFromFile(file: File, name: string): Promise<void> {
                 }
                 renderChannelList();
                 renderPlaylistList();
+                renderViewLists();
+                showClassicUI();
                 done();
                 closeModal(elements.m3uModal);
                 resolve();
