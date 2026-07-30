@@ -152,4 +152,16 @@
         padding: 1.25rem;
         width: 95%;
     }
+
+    .mini-player {
+        width: 100%;
+        max-width: 100%;
+        bottom: 0;
+        right: 0;
+        border-radius: 0;
+    }
+
+    .mini-player:hover {
+        transform: none;
+    }
 }

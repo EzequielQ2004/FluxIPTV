@@ -1,7 +1,7 @@
 import Hls from 'hls.js';
 import * as dashjs from 'dashjs';
 import { state, saveState, addToHistory, verifyPin, setPin, removePin, setPinContext, getPinContext, getPinLockoutSeconds, incrementPinFailedAttempts, resetPinFailedAttempts } from './state.ts';
-import { elements, updateActiveChannel, scrollToChannel, renderHistory, showLoading, hideLoading, showError, hideError, openModal, closeModal, showToast, updateLockBtn } from './ui.ts';
+import { elements, updateActiveChannel, scrollToChannel, renderHistory, showLoading, hideLoading, showError, hideError, openModal, closeModal, showToast, updateLockBtn, showView, hideMiniPlayer } from './ui.ts';
 import { escapeHtml } from './fallback-image.ts';
 import { loadM3UFromUrl } from './loader.ts';
 import { openSettings } from './settings.ts';
@@ -211,6 +211,12 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
     updateActiveChannel(channel.index);
     scrollToChannel(channel.index);
     renderHistory();
+    elements.viewPlayerChannelName.textContent = channel.name;
+    elements.viewPlayerChannelGroup.textContent = channel.group;
+    hideMiniPlayer();
+    if (state.currentView) {
+        showView('player');
+    }
     updatePlayPauseButton();
 }
 
@@ -290,6 +296,7 @@ function stopPlayback(): void {
     hideError();
     updateActiveChannel(-1);
     updatePlayPauseButton();
+    hideMiniPlayer();
 }
 
 function getOrigin(iframe: HTMLIFrameElement): string {

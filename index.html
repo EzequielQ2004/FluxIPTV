@@ -152,7 +152,14 @@
             </div>
             <div class="ch-grid" id="chGrid"></div>
         </section>
-        <section class="view view-player" id="viewPlayer"></section>
+        <section class="view view-player" id="viewPlayer">
+            <div class="view-player-backdrop">
+                <div class="view-player-info">
+                    <div class="view-player-channel-name" id="viewPlayerChannelName"></div>
+                    <div class="view-player-channel-group" id="viewPlayerChannelGroup"></div>
+                </div>
+            </div>
+        </section>
 
         <main class="player-area" id="main-content">
             <div class="video-container" id="videoContainer" aria-live="polite" aria-label="Reproductor de video" data-i18n-aria="player.videoAria">
@@ -213,6 +220,11 @@
                         <rect x="6" y="6" width="12" height="12" rx="2"></rect>
                     </svg>
                 </button>
+                <button class="control-btn" id="viewMinimizeBtn" aria-label="Minimizar reproductor" data-tooltip="Minimizar" data-i18n-aria="player.minimize" data-i18n-tooltip="player.minimize">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
                 <div class="volume-group">
                     <button class="control-btn volume-btn" id="volumeBtn" aria-label="Silenciar" data-tooltip="Silenciar" data-i18n-aria="player.volume" data-i18n-tooltip="player.volume">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="volumeIcon">
@@ -251,6 +263,22 @@
             </div>
             <div class="history-bar" id="historyBar"></div>
         </main>
+    </div>
+
+    <div class="mini-player hidden" id="miniPlayer">
+        <div class="mini-player-bar">
+            <span class="mini-player-label" data-i18n="player.miniNowPlaying">Reproduciendo</span>
+            <span class="mini-player-name" id="miniPlayerName"></span>
+        </div>
+        <div class="mini-player-actions">
+            <button class="mini-player-btn" id="miniPlayerPlayBtn" aria-label="Reproducir/Pausar" data-tooltip="Reproducir/Pausar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="miniPlayIcon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="miniPauseIcon" class="hidden"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+            </button>
+            <button class="mini-player-btn" id="miniPlayerCloseBtn" aria-label="Cerrar" data-tooltip="Cerrar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
     </div>
 
     <div class="toast-container" id="toastContainer" aria-live="polite"></div>

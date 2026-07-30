@@ -21,7 +21,10 @@ import {
     renderViewLists,
     showView,
     renderChannelGrid,
-    renderGroupList
+    renderGroupList,
+    minimizePlayer,
+    hideMiniPlayer,
+    showMiniPlayer
 } from './ui.ts';
 import {
     playChannel,
@@ -91,6 +94,21 @@ function setupEventListeners() {
     elements.fullscreenBtn.addEventListener('click', toggleFullscreen);
     elements.kioskBtn.addEventListener('click', toggleKioskMode);
     elements.epgBtn.addEventListener('click', showEpg);
+    elements.viewMinimizeBtn.addEventListener('click', minimizePlayer);
+
+    elements.miniPlayer.addEventListener('click', function (e: MouseEvent) {
+        if ((e.target as Element).closest('.mini-player-actions')) return;
+        showView('player');
+    });
+    elements.miniPlayerPlayBtn.addEventListener('click', function (e: MouseEvent) {
+        e.stopPropagation();
+        togglePlayPause();
+    });
+    elements.miniPlayerCloseBtn.addEventListener('click', function (e: MouseEvent) {
+        e.stopPropagation();
+        stopPlayback();
+        hideMiniPlayer();
+    });
 
     elements.settingsBtn.addEventListener('click', openSettings);
     elements.themeToggle.addEventListener('click', toggleTheme);
@@ -202,7 +220,6 @@ function setupEventListeners() {
         const card = (e.target as Element).closest('.ch-card');
         if (card) {
             const index = parseInt(card.getAttribute('data-index')!);
-            showView('player');
             playChannel(index);
         }
     });

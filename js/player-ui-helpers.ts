@@ -1,5 +1,5 @@
 import { state } from './state.ts';
-import { elements, hideLoading, showError } from './ui.ts';
+import { elements, hideLoading, showError, syncMiniPlayer } from './ui.ts';
 import { t } from './i18n.ts';
 import { getIsYoutubeMode, getIsEmbedMode } from './player-shared.ts';
 
@@ -22,6 +22,7 @@ export function updatePlayPauseButton() {
             elements.pauseIcon!.classList.remove('hidden');
         }
     }
+    syncMiniPlayer();
 }
 
 export function autoKiosk() {

@@ -39,6 +39,7 @@ var translations: Record<string, Record<string, string>> = {
         'player.epg': 'Guía de programación',
         'player.kiosk': 'Modo kiosko',
         'player.stop': 'Detener',
+        'player.minimize': 'Minimizar',
 
         'filter.all': 'Todos',
         'filter.favorites': 'Favoritos',
@@ -58,6 +59,8 @@ var translations: Record<string, Record<string, string>> = {
         'player.kioskOn': 'Modo kiosko activado',
         'player.kioskOff': 'Modo kiosko desactivado',
         'player.channelNumber': 'Canal {number}',
+        'player.maximize': 'Maximizar',
+        'player.miniNowPlaying': 'Reproduciendo',
 
         'player.youtubeLoadError': 'No se pudo cargar el reproductor de YouTube',
         'player.youtubeExtractError': 'No se pudo extraer el ID del video de YouTube',
@@ -312,6 +315,7 @@ var translations: Record<string, Record<string, string>> = {
         'player.epg': 'Program guide',
         'player.kiosk': 'Kiosk mode',
         'player.stop': 'Stop',
+        'player.minimize': 'Minimize',
 
         'filter.all': 'All',
         'filter.favorites': 'Favorites',
@@ -331,6 +335,8 @@ var translations: Record<string, Record<string, string>> = {
         'player.kioskOn': 'Kiosk mode activated',
         'player.kioskOff': 'Kiosk mode deactivated',
         'player.channelNumber': 'Channel {number}',
+        'player.maximize': 'Maximize',
+        'player.miniNowPlaying': 'Now playing',
 
         'player.youtubeLoadError': 'Could not load the YouTube player',
         'player.youtubeExtractError': 'Could not extract YouTube video ID',

@@ -234,3 +234,111 @@
 .app-container.viewing-player .sidebar-overlay {
     display: none;
 }
+
+.app-container.viewing-player .player-area {
+    grid-column: 1 / -1;
+}
+
+/* View 3: Player View */
+.view-player.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.view-player-backdrop {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+}
+
+.view-player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.view-player-channel-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.view-player-channel-group {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* Mini player */
+.mini-player {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    min-width: 260px;
+    max-width: 360px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.mini-player:hover {
+    transform: scale(1.02);
+}
+
+.mini-player-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.mini-player-label {
+    font-size: 0.625rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.mini-player-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mini-player-actions {
+    display: flex;
+    gap: 0.25rem;
+    flex-shrink: 0;
+}
+
+.mini-player-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.mini-player-btn:hover {
+    color: var(--accent);
+    background: var(--bg-secondary);
+}

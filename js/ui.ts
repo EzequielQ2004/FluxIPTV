@@ -91,7 +91,16 @@ const elements = {
     get chSearchInput() { return byId('chSearchInput') as HTMLInputElement; },
     get chFilterTabs() { return byId('chFilterTabs'); },
     get chGroupList() { return byId('chGroupList'); },
-    get chGrid() { return byId('chGrid'); }
+    get chGrid() { return byId('chGrid'); },
+    get viewMinimizeBtn() { return byId('viewMinimizeBtn'); },
+    get miniPlayer() { return byId('miniPlayer'); },
+    get miniPlayerName() { return byId('miniPlayerName'); },
+    get miniPlayerPlayBtn() { return byId('miniPlayerPlayBtn'); },
+    get miniPlayIcon() { return byId('miniPlayIcon'); },
+    get miniPauseIcon() { return byId('miniPauseIcon'); },
+    get miniPlayerCloseBtn() { return byId('miniPlayerCloseBtn'); },
+    get viewPlayerChannelName() { return byId('viewPlayerChannelName'); },
+    get viewPlayerChannelGroup() { return byId('viewPlayerChannelGroup'); }
 };
 
 function getChannelLogo(channel: Channel): string {
@@ -962,6 +971,31 @@ function showClassicUI(): void {
     state.currentView = null;
 }
 
+function minimizePlayer(): void {
+    showView('channels');
+    showMiniPlayer();
+}
+
+function syncMiniPlayer(): void {
+    if (elements.miniPlayer.classList.contains('hidden')) return;
+    elements.miniPlayIcon.classList.toggle('hidden', state.isPlaying);
+    elements.miniPauseIcon.classList.toggle('hidden', !state.isPlaying);
+}
+
+function showMiniPlayer(): void {
+    elements.miniPlayer.classList.remove('hidden');
+    const ch = state.channels[state.currentChannelIndex];
+    if (ch) {
+        elements.miniPlayerName.textContent = ch.name;
+    }
+    elements.miniPlayIcon.classList.toggle('hidden', state.isPlaying);
+    elements.miniPauseIcon.classList.toggle('hidden', !state.isPlaying);
+}
+
+function hideMiniPlayer(): void {
+    elements.miniPlayer.classList.add('hidden');
+}
+
 export {
     elements,
     updateActiveChannel,
@@ -990,5 +1024,9 @@ export {
     showClassicUI,
     renderViewLists,
     renderChannelGrid,
-    renderGroupList
+    renderGroupList,
+    minimizePlayer,
+    hideMiniPlayer,
+    showMiniPlayer,
+    syncMiniPlayer
 };
