@@ -176,6 +176,135 @@
     margin-top: 0.25rem;
 }
 
+/* ---- View 1 (Playlist Manager) in TV ---- */
+.tv-mode .view-lists {
+    padding: 1.5rem;
+}
+
+.tv-mode .view-lists-title {
+    font-size: 3rem;
+}
+
+.tv-mode .view-lists-subtitle {
+    font-size: 1.25rem;
+}
+
+.tv-mode .view-lists-logo {
+    max-height: 120px;
+}
+
+.tv-mode .view-lists-add-btn {
+    font-size: 1.1rem;
+    padding: 0.875rem 2rem;
+    min-height: 48px;
+}
+
+.tv-mode .view-lists-section-title {
+    font-size: 1.1rem;
+}
+
+.tv-mode .playlist-item {
+    font-size: 1rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.tv-mode .playlist-name {
+    font-size: 1.1rem;
+}
+
+.tv-mode .playlist-meta {
+    font-size: 0.85rem;
+}
+
+.tv-mode .pl-action-btn {
+    width: 40px;
+    height: 40px;
+}
+
+.tv-mode .pl-action-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* ---- View 2 (Channel Browser) in TV ---- */
+.tv-mode .view-channels-filter {
+    width: 280px;
+    padding: 1.25rem;
+}
+
+.tv-mode .ch-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    padding: 1.25rem;
+}
+
+.tv-mode .ch-card {
+    padding: 1rem;
+}
+
+.tv-mode .ch-card-logo {
+    width: 96px;
+    height: 96px;
+}
+
+.tv-mode .ch-card-name {
+    font-size: 1rem;
+}
+
+.tv-mode .ch-action-btn {
+    width: 36px;
+    height: 36px;
+}
+
+.tv-mode .ch-action-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.tv-mode .ch-group-item {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+.tv-mode #chSearchInput {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+/* ---- View 3 (Player View) in TV ---- */
+.tv-mode .view-player-channel-name {
+    font-size: 2rem;
+}
+
+.tv-mode .view-player-channel-group {
+    font-size: 1.25rem;
+}
+
+/* ---- Mini-player in TV ---- */
+.tv-mode .mini-player {
+    padding: 0.75rem 1rem;
+    min-width: 320px;
+}
+
+.tv-mode .mini-player-label {
+    font-size: 0.8rem;
+}
+
+.tv-mode .mini-player-name {
+    font-size: 1rem;
+}
+
+.tv-mode .mini-player-btn {
+    width: 40px;
+    height: 40px;
+}
+
+.tv-mode .mini-player-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
 /* ---- Scrollbar — thicker for visibility ---- */
 .tv-mode ::-webkit-scrollbar {
     width: 10px;

@@ -74,6 +74,43 @@
         gap: 0.5rem;
     }
 
+    /* View 1: stack vertically on mobile */
+    .view-lists-inner {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .view-lists-header {
+        width: 100%;
+    }
+
+    .view-lists-body {
+        width: 100%;
+    }
+
+    /* View 2: filter panel stacks on mobile */
+    .view-channels.active {
+        flex-direction: column;
+    }
+
+    .view-channels-filter {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.75rem;
+    }
+
+    .ch-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+
+    .ch-card-logo {
+        width: 56px;
+        height: 56px;
+    }
+
     .sidebar {
         position: fixed;
         left: -100%;
