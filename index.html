@@ -139,7 +139,19 @@
                 </div>
             </div>
         </section>
-        <section class="view view-channels" id="viewChannels"></section>
+        <section class="view view-channels" id="viewChannels">
+            <div class="view-channels-filter">
+                <input type="text" class="search-input" id="chSearchInput" placeholder="Buscar canales..." aria-label="Buscar canales" data-i18n-placeholder="sidebar.searchPlaceholder" data-i18n-aria="sidebar.searchAria">
+                <div class="filter-tabs" id="chFilterTabs">
+                    <button class="filter-tab active" data-filter="all" data-i18n="filter.all">Todos</button>
+                    <button class="filter-tab" data-filter="favorites" data-i18n="filter.favorites">Favoritos</button>
+                    <button class="filter-tab" data-filter="recent" data-i18n="filter.recent">Recientes</button>
+                    <button class="filter-tab" data-filter="groups" data-i18n="filter.groups">Grupos</button>
+                </div>
+                <div class="ch-group-list" id="chGroupList"></div>
+            </div>
+            <div class="ch-grid" id="chGrid"></div>
+        </section>
         <section class="view view-player" id="viewPlayer"></section>
 
         <main class="player-area" id="main-content">

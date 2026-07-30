@@ -87,7 +87,11 @@ const elements = {
     get aboutModal() { return byId('aboutModal'); },
     get closeAboutBtn() { return byId('closeAboutBtn'); },
     get addListBtn() { return byId('addListBtn'); },
-    get viewListsList() { return byId('viewListsList'); }
+    get viewListsList() { return byId('viewListsList'); },
+    get chSearchInput() { return byId('chSearchInput') as HTMLInputElement; },
+    get chFilterTabs() { return byId('chFilterTabs'); },
+    get chGroupList() { return byId('chGroupList'); },
+    get chGrid() { return byId('chGrid'); }
 };
 
 function getChannelLogo(channel: Channel): string {
@@ -533,6 +537,93 @@ function renderViewLists(): void {
     container.innerHTML = parts.join('');
 }
 
+function renderChannelGrid(): void {
+    const grid = elements.chGrid;
+    if (!grid) return;
+
+    var channels = state.channels;
+    if (channels.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><p>' + t('app.noChannels') + '</p></div>';
+        return;
+    }
+
+    const searchTerm = elements.chSearchInput.value.toLowerCase();
+    if (searchTerm) {
+        channels = channels.filter(function (ch) {
+            return ch.name.toLowerCase().includes(searchTerm) || ch.group.toLowerCase().includes(searchTerm);
+        });
+    }
+
+    if (state.currentFilter === 'favorites') {
+        channels = channels.filter(function (ch) { return state.favorites.has(ch.url); });
+    } else if (state.currentFilter === 'recent') {
+        var recentUrls = new Set(state.history.map(function (h) { return h.url; }));
+        channels = channels.filter(function (ch) { return recentUrls.has(ch.url); });
+    } else if (state.currentFilter === 'groups') {
+        if (state.selectedGroup) {
+            channels = channels.filter(function (ch) { return ch.group === state.selectedGroup; });
+        } else {
+            channels = [];
+        }
+    }
+
+    if (channels.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><p>' + t('ui.noChannels') + '</p></div>';
+        return;
+    }
+
+    var parts: string[] = [];
+    for (var i = 0; i < channels.length; i++) {
+        var ch = channels[i];
+        var isFavorite = state.favorites.has(ch.url);
+        var isLocked = state.lockedChannels.has(ch.url);
+        var isActive = ch.index === state.currentChannelIndex;
+        var displayName = ch.name === DEFAULT_CHANNEL_NAME ? t('parser.defaultName') : ch.name;
+        parts.push(`
+            <div class="ch-card ${isActive ? 'active' : ''}" data-index="${ch.index}">
+                <img class="ch-card-logo" src="${getChannelLogo(ch)}" alt="${escapeHtml(displayName)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="handleImageError(this)">
+                <div class="ch-card-name">${escapeHtml(displayName)}</div>
+                <div class="ch-card-actions">
+                    <button class="ch-action-btn ${isFavorite ? 'favorite' : ''}" data-action="favorite" data-index="${ch.index}" aria-label="${isFavorite ? t('ui.removeFav') : t('ui.addFav')}" data-tooltip="${isFavorite ? t('ui.removeFav') : t('ui.addFav')}">
+                        ${isFavorite ? SVG_FAV_FILLED : SVG_FAV_OUTLINE}
+                    </button>
+                    <button class="ch-action-btn ${isLocked ? 'locked' : ''}" data-action="lock" data-index="${ch.index}" aria-label="${isLocked ? t('ui.unlock') : t('ui.lock')}" data-tooltip="${isLocked ? t('ui.unlock') : t('ui.lock')}">
+                        ${isLocked ? SVG_LOCK_CLOSED : SVG_LOCK_OPEN}
+                    </button>
+                </div>
+            </div>
+        `);
+    }
+    grid.innerHTML = parts.join('');
+}
+
+function renderGroupList(): void {
+    const container = elements.chGroupList;
+    if (!container) return;
+
+    if (state.currentFilter !== 'groups') {
+        container.innerHTML = '';
+        return;
+    }
+
+    var groupCounts: Record<string, number> = {};
+    state.channels.forEach(function (ch) { groupCounts[ch.group] = (groupCounts[ch.group] || 0) + 1; });
+    var groupNames = Object.keys(groupCounts).sort();
+
+    if (groupNames.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+
+    var parts = ['<div class="ch-group-item' + (!state.selectedGroup ? ' active' : '') + '" data-group="">' + t('filter.all') + '</div>'];
+    for (var i = 0; i < groupNames.length; i++) {
+        var name = groupNames[i];
+        var active = name === state.selectedGroup ? ' active' : '';
+        parts.push('<div class="ch-group-item' + active + '" data-group="' + escapeHtml(name) + '">' + escapeHtml(name) + '</div>');
+    }
+    container.innerHTML = parts.join('');
+}
+
 function showPlaylistDetails(url: string): void {
     var pl = state.playlists.find(function (p) { return p.url === url; });
     if (!pl) return;
@@ -556,6 +647,10 @@ function updateActiveChannel(index: number): void {
     if (prevActive) prevActive.classList.remove('active');
     const newActive = elements.channelList.querySelector(`.channel-item[data-index="${index}"]`);
     if (newActive) newActive.classList.add('active');
+    const prevCard = elements.chGrid?.querySelector('.ch-card.active');
+    if (prevCard) prevCard.classList.remove('active');
+    const newCard = elements.chGrid?.querySelector(`.ch-card[data-index="${index}"]`);
+    if (newCard) newCard.classList.add('active');
 }
 
 function renderHistory(): void {
@@ -766,31 +861,47 @@ function toggleFavorite(index: number): void {
         state.favorites.add(url);
     }
     saveState();
+    const isFav = state.favorites.has(url);
     const item = elements.channelList.querySelector(`.channel-item[data-index="${index}"]`);
     if (item) {
         const btn = item.querySelector('.channel-action-btn[data-action="favorite"]');
         if (btn) {
-            const isFav = state.favorites.has(url);
             btn.classList.toggle('favorite', isFav);
             btn.innerHTML = isFav ? SVG_FAV_FILLED : SVG_FAV_OUTLINE;
             btn.setAttribute('aria-label', isFav ? t('ui.removeFav') : t('ui.addFav'));
             btn.setAttribute('data-tooltip', isFav ? t('ui.removeFav') : t('ui.addFav'));
         }
     }
+    const card = elements.chGrid?.querySelector(`.ch-card[data-index="${index}"] .ch-action-btn[data-action="favorite"]`);
+    if (card) {
+        card.classList.toggle('favorite', isFav);
+        card.innerHTML = isFav ? SVG_FAV_FILLED : SVG_FAV_OUTLINE;
+        card.setAttribute('aria-label', isFav ? t('ui.removeFav') : t('ui.addFav'));
+        card.setAttribute('data-tooltip', isFav ? t('ui.removeFav') : t('ui.addFav'));
+    }
 }
 
 function updateLockBtn(index: number): void {
     var ch = state.channels[index];
     if (!ch) return;
-    const item = elements.channelList.querySelector(`.channel-item[data-index="${index}"]`);
-    if (!item) return;
-    const btn = item.querySelector('.channel-action-btn[data-action="lock"]');
-    if (!btn) return;
     const isLocked = state.lockedChannels.has(ch.url);
-    btn.classList.toggle('locked', isLocked);
-    btn.innerHTML = isLocked ? SVG_LOCK_CLOSED : SVG_LOCK_OPEN;
-    btn.setAttribute('aria-label', isLocked ? t('ui.unlock') : t('ui.lock'));
-    btn.setAttribute('data-tooltip', isLocked ? t('ui.unlock') : t('ui.lock'));
+    const item = elements.channelList.querySelector(`.channel-item[data-index="${index}"]`);
+    if (item) {
+        const btn = item.querySelector('.channel-action-btn[data-action="lock"]');
+        if (btn) {
+            btn.classList.toggle('locked', isLocked);
+            btn.innerHTML = isLocked ? SVG_LOCK_CLOSED : SVG_LOCK_OPEN;
+            btn.setAttribute('aria-label', isLocked ? t('ui.unlock') : t('ui.lock'));
+            btn.setAttribute('data-tooltip', isLocked ? t('ui.unlock') : t('ui.lock'));
+        }
+    }
+    const card = elements.chGrid?.querySelector(`.ch-card[data-index="${index}"] .ch-action-btn[data-action="lock"]`);
+    if (card) {
+        card.classList.toggle('locked', isLocked);
+        card.innerHTML = isLocked ? SVG_LOCK_CLOSED : SVG_LOCK_OPEN;
+        card.setAttribute('aria-label', isLocked ? t('ui.unlock') : t('ui.lock'));
+        card.setAttribute('data-tooltip', isLocked ? t('ui.unlock') : t('ui.lock'));
+    }
 }
 
 function toggleLock(index: number): void {
@@ -834,14 +945,20 @@ function showView(viewName: 'lists' | 'channels' | 'player'): void {
     elements.viewChannels.classList.toggle('active', viewName === 'channels');
     elements.viewPlayer.classList.toggle('active', viewName === 'player');
     state.currentView = viewName;
-    document.querySelector('.app-container')?.classList.toggle('viewing-lists', viewName === 'lists');
+    const container = document.querySelector('.app-container');
+    container?.classList.toggle('viewing-lists', viewName === 'lists');
+    container?.classList.toggle('viewing-channels', viewName === 'channels');
+    container?.classList.toggle('viewing-player', viewName === 'player');
 }
 
 function showClassicUI(): void {
     elements.viewLists.classList.remove('active');
     elements.viewChannels.classList.remove('active');
     elements.viewPlayer.classList.remove('active');
-    document.querySelector('.app-container')?.classList.remove('viewing-lists');
+    const container = document.querySelector('.app-container');
+    container?.classList.remove('viewing-lists');
+    container?.classList.remove('viewing-channels');
+    container?.classList.remove('viewing-player');
     state.currentView = null;
 }
 
@@ -871,5 +988,7 @@ export {
     updateLockBtn,
     showView,
     showClassicUI,
-    renderViewLists
+    renderViewLists,
+    renderChannelGrid,
+    renderGroupList
 };

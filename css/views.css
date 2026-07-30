@@ -93,9 +93,144 @@
     text-align: center;
 }
 
-/* Hide sidebar and player when viewing lists */
+/* View 2: Channel Browser */
+.view-channels.active {
+    display: flex;
+    flex-direction: row;
+    grid-column: 1;
+    overflow: hidden;
+}
+
+.view-channels-filter {
+    width: 220px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+}
+
+.ch-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+    gap: 0.75rem;
+    padding: 1rem;
+    overflow-y: auto;
+    align-content: start;
+}
+
+.ch-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    background: var(--bg-card);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.ch-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px var(--accent-bg);
+}
+
+.ch-card.active {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+    border-width: 2px;
+}
+
+.ch-card-logo {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    background: var(--bg-secondary);
+}
+
+.ch-card-name {
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.ch-card-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.ch-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.ch-action-btn:hover {
+    color: var(--accent);
+    background: var(--bg-secondary);
+}
+
+.ch-action-btn.favorite {
+    color: var(--fav-color);
+}
+
+.ch-action-btn.locked {
+    color: var(--lock-color);
+}
+
+.ch-group-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.ch-group-item {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.ch-group-item:hover,
+.ch-group-item.active {
+    background: var(--accent-bg);
+    color: var(--accent);
+}
+
+/* Hide sidebar when viewing channels */
 .app-container.viewing-lists .sidebar,
 .app-container.viewing-lists .sidebar-overlay,
 .app-container.viewing-lists .player-area {
+    display: none;
+}
+
+.app-container.viewing-channels .sidebar,
+.app-container.viewing-channels .sidebar-overlay {
+    display: none;
+}
+
+.app-container.viewing-player .sidebar,
+.app-container.viewing-player .sidebar-overlay {
     display: none;
 }

@@ -19,7 +19,9 @@ import {
     toggleLock,
     showClassicUI,
     renderViewLists,
-    showView
+    showView,
+    renderChannelGrid,
+    renderGroupList
 } from './ui.ts';
 import {
     playChannel,
@@ -154,6 +156,53 @@ function setupEventListeners() {
             e.stopPropagation();
         } else if (channelItem) {
             const index = parseInt(channelItem.getAttribute('data-index')!);
+            playChannel(index);
+        }
+    });
+
+    let chSearchTimeout: ReturnType<typeof setTimeout> | undefined;
+    elements.chSearchInput?.addEventListener('input', () => {
+        clearTimeout(chSearchTimeout);
+        chSearchTimeout = setTimeout(renderChannelGrid, 200);
+    });
+
+    elements.chFilterTabs?.addEventListener('click', (e: MouseEvent) => {
+        const tab = (e.target as Element).closest('.filter-tab');
+        if (!tab) return;
+        elements.chFilterTabs?.querySelectorAll('.filter-tab').forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        state.currentFilter = tab.getAttribute('data-filter') || '';
+        renderChannelGrid();
+        renderGroupList();
+    });
+
+    elements.chGroupList?.addEventListener('click', (e: MouseEvent) => {
+        const groupItem = (e.target as Element).closest('.ch-group-item');
+        if (!groupItem) return;
+        const group = groupItem.getAttribute('data-group') || '';
+        state.selectedGroup = group || null;
+        renderGroupList();
+        renderChannelGrid();
+    });
+
+    elements.chGrid?.addEventListener('click', (e: MouseEvent) => {
+        const actionBtn = (e.target as Element).closest('.ch-action-btn');
+        if (actionBtn) {
+            const index = parseInt(actionBtn.getAttribute('data-index')!);
+            const action = actionBtn.getAttribute('data-action')!;
+            if (action === 'favorite') {
+                toggleFavorite(index);
+                renderChannelGrid();
+            } else if (action === 'lock') {
+                toggleLock(index);
+            }
+            e.stopPropagation();
+            return;
+        }
+        const card = (e.target as Element).closest('.ch-card');
+        if (card) {
+            const index = parseInt(card.getAttribute('data-index')!);
+            showView('player');
             playChannel(index);
         }
     });

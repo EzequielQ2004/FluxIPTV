@@ -1,7 +1,7 @@
 import { parseM3U } from './parser.ts';
 import { t } from './i18n.ts';
 import { state, saveState } from './state.ts';
-import { elements, renderChannelList, renderPlaylistList, renderViewLists, showClassicUI, showLoading, hideLoading, showListLoading, closeModal, showError, showToast } from './ui.ts';
+import { elements, renderChannelList, renderPlaylistList, renderViewLists, renderChannelGrid, renderGroupList, showView, showLoading, hideLoading, showListLoading, closeModal, showError, showToast } from './ui.ts';
 import { loadEpgFromUrl } from './epg.ts';
 import { clearStreamTypeCache } from './player-core.ts';
 
@@ -146,7 +146,9 @@ async function loadM3UFromUrl(url: string, name?: string, epgUrl?: string): Prom
         renderChannelList();
         renderPlaylistList();
         renderViewLists();
-        showClassicUI();
+        renderChannelGrid();
+        renderGroupList();
+        showView('channels');
 
         var epgUrlToLoad = epgUrl || state.epgSource || autoDetectEpgUrl(url);
         if (epgUrlToLoad) {
@@ -224,7 +226,9 @@ function loadM3UFromFile(file: File, name: string): Promise<void> {
                 renderChannelList();
                 renderPlaylistList();
                 renderViewLists();
-                showClassicUI();
+                renderChannelGrid();
+                renderGroupList();
+                showView('channels');
                 done();
                 closeModal(elements.m3uModal);
                 resolve();
