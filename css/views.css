@@ -97,7 +97,7 @@
 .view-channels.active {
     display: flex;
     flex-direction: row;
-    grid-column: 1;
+    grid-column: 1 / -1;
     overflow: hidden;
 }
 
@@ -226,7 +226,8 @@
 }
 
 .app-container.viewing-channels .sidebar,
-.app-container.viewing-channels .sidebar-overlay {
+.app-container.viewing-channels .sidebar-overlay,
+.app-container.viewing-channels .player-area {
     display: none;
 }
 

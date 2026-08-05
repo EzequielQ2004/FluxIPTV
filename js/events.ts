@@ -352,7 +352,7 @@ function setupEventListeners() {
     });
 
     document.querySelector('.logo')?.addEventListener('click', () => {
-        if (state.currentView === null) showView('lists');
+        showView('lists');
     });
 
     elements.plCopyUrlBtn.addEventListener('click', function () {

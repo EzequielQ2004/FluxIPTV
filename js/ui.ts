@@ -960,17 +960,6 @@ function showView(viewName: 'lists' | 'channels' | 'player'): void {
     container?.classList.toggle('viewing-player', viewName === 'player');
 }
 
-function showClassicUI(): void {
-    elements.viewLists.classList.remove('active');
-    elements.viewChannels.classList.remove('active');
-    elements.viewPlayer.classList.remove('active');
-    const container = document.querySelector('.app-container');
-    container?.classList.remove('viewing-lists');
-    container?.classList.remove('viewing-channels');
-    container?.classList.remove('viewing-player');
-    state.currentView = null;
-}
-
 function minimizePlayer(): void {
     showView('channels');
     showMiniPlayer();
@@ -1021,7 +1010,6 @@ export {
     toggleLock,
     updateLockBtn,
     showView,
-    showClassicUI,
     renderViewLists,
     renderChannelGrid,
     renderGroupList,

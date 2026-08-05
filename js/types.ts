@@ -55,5 +55,5 @@ export interface AppState {
     kioskMode: boolean;
     expandedGroups: Set<string>;
     selectedGroup: string | null;
-    currentView: 'lists' | 'channels' | 'player' | null;
+    currentView: 'lists' | 'channels' | 'player';
 }

@@ -35,7 +35,7 @@ const INITIAL_STATE: AppState = {
     kioskMode: false,
     expandedGroups: new Set<string>(),
     selectedGroup: null,
-    currentView: null
+    currentView: 'lists'
 };
 
 const PERSIST_KEYS = new Set<string>(['theme', 'favorites', 'lockedChannels', 'history', 'playlists', 'kioskMode']);

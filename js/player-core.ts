@@ -214,9 +214,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
     elements.viewPlayerChannelName.textContent = channel.name;
     elements.viewPlayerChannelGroup.textContent = channel.group;
     hideMiniPlayer();
-    if (state.currentView) {
-        showView('player');
-    }
+    showView('player');
     updatePlayPauseButton();
 }
 
