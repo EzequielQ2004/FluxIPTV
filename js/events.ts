@@ -17,7 +17,6 @@ import {
     toggleSidebar,
     toggleFavorite,
     toggleLock,
-    showClassicUI,
     renderViewLists,
     showView,
     renderChannelGrid,
@@ -319,7 +318,7 @@ function setupEventListeners() {
                 });
             }
         } else {
-            loadM3UFromUrl(url).then(showClassicUI);
+            loadM3UFromUrl(url);
         }
     });
 
@@ -337,7 +336,7 @@ function setupEventListeners() {
         if (actionBtn) {
             const action = actionBtn.getAttribute('data-action')!;
             if (action === 'update') {
-                loadM3UFromUrl(url).then(showClassicUI);
+                loadM3UFromUrl(url);
             } else if (action === 'details') {
                 showPlaylistDetails(url);
             } else if (action === 'delete') {
@@ -348,7 +347,7 @@ function setupEventListeners() {
                 });
             }
         } else {
-            loadM3UFromUrl(url).then(showClassicUI);
+            loadM3UFromUrl(url);
         }
     });
 
