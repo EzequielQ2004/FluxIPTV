@@ -11,7 +11,7 @@
 }
 
 .playlist-item:hover {
-    background: var(--bg-card);
+    background: var(--accent-bg);
 }
 
 .playlist-info {
