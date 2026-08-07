@@ -91,11 +91,9 @@
     margin-bottom: 0.5rem;
 }
 
-.view-lists-empty {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    padding: 2rem 0;
-    text-align: center;
+.empty-state-hint {
+    color: var(--accent);
+    font-size: 0.875rem;
 }
 
 /* View 2: Channel Browser */

@@ -497,7 +497,13 @@ function renderViewLists(): void {
     if (!container) return;
 
     if (state.playlists.length === 0) {
-        container.innerHTML = '<div class="view-lists-empty">' + t('ui.noPlaylists') + '</div>';
+        container.innerHTML = [
+            '<div class="empty-state">',
+            '<div class="empty-state-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg></div>',
+            '<p>' + t('ui.noPlaylists') + '</p>',
+            '<p class="empty-state-hint">' + t('ui.noPlaylistsHint') + '</p>',
+            '</div>'
+        ].join('');
         return;
     }
 
