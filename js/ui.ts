@@ -43,7 +43,6 @@ const elements = {
     get viewLists() { return byId('viewLists'); },
     get viewChannels() { return byId('viewChannels'); },
     get viewPlayer() { return byId('viewPlayer'); },
-    get menuToggle() { return byId('menuToggle'); },
     get sidebar() { return byId('sidebar'); },
     get sidebarOverlay() { return byId('sidebarOverlay'); },
     get historyBar() { return byId('historyBar'); },

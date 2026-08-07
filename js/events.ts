@@ -113,7 +113,6 @@ function setupEventListeners() {
     elements.themeToggle.addEventListener('click', toggleTheme);
     var emptyLoadBtn = document.getElementById('emptyLoadBtn');
     if (emptyLoadBtn) emptyLoadBtn.addEventListener('click', function () { openModal(elements.m3uModal); });
-    elements.menuToggle.addEventListener('click', toggleSidebar);
     elements.sidebarOverlay.addEventListener('click', toggleSidebar);
 
     let searchTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -349,10 +348,6 @@ function setupEventListeners() {
         } else {
             loadM3UFromUrl(url);
         }
-    });
-
-    document.querySelector('.logo')?.addEventListener('click', () => {
-        showView('lists');
     });
 
     elements.plCopyUrlBtn.addEventListener('click', function () {
