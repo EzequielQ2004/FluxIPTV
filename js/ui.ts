@@ -40,6 +40,7 @@ const elements = {
     get fullscreenBtn() { return byId('fullscreenBtn'); },
     get epgBtn() { return byId('epgBtn'); },
     get themeToggle() { return byId('themeToggle'); },
+    get headerHomeBtn() { return byId('headerHomeBtn'); },
     get viewLists() { return byId('viewLists'); },
     get viewChannels() { return byId('viewChannels'); },
     get viewPlayer() { return byId('viewPlayer'); },

@@ -234,6 +234,15 @@
     display: none;
 }
 
+/* Header contextual: logo + search only in Channel Browser (View 2) */
+.app-container.viewing-channels .header {
+    justify-content: space-between;
+}
+
+.app-container.viewing-channels .header-context {
+    display: flex;
+}
+
 .app-container.viewing-player .sidebar,
 .app-container.viewing-player .sidebar-overlay {
     display: none;

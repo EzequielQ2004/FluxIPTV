@@ -28,6 +28,7 @@ var translations: Record<string, Record<string, string>> = {
         'header.menuToggle': 'Abrir menú',
         'header.themeToggle': 'Cambiar tema',
         'header.settings': 'Ajustes',
+        'header.home': 'Volver a Mis Listas',
 
         'player.videoAria': 'Reproductor de video',
         'player.prev': 'Canal anterior',
@@ -305,6 +306,7 @@ var translations: Record<string, Record<string, string>> = {
         'header.menuToggle': 'Open menu',
         'header.themeToggle': 'Toggle theme',
         'header.settings': 'Settings',
+        'header.home': 'Back to lists',
 
         'player.videoAria': 'Video player',
         'player.prev': 'Previous channel',

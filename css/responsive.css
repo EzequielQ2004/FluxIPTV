@@ -67,6 +67,17 @@
         gap: 0.5rem;
     }
 
+    /* Header contextual in View 2: search takes available space */
+    .header-context {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .header-search {
+        width: 100%;
+        min-width: 0;
+    }
+
     /* View 1: stack vertically on mobile */
     .view-lists-inner {
         flex-direction: column;
