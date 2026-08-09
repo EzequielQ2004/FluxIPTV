@@ -235,12 +235,20 @@
 }
 
 /* Header contextual: logo + search only in Channel Browser (View 2) */
-.app-container.viewing-channels .header {
-    justify-content: space-between;
-}
-
 .app-container.viewing-channels .header-context {
     display: flex;
+}
+
+.app-container.viewing-channels .header-search {
+    display: flex;
+}
+
+@media (min-width: 769px) {
+    .app-container.viewing-channels .header {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+    }
 }
 
 .app-container.viewing-player .sidebar,

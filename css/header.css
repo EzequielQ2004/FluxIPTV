@@ -36,8 +36,27 @@
     display: block;
 }
 
+.header-home-btn[data-tooltip]::after {
+    left: 0;
+    transform: translateX(0) scale(0.9);
+}
+
+.header-home-btn[data-tooltip]:hover::after {
+    transform: translateX(0) scale(1);
+}
+
+.header-controls [data-tooltip]::after {
+    left: auto;
+    right: 0;
+    transform: translateX(0) scale(0.9);
+}
+
+.header-controls [data-tooltip]:hover::after {
+    transform: translateX(0) scale(1);
+}
+
 .header-search {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 0.5rem;
     background: var(--bg-secondary);

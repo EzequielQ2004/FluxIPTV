@@ -67,15 +67,25 @@
         gap: 0.5rem;
     }
 
-    /* Header contextual in View 2: search takes available space */
+    /* Header contextual in View 2 (mobile): logo + flexible search + buttons */
+    .viewing-channels .header {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
     .header-context {
-        flex: 1;
-        min-width: 0;
+        flex: 0 0 auto;
     }
 
     .header-search {
-        width: 100%;
+        flex: 1;
+        width: auto;
         min-width: 0;
+    }
+
+    .header-controls {
+        flex-shrink: 0;
     }
 
     /* View 1: stack vertically on mobile */
