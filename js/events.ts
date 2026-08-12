@@ -20,7 +20,7 @@ import {
     renderViewLists,
     showView,
     renderChannelGrid,
-    renderGroupList,
+    setFilter,
     minimizePlayer,
     hideMiniPlayer,
     showMiniPlayer
@@ -129,10 +129,7 @@ function setupEventListeners() {
     document.querySelector<HTMLElement>('.filter-tabs')!.addEventListener('click', (e: MouseEvent) => {
         const tab = (e.target as Element).closest('.filter-tab');
         if (!tab) return;
-        document.querySelectorAll('.filter-tab').forEach(function (t) { t.classList.remove('active'); });
-        tab.classList.add('active');
-        state.currentFilter = tab.getAttribute('data-filter') || '';
-        renderChannelList();
+        setFilter(tab.getAttribute('data-filter') || '');
     });
 
     function toggleGroup(groupItem: Element) {
@@ -188,20 +185,7 @@ function setupEventListeners() {
     elements.chFilterTabs?.addEventListener('click', (e: MouseEvent) => {
         const tab = (e.target as Element).closest('.filter-tab');
         if (!tab) return;
-        elements.chFilterTabs?.querySelectorAll('.filter-tab').forEach(function (t) { t.classList.remove('active'); });
-        tab.classList.add('active');
-        state.currentFilter = tab.getAttribute('data-filter') || '';
-        renderChannelGrid();
-        renderGroupList();
-    });
-
-    elements.chGroupList?.addEventListener('click', (e: MouseEvent) => {
-        const groupItem = (e.target as Element).closest('.ch-group-item');
-        if (!groupItem) return;
-        const group = groupItem.getAttribute('data-group') || '';
-        state.selectedGroup = group || null;
-        renderGroupList();
-        renderChannelGrid();
+        setFilter(tab.getAttribute('data-filter') || '');
     });
 
     elements.chGrid?.addEventListener('click', (e: MouseEvent) => {

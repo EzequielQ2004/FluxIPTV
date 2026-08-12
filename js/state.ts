@@ -34,7 +34,6 @@ const INITIAL_STATE: AppState = {
     playlists: [],
     kioskMode: false,
     expandedGroups: new Set<string>(),
-    selectedGroup: null,
     currentView: 'lists'
 };
 

@@ -47,6 +47,8 @@ var translations: Record<string, Record<string, string>> = {
         'filter.recent': 'Recientes',
         'filter.groups': 'Grupos',
         'filter.search': 'Buscar',
+        'filter.noFavorites': 'Aún no tienes canales favoritos',
+        'filter.noRecent': 'Sin canales recientes',
 
         'player.streamInterrupted': 'El stream se ha interrumpido',
         'player.streamError': 'Error al cargar el stream',
@@ -325,6 +327,8 @@ var translations: Record<string, Record<string, string>> = {
         'filter.recent': 'Recent',
         'filter.groups': 'Groups',
         'filter.search': 'Search',
+        'filter.noFavorites': 'No favorite channels yet',
+        'filter.noRecent': 'No recent channels',
 
         'player.streamInterrupted': 'Stream was interrupted',
         'player.streamError': 'Error loading the stream',

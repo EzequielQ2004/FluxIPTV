@@ -105,7 +105,7 @@
 }
 
 .view-channels-filter {
-    width: 220px;
+    width: 150px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -113,6 +113,14 @@
     padding: 1rem;
     border-right: 1px solid var(--border-color);
     overflow-y: auto;
+}
+
+.ch-filter-tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
 }
 
 .ch-grid {
@@ -200,25 +208,63 @@
     color: var(--lock-color);
 }
 
-.ch-group-list {
+.ch-grid.is-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ch-grid.groups-view {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 1.25rem;
 }
 
-.ch-group-item {
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
+.ch-group-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ch-group-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
     font-size: 0.85rem;
-    color: var(--text-secondary);
-    transition: var(--transition);
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.ch-group-item:hover,
-.ch-group-item.active {
-    background: var(--accent-bg);
-    color: var(--accent);
+.ch-group-count {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border-radius: 0.5rem;
+    padding: 0.1rem 0.4rem;
+}
+
+.ch-group-row {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+}
+
+.ch-group-row .ch-card {
+    flex: 0 0 auto;
+    width: 128px;
+}
+
+.ch-group-row .ch-card-logo {
+    width: 48px;
+    height: 48px;
+}
+
+.ch-group-row .ch-card-name {
+    font-size: 0.7rem;
 }
 
 /* Hide sidebar when viewing channels */

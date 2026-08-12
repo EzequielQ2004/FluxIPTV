@@ -90,7 +90,6 @@ const elements = {
     get viewListsList() { return byId('viewListsList'); },
     get chSearchInput() { return byId('chSearchInput') as HTMLInputElement; },
     get chFilterTabs() { return byId('chFilterTabs'); },
-    get chGroupList() { return byId('chGroupList'); },
     get chGrid() { return byId('chGrid'); },
     get viewMinimizeBtn() { return byId('viewMinimizeBtn'); },
     get miniPlayer() { return byId('miniPlayer'); },
@@ -552,13 +551,42 @@ function renderViewLists(): void {
     container.innerHTML = parts.join('');
 }
 
+function channelCardHtml(ch: Channel): string {
+    var isFavorite = state.favorites.has(ch.url);
+    var isLocked = state.lockedChannels.has(ch.url);
+    var isActive = ch.index === state.currentChannelIndex;
+    var displayName = ch.name === DEFAULT_CHANNEL_NAME ? t('parser.defaultName') : ch.name;
+    return `
+        <div class="ch-card ${isActive ? 'active' : ''}" data-index="${ch.index}">
+            <img class="ch-card-logo" src="${getChannelLogo(ch)}" alt="${escapeHtml(displayName)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="handleImageError(this)">
+            <div class="ch-card-name">${escapeHtml(displayName)}</div>
+            <div class="ch-card-actions">
+                <button class="ch-action-btn ${isFavorite ? 'favorite' : ''}" data-action="favorite" data-index="${ch.index}" aria-label="${isFavorite ? t('ui.removeFav') : t('ui.addFav')}" data-tooltip="${isFavorite ? t('ui.removeFav') : t('ui.addFav')}">
+                    ${isFavorite ? SVG_FAV_FILLED : SVG_FAV_OUTLINE}
+                </button>
+                <button class="ch-action-btn ${isLocked ? 'locked' : ''}" data-action="lock" data-index="${ch.index}" aria-label="${isLocked ? t('ui.unlock') : t('ui.lock')}" data-tooltip="${isLocked ? t('ui.unlock') : t('ui.lock')}">
+                    ${isLocked ? SVG_LOCK_CLOSED : SVG_LOCK_OPEN}
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function renderEmptyGrid(message: string): void {
+    const grid = elements.chGrid;
+    if (!grid) return;
+    grid.classList.add('is-empty');
+    grid.classList.remove('groups-view');
+    grid.innerHTML = '<div class="empty-state"><p>' + message + '</p></div>';
+}
+
 function renderChannelGrid(): void {
     const grid = elements.chGrid;
     if (!grid) return;
 
     var channels = state.channels;
     if (channels.length === 0) {
-        grid.innerHTML = '<div class="empty-state"><p>' + t('app.noChannels') + '</p></div>';
+        renderEmptyGrid(t('app.noChannels'));
         return;
     }
 
@@ -574,69 +602,62 @@ function renderChannelGrid(): void {
     } else if (state.currentFilter === 'recent') {
         var recentUrls = new Set(state.history.map(function (h) { return h.url; }));
         channels = channels.filter(function (ch) { return recentUrls.has(ch.url); });
-    } else if (state.currentFilter === 'groups') {
-        if (state.selectedGroup) {
-            channels = channels.filter(function (ch) { return ch.group === state.selectedGroup; });
-        } else {
-            channels = [];
-        }
     }
 
     if (channels.length === 0) {
-        grid.innerHTML = '<div class="empty-state"><p>' + t('ui.noChannels') + '</p></div>';
+        var emptyMessage = state.currentFilter === 'favorites'
+            ? t('filter.noFavorites')
+            : (state.currentFilter === 'recent' ? t('filter.noRecent') : t('ui.noChannels'));
+        renderEmptyGrid(emptyMessage);
         return;
     }
 
+    grid.classList.remove('is-empty');
+
+    if (state.currentFilter === 'groups') {
+        grid.classList.add('groups-view');
+        var groupMap: Record<string, Channel[]> = {};
+        channels.forEach(function (ch) { (groupMap[ch.group] = groupMap[ch.group] || []).push(ch); });
+        var groupNames = Object.keys(groupMap).sort();
+
+        var sections: string[] = [];
+        for (var i = 0; i < groupNames.length; i++) {
+            var name = groupNames[i];
+            var groupChannels = groupMap[name];
+            var cards = groupChannels.map(channelCardHtml).join('');
+            sections.push(
+                '<section class="ch-group-section">' +
+                '<h3 class="ch-group-title">' + escapeHtml(name) +
+                '<span class="ch-group-count">' + groupChannels.length + '</span></h3>' +
+                '<div class="ch-group-row">' + cards + '</div>' +
+                '</section>'
+            );
+        }
+        grid.innerHTML = sections.join('');
+        return;
+    }
+
+    grid.classList.remove('groups-view');
+
     var parts: string[] = [];
     for (var i = 0; i < channels.length; i++) {
-        var ch = channels[i];
-        var isFavorite = state.favorites.has(ch.url);
-        var isLocked = state.lockedChannels.has(ch.url);
-        var isActive = ch.index === state.currentChannelIndex;
-        var displayName = ch.name === DEFAULT_CHANNEL_NAME ? t('parser.defaultName') : ch.name;
-        parts.push(`
-            <div class="ch-card ${isActive ? 'active' : ''}" data-index="${ch.index}">
-                <img class="ch-card-logo" src="${getChannelLogo(ch)}" alt="${escapeHtml(displayName)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="handleImageError(this)">
-                <div class="ch-card-name">${escapeHtml(displayName)}</div>
-                <div class="ch-card-actions">
-                    <button class="ch-action-btn ${isFavorite ? 'favorite' : ''}" data-action="favorite" data-index="${ch.index}" aria-label="${isFavorite ? t('ui.removeFav') : t('ui.addFav')}" data-tooltip="${isFavorite ? t('ui.removeFav') : t('ui.addFav')}">
-                        ${isFavorite ? SVG_FAV_FILLED : SVG_FAV_OUTLINE}
-                    </button>
-                    <button class="ch-action-btn ${isLocked ? 'locked' : ''}" data-action="lock" data-index="${ch.index}" aria-label="${isLocked ? t('ui.unlock') : t('ui.lock')}" data-tooltip="${isLocked ? t('ui.unlock') : t('ui.lock')}">
-                        ${isLocked ? SVG_LOCK_CLOSED : SVG_LOCK_OPEN}
-                    </button>
-                </div>
-            </div>
-        `);
+        parts.push(channelCardHtml(channels[i]));
     }
     grid.innerHTML = parts.join('');
 }
 
-function renderGroupList(): void {
-    const container = elements.chGroupList;
-    if (!container) return;
+function syncFilterTabs(): void {
+    document.querySelectorAll('.filter-tab').forEach(function (t) {
+        var el = t as HTMLElement;
+        el.classList.toggle('active', el.getAttribute('data-filter') === state.currentFilter);
+    });
+}
 
-    if (state.currentFilter !== 'groups') {
-        container.innerHTML = '';
-        return;
-    }
-
-    var groupCounts: Record<string, number> = {};
-    state.channels.forEach(function (ch) { groupCounts[ch.group] = (groupCounts[ch.group] || 0) + 1; });
-    var groupNames = Object.keys(groupCounts).sort();
-
-    if (groupNames.length === 0) {
-        container.innerHTML = '';
-        return;
-    }
-
-    var parts = ['<div class="ch-group-item' + (!state.selectedGroup ? ' active' : '') + '" data-group="">' + t('filter.all') + '</div>'];
-    for (var i = 0; i < groupNames.length; i++) {
-        var name = groupNames[i];
-        var active = name === state.selectedGroup ? ' active' : '';
-        parts.push('<div class="ch-group-item' + active + '" data-group="' + escapeHtml(name) + '">' + escapeHtml(name) + '</div>');
-    }
-    container.innerHTML = parts.join('');
+function setFilter(filter: string): void {
+    state.currentFilter = filter;
+    syncFilterTabs();
+    renderChannelGrid();
+    renderChannelList();
 }
 
 function showPlaylistDetails(url: string): void {
@@ -1018,7 +1039,7 @@ export {
     showView,
     renderViewLists,
     renderChannelGrid,
-    renderGroupList,
+    setFilter,
     minimizePlayer,
     hideMiniPlayer,
     showMiniPlayer,
