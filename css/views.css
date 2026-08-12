@@ -250,6 +250,7 @@
     display: flex;
     gap: 0.75rem;
     overflow-x: auto;
+    overflow-y: hidden;
     padding-bottom: 0.25rem;
 }
 
