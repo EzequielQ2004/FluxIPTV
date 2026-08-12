@@ -26,7 +26,7 @@ const INITIAL_STATE: AppState = {
     isPlaying: false,
     isMuted: false,
     volume: 1,
-    currentFilter: 'all',
+    currentFilter: 'groups',
     theme: 'auto',
     pendingChannelIndex: null,
     epgData: null,
