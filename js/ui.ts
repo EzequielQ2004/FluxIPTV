@@ -42,7 +42,7 @@ const elements = {
     get headerHomeBtn() { return byId('headerHomeBtn'); },
     get viewLists() { return byId('viewLists'); },
     get viewChannels() { return byId('viewChannels'); },
-    get viewPlayer() { return byId('viewPlayer'); },
+
     get sidebar() { return byId('sidebar'); },
     get sidebarOverlay() { return byId('sidebarOverlay'); },
     get m3uModal() { return byId('m3uModal'); },
@@ -94,9 +94,7 @@ const elements = {
     get miniPlayerPlayBtn() { return byId('miniPlayerPlayBtn'); },
     get miniPlayIcon() { return byId('miniPlayIcon'); },
     get miniPauseIcon() { return byId('miniPauseIcon'); },
-    get miniPlayerCloseBtn() { return byId('miniPlayerCloseBtn'); },
-    get viewPlayerChannelName() { return byId('viewPlayerChannelName'); },
-    get viewPlayerChannelGroup() { return byId('viewPlayerChannelGroup'); }
+    get miniPlayerCloseBtn() { return byId('miniPlayerCloseBtn'); }
 };
 
 function getChannelLogo(channel: Channel): string {
@@ -952,7 +950,6 @@ function toggleLock(index: number): void {
 function showView(viewName: 'lists' | 'channels' | 'player'): void {
     elements.viewLists.classList.toggle('active', viewName === 'lists');
     elements.viewChannels.classList.toggle('active', viewName === 'channels');
-    elements.viewPlayer.classList.toggle('active', viewName === 'player');
     state.currentView = viewName;
     const container = document.querySelector('.app-container');
     container?.classList.toggle('viewing-lists', viewName === 'lists');

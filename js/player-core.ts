@@ -211,8 +211,6 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
     updateActiveChannel(channel.index);
     scrollToChannel(channel.index);
     renderEpgInline();
-    elements.viewPlayerChannelName.textContent = channel.name;
-    elements.viewPlayerChannelGroup.textContent = channel.group;
     hideMiniPlayer();
     showView('player');
     updatePlayPauseButton();
