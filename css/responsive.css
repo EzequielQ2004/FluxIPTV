@@ -74,6 +74,13 @@
         gap: 0.5rem;
     }
 
+    /* Header contextual in View 3 (mobile): logo + controls */
+    .viewing-player .header {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
     .header-context {
         flex: 0 0 auto;
     }

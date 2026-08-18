@@ -308,6 +308,14 @@
     display: flex;
 }
 
+@media (min-width: 769px) {
+    .app-container.viewing-player .header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+    }
+}
+
 .app-container.viewing-player .player-area {
     grid-column: 1 / -1;
 }
