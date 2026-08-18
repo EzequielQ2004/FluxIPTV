@@ -332,48 +332,79 @@
     border-color: var(--accent-hover);
 }
 
-.history-bar {
+.epg-inline {
     display: flex;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 1rem;
-    overflow-x: auto;
 }
 
-.history-item {
-    flex-shrink: 0;
-    width: 80px;
-    text-align: center;
-    cursor: pointer;
+.epg-inline-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.epg-inline-header .epg-channel-logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+
+.epg-inline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.epg-inline-list .epg-item {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background: var(--bg-secondary);
     transition: var(--transition);
 }
 
-.history-item:hover {
-    transform: scale(1.05);
+.epg-inline-list .epg-item:hover {
+    background: var(--bg-tertiary, var(--bg-secondary));
+    transform: scale(1.01);
 }
 
-.history-item:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+.epg-inline-list .epg-item-current {
+    border-color: var(--accent);
+    background: var(--accent-bg);
 }
 
-.history-item img {
-    width: 48px;
-    height: 48px;
-    border-radius: 0.5rem;
-    object-fit: contain;
-    object-position: center;
-    background: var(--bg-secondary);
-    margin: 0 auto 0.5rem;
+.epg-inline-list .epg-item-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
 }
 
-.history-item span {
-    font-size: 0.625rem;
+.epg-inline-list .epg-item-time {
+    font-size: 0.75rem;
+    color: var(--flux-cyan-dim);
+    margin-bottom: 0.25rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+}
+
+.epg-inline-list .epg-item-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.epg-inline-list .epg-item-desc {
+    font-size: 0.75rem;
     color: var(--text-secondary);
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }

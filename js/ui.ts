@@ -38,7 +38,6 @@ const elements = {
     get muteIcon() { return byId('muteIcon'); },
     get volumeSlider() { return byId('volumeSlider') as HTMLInputElement; },
     get fullscreenBtn() { return byId('fullscreenBtn'); },
-    get epgBtn() { return byId('epgBtn'); },
     get themeToggle() { return byId('themeToggle'); },
     get headerHomeBtn() { return byId('headerHomeBtn'); },
     get viewLists() { return byId('viewLists'); },
@@ -46,7 +45,6 @@ const elements = {
     get viewPlayer() { return byId('viewPlayer'); },
     get sidebar() { return byId('sidebar'); },
     get sidebarOverlay() { return byId('sidebarOverlay'); },
-    get historyBar() { return byId('historyBar'); },
     get m3uModal() { return byId('m3uModal'); },
     get pinModal() { return byId('pinModal'); },
     get epgModal() { return byId('epgModal'); },
@@ -75,7 +73,6 @@ const elements = {
     get confirmMessage() { return byId('confirmMessage'); },
     get cancelConfirmBtn() { return byId('cancelConfirmBtn'); },
     get acceptConfirmBtn() { return byId('acceptConfirmBtn'); },
-    get kioskBtn() { return byId('kioskBtn'); },
     get channelInfoOverlay() { return byId('channelInfoOverlay'); },
     get channelInfoName() { return byId('channelInfoName'); },
     get channelInfoGroup() { return byId('channelInfoGroup'); },
@@ -689,30 +686,6 @@ function updateActiveChannel(index: number): void {
     if (newCard) newCard.classList.add('active');
 }
 
-function renderHistory(): void {
-    if (state.history.length === 0) {
-        elements.historyBar.innerHTML = '<span style="color: var(--text-secondary); font-size: 0.75rem; padding: 0.5rem;">' + t('ui.noHistory') + '</span>';
-        return;
-    }
-
-    let html = '';
-    for (const item of state.history) {
-        var logoUrl = getCachedLogoUrl(item.logo) || getFallbackImage(36);
-        html += `
-            <div class="history-item" data-history-id="${item.id}" tabindex="0" role="button" aria-label="${escapeHtml(item.name)}">
-                 <img src="${logoUrl}" 
-                      alt="${escapeHtml(item.name)}"
-                      decoding="async"
-                      referrerpolicy="no-referrer"
-                      onerror="handleImageError(this)">
-                <span>${escapeHtml(item.name)}</span>
-            </div>
-        `;
-    }
-
-    elements.historyBar.innerHTML = html;
-}
-
 function showLoading(show: boolean, message?: string): void {
     elements.loadingOverlay.classList.toggle('active', show);
     if (message && elements.loadingText) {
@@ -1019,7 +992,6 @@ export {
     renderChannelList,
     renderPlaylistList,
     showPlaylistDetails,
-    renderHistory,
     showLoading,
     hideLoading,
     showListLoading,

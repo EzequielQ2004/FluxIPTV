@@ -1,6 +1,6 @@
 import { state, loadState } from './state.ts';
 import { initI18n } from './i18n.ts';
-import { applyTheme, renderHistory, elements, startSystemThemeListener, showView, renderViewLists } from './ui.ts';
+import { applyTheme, elements, startSystemThemeListener, showView, renderViewLists } from './ui.ts';
 import { setupEventListeners } from './events.ts';
 import { updateVolumeSlider } from './player-core.ts';
 import { createLocalStorageProvider, setSyncProvider } from './backup.ts';
@@ -14,7 +14,6 @@ function init(): void {
     setupEventListeners();
     startSystemThemeListener();
     applyTheme();
-    renderHistory();
     if (elements.video) {
         elements.video.volume = state.volume;
     }
@@ -22,8 +21,6 @@ function init(): void {
 
     setSyncProvider(createLocalStorageProvider());
 
-    const kioskBtn = document.getElementById('kioskBtn');
-    if (kioskBtn) kioskBtn.classList.toggle('active', state.kioskMode);
     if (state.kioskMode) document.body.classList.add('tv-mode');
 
     const params = new URLSearchParams(window.location.search);

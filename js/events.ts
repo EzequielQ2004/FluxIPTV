@@ -38,7 +38,6 @@ import {
     setVolume,
     verifyPin
 } from './player-core.ts';
-import { showEpg } from './epg.ts';
 import { navigateFocus, handleDpadSidebar } from './keyboard.ts';
 import { setLoadTimeout } from './player-shared.ts';
 import { loadM3UFromUrl, loadM3UFromFile, deletePlaylist } from './loader.ts';
@@ -91,8 +90,6 @@ function setupEventListeners() {
         setVolume(parseFloat(elements.volumeSlider.value));
     });
     elements.fullscreenBtn.addEventListener('click', toggleFullscreen);
-    elements.kioskBtn.addEventListener('click', toggleKioskMode);
-    elements.epgBtn.addEventListener('click', showEpg);
     elements.viewMinimizeBtn.addEventListener('click', minimizePlayer);
 
     elements.miniPlayer.addEventListener('click', function (e: MouseEvent) {
@@ -206,23 +203,6 @@ function setupEventListeners() {
         if (card) {
             const index = parseInt(card.getAttribute('data-index')!);
             playChannel(index);
-        }
-    });
-
-    elements.historyBar.addEventListener('click', (e: MouseEvent) => {
-        const historyItem = (e.target as Element).closest('.history-item');
-        if (historyItem) {
-            const historyId = historyItem.getAttribute('data-history-id')!;
-            const histEntry = state.history.find(function (h) { return h.id === historyId; });
-            if (!histEntry) return;
-            const channelIndex = state.channels.findIndex(function (ch) {
-                return ch.url === histEntry.url;
-            });
-            if (channelIndex === -1) {
-                showToast(t('toast.playlist.channelUnavailable'), 'error');
-                return;
-            }
-            playChannel(channelIndex);
         }
     });
 

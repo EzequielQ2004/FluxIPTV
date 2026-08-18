@@ -1,8 +1,8 @@
 import Hls from 'hls.js';
 import * as dashjs from 'dashjs';
 import { state, saveState, addToHistory, verifyPin, setPin, removePin, setPinContext, getPinContext, getPinLockoutSeconds, incrementPinFailedAttempts, resetPinFailedAttempts } from './state.ts';
-import { elements, updateActiveChannel, scrollToChannel, renderHistory, showLoading, hideLoading, showError, hideError, openModal, closeModal, showToast, updateLockBtn, showView, hideMiniPlayer } from './ui.ts';
-import { escapeHtml } from './fallback-image.ts';
+import { elements, updateActiveChannel, scrollToChannel, showLoading, hideLoading, showError, hideError, openModal, closeModal, showToast, updateLockBtn, showView, hideMiniPlayer } from './ui.ts';
+import { renderEpgInline } from './epg.ts';
 import { loadM3UFromUrl } from './loader.ts';
 import { openSettings } from './settings.ts';
 import { t } from './i18n.ts';
@@ -137,7 +137,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
         playYoutubeChannel(channel);
         updateActiveChannel(channel.index);
         scrollToChannel(channel.index);
-        renderHistory();
+        renderEpgInline();
         updatePlayPauseButton();
         setLoadTimeout(null);
         return;
@@ -149,7 +149,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
         playTwitchChannel(channel);
         updateActiveChannel(channel.index);
         scrollToChannel(channel.index);
-        renderHistory();
+        renderEpgInline();
         updatePlayPauseButton();
         setLoadTimeout(null);
         return;
@@ -161,7 +161,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
         playDailymotionChannel(channel);
         updateActiveChannel(channel.index);
         scrollToChannel(channel.index);
-        renderHistory();
+        renderEpgInline();
         updatePlayPauseButton();
         setLoadTimeout(null);
         return;
@@ -210,7 +210,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
 
     updateActiveChannel(channel.index);
     scrollToChannel(channel.index);
-    renderHistory();
+    renderEpgInline();
     elements.viewPlayerChannelName.textContent = channel.name;
     elements.viewPlayerChannelGroup.textContent = channel.group;
     hideMiniPlayer();
@@ -390,8 +390,6 @@ function toggleFullscreen(): void {
 
 function toggleKioskMode(): void {
     state.kioskMode = !state.kioskMode;
-    var btn = document.getElementById('kioskBtn');
-    if (btn) btn.classList.toggle('active', state.kioskMode);
     document.body.classList.toggle('tv-mode', state.kioskMode);
 
     if (typeof window !== 'undefined' && '__TAURI__' in window) {

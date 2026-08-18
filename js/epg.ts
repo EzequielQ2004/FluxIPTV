@@ -1,6 +1,5 @@
 import { t, getLocale } from './i18n.ts';
 import { state } from './state.ts';
-import { elements, openModal } from './ui.ts';
 import { getFallbackImage, escapeHtml } from './fallback-image.ts';
 import { EpgProgramme } from './types.ts';
 
@@ -103,15 +102,26 @@ function getNextProgrammes(programmes: EpgProgramme[], count?: number): EpgProgr
     return result;
 }
 
-function showEpg(): void {
+function renderEpgInline(): void {
+    var headerEl = document.getElementById('epgInlineHeader');
+    var listEl = document.getElementById('epgInlineList');
+    if (!headerEl || !listEl) return;
+
     if (state.currentChannelIndex < 0 || state.currentChannelIndex >= state.channels.length) {
+        headerEl.innerHTML = '';
+        listEl.innerHTML = [
+            '<div class="empty-state">',
+            '<div class="empty-state-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>',
+            '<p>' + t('modal.epg.empty') + '</p>',
+            '</div>'
+        ].join('');
         return;
     }
 
     var channel = state.channels[state.currentChannelIndex];
     var tvgId = channel.tvgId;
 
-    document.getElementById('epgChannelInfo')!.innerHTML = [
+    headerEl.innerHTML = [
         '<img class="epg-channel-logo" src="' + escapeHtml(channel.logo || getFallbackImage(64)) + '" alt="' + escapeHtml(channel.name) + '" decoding="async" referrerpolicy="no-referrer" onerror="handleImageError(this)">',
         '<div>',
         '<h3 style="font-size: 1.25rem; font-weight: 600;">' + escapeHtml(channel.name) + '</h3>',
@@ -120,11 +130,10 @@ function showEpg(): void {
         '</div>'
     ].join('');
 
-    var epgList = document.getElementById('epgList')!;
     var programmes = state.epgData && tvgId ? state.epgData[tvgId] : null;
 
     if (!programmes || programmes.length === 0) {
-        epgList.innerHTML = [
+        listEl.innerHTML = [
             '<div class="empty-state">',
             '<div class="empty-state-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>',
             '<p>' + (tvgId ? t('epg.noPrograms') : t('epg.noTvgId')) + '</p>',
@@ -160,10 +169,8 @@ function showEpg(): void {
             ].join('');
         });
 
-        epgList.innerHTML = html;
+        listEl.innerHTML = html;
     }
-
-    openModal(elements.epgModal);
 }
 
-export { showEpg, loadEpgFromUrl, parseXmltv };
+export { renderEpgInline, loadEpgFromUrl, parseXmltv };

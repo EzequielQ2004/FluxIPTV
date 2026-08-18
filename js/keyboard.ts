@@ -2,12 +2,12 @@ function navigateFocus(direction: number, axis: string): void {
     const activeEl = document.activeElement as HTMLElement | null;
     if (!activeEl) return;
 
-    const inVerticalList = !!activeEl.closest('.channel-list, .history-bar');
+    const inVerticalList = !!activeEl.closest('.channel-list');
 
     if (axis === 'horizontal' && inVerticalList) return;
 
     const container = axis === 'vertical'
-        ? activeEl.closest('.channel-list, .history-bar, .player-controls, .modal, .header-controls')
+        ? activeEl.closest('.channel-list, .player-controls, .modal, .header-controls')
         : activeEl.closest('.filter-tabs, .player-controls, .modal, .header-controls');
 
     if (!container) return;

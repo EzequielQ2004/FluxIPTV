@@ -1,6 +1,6 @@
 import { t } from './i18n.ts';
 import { state, saveState, loadState, isPinConfigured, setPin, changePin, removePin, setPinContext } from './state.ts';
-import { elements, openModal, closeModal, showToast, showConfirmModal, applyTheme, renderHistory, renderChannelList, renderPlaylistList } from './ui.ts';
+import { elements, openModal, closeModal, showToast, showConfirmModal, applyTheme, renderChannelList, renderPlaylistList } from './ui.ts';
 
 function openSettings(): void {
     updateSettingsState();
@@ -90,7 +90,6 @@ function clearHistory(): void {
         if (!confirmed) return;
         state.history = [];
         saveState();
-        renderHistory();
         showToast(t('settings.history.cleared'));
     });
 }
@@ -184,7 +183,6 @@ function applyImportedData(data: any): void {
     loadState();
     renderChannelList();
     renderPlaylistList();
-    renderHistory();
     applyTheme();
     updateSettingsState();
     showToast(t('settings.import.success'));
@@ -224,8 +222,6 @@ function setupSettings(): void {
         saveState();
         var msg = this.checked ? t('settings.kiosk.enabled') : t('settings.kiosk.disabled');
         showToast(msg);
-        var btn = document.getElementById('kioskBtn');
-        if (btn) btn.classList.toggle('active', this.checked);
     });
 
     document.getElementById('settingsModal')!.addEventListener('click', function (e: MouseEvent) {
