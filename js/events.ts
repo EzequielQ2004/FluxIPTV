@@ -109,7 +109,11 @@ function setupEventListeners() {
     elements.settingsBtn.addEventListener('click', openSettings);
     elements.themeToggle.addEventListener('click', toggleTheme);
     elements.headerHomeBtn?.addEventListener('click', () => {
-        showView('lists');
+        if (state.currentView === 'player') {
+            minimizePlayer();
+        } else {
+            showView('lists');
+        }
     });
     var emptyLoadBtn = document.getElementById('emptyLoadBtn');
     if (emptyLoadBtn) emptyLoadBtn.addEventListener('click', function () { openModal(elements.m3uModal); });

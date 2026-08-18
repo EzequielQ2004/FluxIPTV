@@ -304,6 +304,10 @@
     display: none;
 }
 
+.app-container.viewing-player .header-context {
+    display: flex;
+}
+
 .app-container.viewing-player .player-area {
     grid-column: 1 / -1;
 }
