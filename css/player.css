@@ -353,6 +353,38 @@
     border-bottom: 1px solid var(--border-color);
 }
 
+.epg-channel-meta {
+    min-width: 0;
+}
+
+.epg-channel-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.epg-channel-group,
+.epg-channel-tvgid {
+    color: var(--text-secondary);
+}
+
+.epg-channel-group {
+    font-size: 0.875rem;
+}
+
+.epg-channel-tvgid {
+    font-size: 0.75rem;
+}
+
+.epg-empty-hint {
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    color: var(--text-secondary);
+}
+
 .epg-inline-header .epg-channel-logo {
     width: 64px;
     height: 64px;
