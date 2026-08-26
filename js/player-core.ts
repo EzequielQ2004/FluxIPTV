@@ -1,4 +1,3 @@
-import * as dashjs from 'dashjs';
 import { state, saveState, addToHistory, verifyPin, setPin, removePin, setPinContext, getPinContext, getPinLockoutSeconds, incrementPinFailedAttempts, resetPinFailedAttempts } from './state.ts';
 import { elements, updateActiveChannel, scrollToChannel, showLoading, hideLoading, showError, hideError, openModal, closeModal, showToast, updateLockBtn, showView, hideMiniPlayer } from './ui.ts';
 import { renderEpgInline } from './epg.ts';
@@ -18,7 +17,7 @@ import { updatePlayPauseButton, autoKiosk } from './player-ui-helpers.ts';
 import { isYoutubeUrl, playYoutubeChannel, destroyYoutubePlayer, sendYtCommand, ytPlayer, isChannelLiveMode, channelLiveIframe } from './youtube.ts';
 import { isTwitchUrl, isDailymotionUrl, playTwitchChannel, playDailymotionChannel, embedIframe, currentEmbedType } from './embeds.ts';
 import { setupHls } from './hls.ts';
-import { setupDash, dashManifestLoaded, dashError } from './dash.ts';
+import { setupDash, destroyDash } from './dash.ts';
 
 let channelInfoTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -89,12 +88,7 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
         state.hls = null;
     }
     if (state.dash) {
-        try {
-            state.dash.off(dashjs.MediaPlayer.events.MANIFEST_LOADED, dashManifestLoaded);
-            state.dash.off(dashjs.MediaPlayer.events.ERROR, dashError);
-        } catch (e) {}
-        state.dash.reset();
-        state.dash = null;
+        destroyDash();
     }
 
     destroyYoutubePlayer();
@@ -212,12 +206,7 @@ function stopPlayback(): void {
         state.hls = null;
     }
     if (state.dash) {
-        try {
-            state.dash.off(dashjs.MediaPlayer.events.MANIFEST_LOADED, dashManifestLoaded);
-            state.dash.off(dashjs.MediaPlayer.events.ERROR, dashError);
-        } catch (e) {}
-        state.dash.reset();
-        state.dash = null;
+        destroyDash();
     }
     destroyYoutubePlayer();
     clearLoadTimeout();
