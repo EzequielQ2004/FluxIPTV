@@ -6,15 +6,6 @@ export default defineConfig({
     globals: true,
     environment: 'node',
   },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['hls.js', 'dashjs'],
-        },
-      },
-    },
-  },
   esbuild: {
     drop: ['console'],
   },
