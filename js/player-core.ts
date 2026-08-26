@@ -1,4 +1,3 @@
-import Hls from 'hls.js';
 import * as dashjs from 'dashjs';
 import { state, saveState, addToHistory, verifyPin, setPin, removePin, setPinContext, getPinContext, getPinLockoutSeconds, incrementPinFailedAttempts, resetPinFailedAttempts } from './state.ts';
 import { elements, updateActiveChannel, scrollToChannel, showLoading, hideLoading, showError, hideError, openModal, closeModal, showToast, updateLockBtn, showView, hideMiniPlayer } from './ui.ts';
@@ -15,14 +14,12 @@ import {
     getIsYoutubeMode,
     getIsEmbedMode
 } from './player-shared.ts';
-import { updatePlayPauseButton, autoKiosk, fallbackToNative } from './player-ui-helpers.ts';
+import { updatePlayPauseButton, autoKiosk } from './player-ui-helpers.ts';
 import { isYoutubeUrl, playYoutubeChannel, destroyYoutubePlayer, sendYtCommand, ytPlayer, isChannelLiveMode, channelLiveIframe } from './youtube.ts';
 import { isTwitchUrl, isDailymotionUrl, playTwitchChannel, playDailymotionChannel, embedIframe, currentEmbedType } from './embeds.ts';
 import { setupHls } from './hls.ts';
 import { setupDash, dashManifestLoaded, dashError } from './dash.ts';
 
-let streamTypeCache: Map<string, string> = new Map();
-let streamTypeController: AbortController | null = null;
 let channelInfoTimer: ReturnType<typeof setTimeout> | undefined;
 
 function showChannelInfo(channel: { name: string; group: string; index: number }): void {
@@ -37,36 +34,6 @@ function showChannelInfo(channel: { name: string; group: string; index: number }
     }, 5000);
 }
 let onPlayingHandler: (() => void) | null = null;
-
-function probeStreamType(url: string): Promise<string> {
-    if (streamTypeCache.has(url)) {
-        return Promise.resolve(streamTypeCache.get(url)!);
-    }
-    if (streamTypeController) {
-        streamTypeController.abort();
-    }
-    streamTypeController = new AbortController();
-    const signal = streamTypeController.signal;
-    const timeout = setTimeout(function () {
-        streamTypeController!.abort();
-    }, 5000);
-    return fetch(url, { method: 'HEAD', signal: signal }).then(function (resp) {
-        clearTimeout(timeout);
-        const type = resp.headers.get('Content-Type') || '';
-        let result = 'unknown';
-        if (/application\/vnd\.apple\.mpegurl/i.test(type) || /application\/x-mpegURL/i.test(type)) {
-            result = 'hls';
-        } else if (/application\/dash\+xml/i.test(type)) {
-            result = 'dash';
-        }
-        streamTypeCache.set(url, result);
-        return result;
-    }).catch(function () {
-        clearTimeout(timeout);
-        streamTypeCache.set(url, 'unknown');
-        return 'unknown';
-    });
-}
 
 function playChannel(index: number, skipLockCheck?: boolean): void {
     if (index < 0 || index >= state.channels.length) return;
@@ -172,30 +139,9 @@ function playChannel(index: number, skipLockCheck?: boolean): void {
     video.muted = state.isMuted;
 
     if (isDashUrl(channel.url)) {
-        console.log('DASH stream detected:', channel.url);
         setupDash(video, channel);
-    } else if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-        setupHls(video, channel);
     } else {
-        probeStreamType(channel.url).then(function (probeType) {
-            if (probeType === 'hls' && typeof Hls !== 'undefined' && Hls.isSupported()) {
-                setupHls(video, channel);
-            } else if (probeType === 'dash' && typeof dashjs !== 'undefined') {
-                setupDash(video, channel);
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = channel.url;
-                video.play().catch(function (e) {
-                    if ((e as Error).name === 'AbortError') return;
-                    console.error('Error al reproducir:', e);
-                    hideLoading();
-                    showError(t('player.streamFailed'));
-                });
-            } else {
-                fallbackToNative(channel.url);
-            }
-        }).catch(function () {
-            fallbackToNative(channel.url);
-        });
+        setupHls(video, channel);
     }
 
     if (onPlayingHandler) {
@@ -516,11 +462,6 @@ async function onVerifyPin(): Promise<void> {
 }
 
 function clearStreamTypeCache(): void {
-    streamTypeCache.clear();
-    if (streamTypeController) {
-        streamTypeController.abort();
-        streamTypeController = null;
-    }
 }
 
 export {

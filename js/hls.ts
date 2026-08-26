@@ -1,4 +1,4 @@
-import Hls from 'hls.js';
+import type HlsType from 'hls.js';
 import { state } from './state.ts';
 import { showError, hideLoading } from './ui.ts';
 import { t } from './i18n.ts';
@@ -16,8 +16,15 @@ import {
 } from './player-shared.ts';
 import { Channel } from './types.ts';
 
-function setupHls(video: HTMLVideoElement, channel: Channel): void {
-    var hlsConfig: Partial<Hls.Config> = {
+async function setupHls(video: HTMLVideoElement, channel: Channel): Promise<void> {
+    var Hls = (await import('hls.js')).default;
+
+    if (!Hls.isSupported()) {
+        fallbackToNative(channel.url);
+        return;
+    }
+
+    var hlsConfig: Partial<HlsType.Config> = {
         enableWorker: true,
         lowLatencyMode: true,
         backBufferLength: 90,
