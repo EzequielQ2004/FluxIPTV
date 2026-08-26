@@ -15,6 +15,9 @@ export default defineConfig({
       },
     },
   },
+  esbuild: {
+    drop: ['console'],
+  },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
