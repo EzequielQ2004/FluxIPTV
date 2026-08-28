@@ -570,14 +570,190 @@ function channelCardHtml(ch: Channel): string {
 function renderEmptyGrid(message: string): void {
     const grid = elements.chGrid;
     if (!grid) return;
+    teardownGridVirtual();
     grid.classList.add('is-empty');
     grid.classList.remove('groups-view');
+    grid.classList.remove('grid-v');
     grid.innerHTML = '<div class="empty-state"><p>' + message + '</p></div>';
+}
+
+// --- Grid Virtual Scroller ---
+const GROUP_INNER_GAP = 8;
+const GRID_BUFFER_PX = 320;
+
+type GridRow =
+    | { type: 'cards'; channels: Channel[]; height: number; gap: number }
+    | { type: 'group'; name: string; channels: Channel[]; height: number; gap: number; titleH: number };
+
+let gridRows: GridRow[] = [];
+let gridCumulative: number[] = [0];
+let gridTotalHeight = 0;
+let gridCols = 1;
+let gridRendered: { start: number; end: number } = { start: -1, end: -1 };
+let gridScrollHandler: (() => void) | null = null;
+let gridResizeObserver: ResizeObserver | null = null;
+let gridPadTop = 0;
+
+function readCssPx(el: HTMLElement, name: string, fallback: number): number {
+    var v = getComputedStyle(el).getPropertyValue(name).trim();
+    if (!v) return fallback;
+    var parsed = parseFloat(v);
+    return isNaN(parsed) ? fallback : parsed;
+}
+
+function gridMetrics(): { cardW: number; cardH: number; gap: number; titleH: number; groupCardH: number; groupMargin: number } {
+    const grid = elements.chGrid;
+    return {
+        cardW: readCssPx(grid, '--gv-card-w', 135),
+        cardH: readCssPx(grid, '--gv-card-h', 160),
+        gap: readCssPx(grid, '--gv-gap', 12),
+        titleH: readCssPx(grid, '--gv-group-title-h', 22),
+        groupCardH: readCssPx(grid, '--gv-group-card-h', 126),
+        groupMargin: readCssPx(grid, '--gv-group-margin', 20)
+    };
+}
+
+function gridColCount(grid: HTMLElement, m: { cardW: number; gap: number }): number {
+    var width = grid.clientWidth;
+    if (width <= 0) return 1;
+    return Math.max(1, Math.floor((width + m.gap) / (m.cardW + m.gap)));
+}
+
+function ensureGridScrollHandler(): void {
+    if (gridScrollHandler) return;
+    gridScrollHandler = function () { renderGridVisibleRows(); };
+    elements.chGrid.addEventListener('scroll', gridScrollHandler, { passive: true });
+}
+
+function removeGridScrollHandler(): void {
+    if (gridScrollHandler) {
+        elements.chGrid.removeEventListener('scroll', gridScrollHandler);
+        gridScrollHandler = null;
+    }
+}
+
+function teardownGridVirtual(): void {
+    removeGridScrollHandler();
+    if (gridResizeObserver) {
+        gridResizeObserver.disconnect();
+        gridResizeObserver = null;
+    }
+    gridRows = [];
+    gridCumulative = [0];
+    gridTotalHeight = 0;
+    gridCols = 1;
+    gridRendered = { start: -1, end: -1 };
+}
+
+function gridFindRow(offset: number): number {
+    if (gridRows.length === 0) return 0;
+    if (offset <= 0) return 0;
+    if (offset >= gridTotalHeight) return gridRows.length - 1;
+    let lo = 0, hi = gridCumulative.length - 1;
+    while (lo < hi) {
+        const mid = (lo + hi + 1) >> 1;
+        if (gridCumulative[mid] <= offset) lo = mid;
+        else hi = mid - 1;
+    }
+    return lo;
+}
+
+function buildGridRowHTML(row: GridRow): string {
+    if (row.type === 'cards') {
+        var cards = row.channels;
+        var html = '';
+        for (var i = 0; i < cards.length; i++) html += channelCardHtml(cards[i]);
+        return '<div class="gv-row" style="height:' + row.height + 'px;margin-bottom:' + row.gap + 'px">' + html + '</div>';
+    }
+    var chs = row.channels;
+    var cardHtml = '';
+    for (var j = 0; j < chs.length; j++) cardHtml += channelCardHtml(chs[j]);
+    return '<section class="ch-group-section gv-section" style="height:' + row.height + 'px;margin-bottom:' + row.gap + 'px">' +
+        '<h3 class="ch-group-title" style="height:' + row.titleH + 'px">' + escapeHtml(row.name) +
+        '<span class="ch-group-count">' + chs.length + '</span></h3>' +
+        '<div class="ch-group-row">' + cardHtml + '</div>' +
+        '</section>';
+}
+
+function renderGridVisibleRows(): void {
+    const grid = elements.chGrid;
+    if (!grid || gridRows.length === 0) return;
+
+    var scrollTop = grid.scrollTop;
+    var viewH = grid.clientHeight;
+
+    var windowStart = Math.max(0, scrollTop - gridPadTop - GRID_BUFFER_PX);
+    var windowEnd = Math.min(gridTotalHeight, scrollTop - gridPadTop + viewH + GRID_BUFFER_PX);
+
+    var startRow = gridFindRow(windowStart);
+    var endRow = Math.min(gridFindRow(windowEnd), gridRows.length - 1);
+
+    var viewport = grid.querySelector('.grid-viewport') as HTMLElement | null;
+    if (!viewport) return;
+
+    if (startRow === gridRendered.start && endRow === gridRendered.end) {
+        viewport.style.transform = 'translateY(' + gridCumulative[startRow] + 'px)';
+        return;
+    }
+
+    if (gridRendered.start === -1 || startRow > gridRendered.end || endRow < gridRendered.start) {
+        viewport.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+        for (var i = startRow; i <= endRow; i++) {
+            var wrapper = document.createElement('div');
+            wrapper.innerHTML = buildGridRowHTML(gridRows[i]);
+            (wrapper.firstElementChild as HTMLElement)!.dataset.gvrow = String(i);
+            fragment.appendChild(wrapper.firstElementChild as HTMLElement);
+        }
+        viewport.appendChild(fragment);
+        gridRendered.start = startRow;
+        gridRendered.end = endRow;
+        viewport.style.transform = 'translateY(' + gridCumulative[startRow] + 'px)';
+        return;
+    }
+
+    while (gridRendered.start < startRow && viewport.firstChild) {
+        viewport.removeChild(viewport.firstChild);
+        gridRendered.start++;
+    }
+
+    while (gridRendered.end > endRow && viewport.lastChild) {
+        viewport.removeChild(viewport.lastChild);
+        gridRendered.end--;
+    }
+
+    if (startRow < gridRendered.start) {
+        var topFragment = document.createDocumentFragment();
+        for (var t = startRow; t < gridRendered.start; t++) {
+            var tw = document.createElement('div');
+            tw.innerHTML = buildGridRowHTML(gridRows[t]);
+            (tw.firstElementChild as HTMLElement)!.dataset.gvrow = String(t);
+            topFragment.appendChild(tw.firstElementChild as HTMLElement);
+        }
+        viewport.insertBefore(topFragment, viewport.firstChild);
+        gridRendered.start = startRow;
+    }
+
+    if (endRow > gridRendered.end) {
+        var bottomFragment = document.createDocumentFragment();
+        for (var b = gridRendered.end + 1; b <= endRow; b++) {
+            var bw = document.createElement('div');
+            bw.innerHTML = buildGridRowHTML(gridRows[b]);
+            (bw.firstElementChild as HTMLElement)!.dataset.gvrow = String(b);
+            bottomFragment.appendChild(bw.firstElementChild as HTMLElement);
+        }
+        viewport.appendChild(bottomFragment);
+        gridRendered.end = endRow;
+    }
+
+    viewport.style.transform = 'translateY(' + gridCumulative[startRow] + 'px)';
 }
 
 function renderChannelGrid(): void {
     const grid = elements.chGrid;
     if (!grid) return;
+
+    var savedScrollTop = grid.scrollTop;
 
     var channels = state.channels;
     if (channels.length === 0) {
@@ -607,7 +783,17 @@ function renderChannelGrid(): void {
         return;
     }
 
+    var metrics = gridMetrics();
+    var cols = gridColCount(grid, metrics);
+
+    teardownGridVirtual();
     grid.classList.remove('is-empty');
+    grid.classList.add('grid-v');
+    gridCols = cols;
+    grid.style.setProperty('--gv-cols', String(cols));
+
+    var cs = getComputedStyle(grid);
+    gridPadTop = parseFloat(cs.paddingTop) || 0;
 
     if (state.currentFilter === 'groups') {
         grid.classList.add('groups-view');
@@ -615,30 +801,56 @@ function renderChannelGrid(): void {
         channels.forEach(function (ch) { (groupMap[ch.group] = groupMap[ch.group] || []).push(ch); });
         var groupNames = Object.keys(groupMap).sort();
 
-        var sections: string[] = [];
-        for (var i = 0; i < groupNames.length; i++) {
-            var name = groupNames[i];
-            var groupChannels = groupMap[name];
-            var cards = groupChannels.map(channelCardHtml).join('');
-            sections.push(
-                '<section class="ch-group-section">' +
-                '<h3 class="ch-group-title">' + escapeHtml(name) +
-                '<span class="ch-group-count">' + groupChannels.length + '</span></h3>' +
-                '<div class="ch-group-row">' + cards + '</div>' +
-                '</section>'
-            );
+        gridRows = [];
+        for (var gi = 0; gi < groupNames.length; gi++) {
+            var gname = groupNames[gi];
+            gridRows.push({
+                type: 'group',
+                name: gname,
+                channels: groupMap[gname],
+                height: metrics.titleH + GROUP_INNER_GAP + metrics.groupCardH,
+                gap: metrics.groupMargin,
+                titleH: metrics.titleH
+            });
         }
-        grid.innerHTML = sections.join('');
-        return;
+    } else {
+        grid.classList.remove('groups-view');
+        gridRows = [];
+        for (var s = 0; s < channels.length; s += cols) {
+            gridRows.push({
+                type: 'cards',
+                channels: channels.slice(s, s + cols),
+                height: metrics.cardH,
+                gap: metrics.gap
+            });
+        }
     }
 
-    grid.classList.remove('groups-view');
-
-    var parts: string[] = [];
-    for (var i = 0; i < channels.length; i++) {
-        parts.push(channelCardHtml(channels[i]));
+    gridCumulative = [0];
+    for (var r = 0; r < gridRows.length; r++) {
+        gridCumulative.push(gridCumulative[gridCumulative.length - 1] + gridRows[r].height + gridRows[r].gap);
     }
-    grid.innerHTML = parts.join('');
+    gridTotalHeight = gridCumulative[gridCumulative.length - 1];
+
+    grid.innerHTML =
+        '<div class="grid-spacer" style="position:relative;height:' + gridTotalHeight + 'px">' +
+        '<div class="grid-viewport" style="position:absolute;top:0;left:0;right:0;will-change:transform"></div>' +
+        '</div>';
+
+    var maxScroll = Math.max(0, grid.scrollHeight - grid.clientHeight);
+    if (savedScrollTop > maxScroll) savedScrollTop = maxScroll;
+    grid.scrollTop = savedScrollTop;
+
+    gridRendered = { start: -1, end: -1 };
+    renderGridVisibleRows();
+    ensureGridScrollHandler();
+
+    gridResizeObserver = new ResizeObserver(function () {
+        var m = gridMetrics();
+        var newCols = gridColCount(grid, m);
+        if (newCols !== gridCols) renderChannelGrid();
+    });
+    gridResizeObserver.observe(grid);
 }
 
 function syncFilterTabs(): void {

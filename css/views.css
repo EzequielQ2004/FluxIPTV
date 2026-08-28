@@ -125,7 +125,14 @@
 }
 
 .ch-grid {
+    --gv-card-w: 135px;
+    --gv-card-h: 160px;
+    --gv-gap: 0.75rem;
+    --gv-group-title-h: 22px;
+    --gv-group-card-h: 126px;
+    --gv-group-margin: 1.25rem;
     flex: 1;
+    position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
     gap: 0.75rem;
@@ -267,6 +274,39 @@
 
 .ch-group-row .ch-card-name {
     font-size: 0.7rem;
+}
+
+/* ── Grid virtual scroller ── */
+.ch-grid.grid-v {
+    display: block;
+}
+
+.ch-grid.groups-view.grid-v {
+    gap: 0;
+}
+
+.gv-row {
+    display: grid;
+    grid-template-columns: repeat(var(--gv-cols, 1), minmax(var(--gv-card-w, 135px), 1fr));
+    gap: var(--gv-gap, 0.75rem);
+}
+
+.gv-row .ch-card {
+    height: 100%;
+}
+
+.gv-section .ch-group-title {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.gv-section .ch-group-row {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.gv-section .ch-group-row .ch-card {
+    height: 100%;
 }
 
 /* Hide sidebar when viewing channels */

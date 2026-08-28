@@ -238,6 +238,11 @@
 }
 
 .tv-mode .ch-grid {
+    --gv-card-w: 160px;
+    --gv-card-h: 205px;
+    --gv-gap: 1rem;
+    --gv-group-title-h: 26px;
+    --gv-group-card-h: 176px;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 1rem;
     padding: 1.25rem;

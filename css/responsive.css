@@ -184,6 +184,9 @@
     }
 
     .ch-grid {
+        --gv-card-w: 96px;
+        --gv-card-h: 130px;
+        --gv-gap: 0.5rem;
         grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
         gap: 0.5rem;
         max-width: 100%;
