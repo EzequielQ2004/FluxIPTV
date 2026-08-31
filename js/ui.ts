@@ -749,43 +749,35 @@ function renderGridVisibleRows(): void {
     viewport.style.transform = 'translateY(' + gridCumulative[startRow] + 'px)';
 }
 
+// --- Chunked grid data-model build ---
+const GRID_FILTER_CHUNK = 2000;
+const GRID_ROW_CHUNK = 200;
+
+let gridBuildId = 0;
+
+function gridSchedule(fn: () => void): void {
+    requestAnimationFrame(fn);
+}
+
 function renderChannelGrid(): void {
     const grid = elements.chGrid;
     if (!grid) return;
 
+    // Invalidate any in-progress chunked build (race-safe).
+    var buildId = ++gridBuildId;
+
     var savedScrollTop = grid.scrollTop;
 
-    var channels = state.channels;
-    if (channels.length === 0) {
+    if (state.channels.length === 0) {
         renderEmptyGrid(t('app.noChannels'));
-        return;
-    }
-
-    const searchTerm = elements.chSearchInput.value.toLowerCase();
-    if (searchTerm) {
-        channels = channels.filter(function (ch) {
-            return ch.name.toLowerCase().includes(searchTerm) || ch.group.toLowerCase().includes(searchTerm);
-        });
-    }
-
-    if (state.currentFilter === 'favorites') {
-        channels = channels.filter(function (ch) { return state.favorites.has(ch.url); });
-    } else if (state.currentFilter === 'recent') {
-        var recentUrls = new Set(state.history.map(function (h) { return h.url; }));
-        channels = channels.filter(function (ch) { return recentUrls.has(ch.url); });
-    }
-
-    if (channels.length === 0) {
-        var emptyMessage = state.currentFilter === 'favorites'
-            ? t('filter.noFavorites')
-            : (state.currentFilter === 'recent' ? t('filter.noRecent') : t('ui.noChannels'));
-        renderEmptyGrid(emptyMessage);
         return;
     }
 
     var metrics = gridMetrics();
     var cols = gridColCount(grid, metrics);
 
+    // Reset virtual state and show a lightweight "loading" state while the
+    // data model is chunked across frames.
     teardownGridVirtual();
     grid.classList.remove('is-empty');
     grid.classList.add('grid-v');
@@ -797,35 +789,138 @@ function renderChannelGrid(): void {
 
     if (state.currentFilter === 'groups') {
         grid.classList.add('groups-view');
-        var groupMap: Record<string, Channel[]> = {};
-        channels.forEach(function (ch) { (groupMap[ch.group] = groupMap[ch.group] || []).push(ch); });
-        var groupNames = Object.keys(groupMap).sort();
-
-        gridRows = [];
-        for (var gi = 0; gi < groupNames.length; gi++) {
-            var gname = groupNames[gi];
-            gridRows.push({
-                type: 'group',
-                name: gname,
-                channels: groupMap[gname],
-                height: metrics.titleH + GROUP_INNER_GAP + metrics.groupCardH,
-                gap: metrics.groupMargin,
-                titleH: metrics.titleH
-            });
-        }
     } else {
         grid.classList.remove('groups-view');
-        gridRows = [];
-        for (var s = 0; s < channels.length; s += cols) {
-            gridRows.push({
-                type: 'cards',
-                channels: channels.slice(s, s + cols),
-                height: metrics.cardH,
-                gap: metrics.gap
-            });
-        }
     }
 
+    grid.innerHTML =
+        '<div class="grid-spacer" style="position:relative;height:' + Math.max(grid.clientHeight, 1) + 'px">' +
+        '<div class="grid-viewport" style="position:absolute;top:0;left:0;right:0;will-change:transform">' +
+        '<div class="grid-loading"><span>' + t('app.loadingList') + '</span></div>' +
+        '</div>' +
+        '</div>';
+
+    // Phase 1: filter channels in batches.
+    var channels: Channel[] = [];
+    var source = state.channels;
+    var searchTerm = elements.chSearchInput.value.toLowerCase();
+    var onlyFavorites = state.currentFilter === 'favorites';
+    var onlyRecent = state.currentFilter === 'recent';
+    var recentUrls = onlyRecent ? new Set(state.history.map(function (h) { return h.url; })) : null;
+
+    var fi = 0;
+    var filterPhase = function (): void {
+        if (buildId !== gridBuildId) return;
+        var stop = Math.min(fi + GRID_FILTER_CHUNK, source.length);
+        for (; fi < stop; fi++) {
+            var ch = source[fi];
+            if (searchTerm && !(ch.name.toLowerCase().includes(searchTerm) || ch.group.toLowerCase().includes(searchTerm))) {
+                continue;
+            }
+            if (onlyFavorites && !state.favorites.has(ch.url)) continue;
+            if (onlyRecent && recentUrls && !recentUrls.has(ch.url)) continue;
+            channels.push(ch);
+        }
+        if (fi < source.length) {
+            gridSchedule(filterPhase);
+        } else {
+            if (buildId !== gridBuildId) return;
+            if (channels.length === 0) {
+                var emptyMessage = state.currentFilter === 'favorites'
+                    ? t('filter.noFavorites')
+                    : (state.currentFilter === 'recent' ? t('filter.noRecent') : t('ui.noChannels'));
+                renderEmptyGrid(emptyMessage);
+                return;
+            }
+            finishGridBuild(buildId, savedScrollTop, channels, metrics, cols);
+        }
+    };
+    gridSchedule(filterPhase);
+}
+
+function finishGridBuild(
+    buildId: number,
+    savedScrollTop: number,
+    channels: Channel[],
+    metrics: { cardW: number; cardH: number; gap: number; titleH: number; groupCardH: number; groupMargin: number },
+    cols: number
+): void {
+    // Phase 2: build rows in batches.
+    var isGroups = state.currentFilter === 'groups';
+    gridRows = [];
+
+    if (isGroups) {
+        var groupMap: Record<string, Channel[]> = {};
+        var gi = 0;
+        var groupPhase = function (): void {
+            if (buildId !== gridBuildId) return;
+            var stop = Math.min(gi + GRID_FILTER_CHUNK, channels.length);
+            var ch2: Channel;
+            for (; gi < stop; gi++) {
+                ch2 = channels[gi];
+                if (!groupMap[ch2.group]) groupMap[ch2.group] = [];
+                groupMap[ch2.group].push(ch2);
+            }
+            if (gi < channels.length) {
+                gridSchedule(groupPhase);
+            } else {
+                if (buildId !== gridBuildId) return;
+                var groupNames = Object.keys(groupMap).sort();
+                var ng = 0;
+                var rowPhase = function (): void {
+                    if (buildId !== gridBuildId) return;
+                    var gStop = Math.min(ng + GRID_ROW_CHUNK, groupNames.length);
+                    for (; ng < gStop; ng++) {
+                        var gname = groupNames[ng];
+                        gridRows.push({
+                            type: 'group',
+                            name: gname,
+                            channels: groupMap[gname],
+                            height: metrics.titleH + GROUP_INNER_GAP + metrics.groupCardH,
+                            gap: metrics.groupMargin,
+                            titleH: metrics.titleH
+                        });
+                    }
+                    if (ng < groupNames.length) {
+                        gridSchedule(rowPhase);
+                    } else {
+                        finalizeGridBuild(buildId, savedScrollTop);
+                    }
+                };
+                gridSchedule(rowPhase);
+            }
+        };
+        gridSchedule(groupPhase);
+    } else {
+        var s = 0;
+        var flatPhase = function (): void {
+            if (buildId !== gridBuildId) return;
+            var sStop = Math.min(s + GRID_ROW_CHUNK * cols, channels.length);
+            for (; s < sStop; s += cols) {
+                gridRows.push({
+                    type: 'cards',
+                    channels: channels.slice(s, s + cols),
+                    height: metrics.cardH,
+                    gap: metrics.gap
+                });
+            }
+            if (s < channels.length) {
+                gridSchedule(flatPhase);
+            } else {
+                finalizeGridBuild(buildId, savedScrollTop);
+            }
+        };
+        gridSchedule(flatPhase);
+    }
+}
+
+function finalizeGridBuild(buildId: number, savedScrollTop: number): void {
+    if (buildId !== gridBuildId) return;
+    const grid = elements.chGrid;
+    if (!grid) return;
+
+    // Phase 3: cumulative heights + mount + restore scroll + observer (cheap).
+    var cardsMode = state.currentFilter !== 'groups';
     gridCumulative = [0];
     for (var r = 0; r < gridRows.length; r++) {
         gridCumulative.push(gridCumulative[gridCumulative.length - 1] + gridRows[r].height + gridRows[r].gap);
@@ -848,7 +943,9 @@ function renderChannelGrid(): void {
     gridResizeObserver = new ResizeObserver(function () {
         var m = gridMetrics();
         var newCols = gridColCount(grid, m);
-        if (newCols !== gridCols) renderChannelGrid();
+        var wasCards = cardsMode;
+        var isCardsNow = state.currentFilter !== 'groups';
+        if (newCols !== gridCols || isCardsNow !== wasCards) renderChannelGrid();
     });
     gridResizeObserver.observe(grid);
 }
