@@ -1,4 +1,4 @@
-import { parseM3U } from './parser.ts';
+import { parseM3UInWorker } from './m3u-worker.ts';
 import { t } from './i18n.ts';
 import { state, saveState } from './state.ts';
 import { elements, renderChannelList, renderPlaylistList, renderViewLists, renderChannelGrid, showView, showLoading, hideLoading, showListLoading, closeModal, showError, showToast } from './ui.ts';
@@ -123,7 +123,7 @@ async function loadM3UFromUrl(url: string, name?: string, epgUrl?: string): Prom
         }
 
         // 7. Parse and validate
-        var channels = parseM3U(content, url);
+        var channels = await parseM3UInWorker(content, url);
 
         if (channels.length === 0) {
             done();
@@ -190,7 +190,7 @@ function loadM3UFromFile(file: File, name: string): Promise<void> {
             elements.confirmM3uBtn.disabled = false;
         }
 
-        reader.onload = function (e: any) {
+        reader.onload = async function (e: any) {
             try {
                 const content = e.target.result;
 
@@ -201,7 +201,7 @@ function loadM3UFromFile(file: File, name: string): Promise<void> {
                     return;
                 }
 
-                const channels = parseM3U(content);
+                const channels = await parseM3UInWorker(content);
 
                 if (channels.length === 0) {
                     done();
