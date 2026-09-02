@@ -593,6 +593,7 @@ let gridRendered: { start: number; end: number } = { start: -1, end: -1 };
 let gridScrollHandler: (() => void) | null = null;
 let gridResizeObserver: ResizeObserver | null = null;
 let gridPadTop = 0;
+let gridBuilt = false;
 
 function readCssPx(el: HTMLElement, name: string, fallback: number): number {
     var v = getComputedStyle(el).getPropertyValue(name).trim();
@@ -939,6 +940,7 @@ function finalizeGridBuild(buildId: number, savedScrollTop: number): void {
     gridRendered = { start: -1, end: -1 };
     renderGridVisibleRows();
     ensureGridScrollHandler();
+    gridBuilt = true;
 
     gridResizeObserver = new ResizeObserver(function () {
         var m = gridMetrics();
@@ -960,8 +962,11 @@ function syncFilterTabs(): void {
 function setFilter(filter: string): void {
     state.currentFilter = filter;
     syncFilterTabs();
-    renderChannelGrid();
-    renderChannelList();
+    if (state.currentView === 'channels') {
+        renderChannelGrid();
+    } else {
+        renderChannelList();
+    }
 }
 
 function showPlaylistDetails(url: string): void {
@@ -1264,6 +1269,9 @@ function showView(viewName: 'lists' | 'channels' | 'player'): void {
     container?.classList.toggle('viewing-lists', viewName === 'lists');
     container?.classList.toggle('viewing-channels', viewName === 'channels');
     container?.classList.toggle('viewing-player', viewName === 'player');
+    if (viewName === 'channels' && !gridBuilt && state.channels.length > 0) {
+        renderChannelGrid();
+    }
 }
 
 function minimizePlayer(): void {

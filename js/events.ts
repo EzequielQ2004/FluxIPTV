@@ -196,7 +196,9 @@ function setupEventListeners() {
             const action = actionBtn.getAttribute('data-action')!;
             if (action === 'favorite') {
                 toggleFavorite(index);
-                renderChannelGrid();
+                if (state.currentFilter === 'favorites' || state.currentFilter === 'recent') {
+                    renderChannelGrid();
+                }
             } else if (action === 'lock') {
                 toggleLock(index);
             }
